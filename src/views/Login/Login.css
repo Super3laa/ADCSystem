@@ -1,0 +1,15 @@
+.LoginPage{
+    display: flex;
+    min-height: 90vh;
+    justify-content: center;
+    padding : 1rem
+}
+.LoginCard{
+    width: fit-content;
+    height: fit-content;
+    margin: auto;
+    border-radius: 6px;
+    box-shadow: 0rem 0rem 5px 0px hsl(0deg 0% 83%);
+    background: rgb(255, 255, 255);
+    padding: 2%;
+}
