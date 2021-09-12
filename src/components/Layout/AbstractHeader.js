@@ -18,6 +18,7 @@ import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {FaUserCircle} from 'react-icons/fa'
 import jwtDecode from 'jwt-decode';
+import {IoMenuSharp} from 'react-icons/io5'
 import logo from "./logo.png";
 import { useTheme } from "@material-ui/core";
 export default function AbstractHeader(props) {
@@ -50,7 +51,7 @@ export default function AbstractHeader(props) {
             : null*/}
             <Navbar
                 id="AbstractHeader"
-                expand="md"
+                expand="lg"
                 style={{
                     border: "0",
                     padding: "0.5rem",
@@ -73,9 +74,9 @@ export default function AbstractHeader(props) {
                     />{" "}
                     {title}
                 </NavbarBrand>
-                <NavbarToggler onClick={toggle} />
+                <NavbarToggler onClick={toggle} className="mr-2"  style={{color:"white"}}><IoMenuSharp/></NavbarToggler>
                 <Collapse isOpen={isOpen} navbar>
-                    <Nav className="mr-auto">
+                    <Nav navbar>
                         {props.navigations.map((x, i) => {
                             if (x.length === 1) {
                                 return (
@@ -115,7 +116,7 @@ export default function AbstractHeader(props) {
                         })}
                     </Nav>
                 </Collapse>
-                <Nav
+                <Nav navbar
                     style={{
                         padding: "0px 1.5rem",
                         marginRight: "3rem",
