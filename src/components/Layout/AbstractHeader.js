@@ -49,6 +49,7 @@ export default function AbstractHeader(props) {
                 }})
             : null*/}
             <Navbar
+                id="AbstractHeader"
                 expand="md"
                 style={{
                     border: "0",
@@ -138,7 +139,7 @@ export default function AbstractHeader(props) {
                 </Nav>
                 {
                     props.exitIcon ? <Nav>
-                        <NavbarText style={{ fontSize: "1.15rem" }}>
+                        <NavbarText style={{ fontSize: "1.1rem" }}>
                             {
                                 props.badge ? 
                                 <>
