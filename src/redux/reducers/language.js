@@ -1,4 +1,4 @@
-const language=(state={currentLanguage:"EN",languageName:"latin",direction:"ltr"},action)=>{
+const language=(state={},action)=>{
     switch (action.type){
         case 'changeLanguage':
             return action.payload

@@ -11,7 +11,6 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
-    Badge,
     NavbarText
 } from 'reactstrap'; import { IoMdLogOut } from "react-icons/io";
 import { useHistory } from "react-router-dom";
@@ -46,9 +45,15 @@ export default function AbstractHeader(props) {
         setAnchorEl(event.currentTarget);
     };
     const handleChangeLang = (e)=>{
-        dispatch(changeLanguage(languageTable.get(e.currentTarget.textContent)))
-        setcurrentLanguage(e.currentTarget.textContent);
-        setAnchorEl(null);
+        try {
+            const languageProps = languageTable.get(e.currentTarget.textContent)
+            dispatch(changeLanguage(languageProps))
+            localStorage.setItem('language',JSON.stringify(languageProps))
+            setcurrentLanguage(e.currentTarget.textContent);
+            setAnchorEl(null);   
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const handleProfileMenuClick = (event) => {

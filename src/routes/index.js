@@ -12,8 +12,8 @@ function Routes() {
                     <Router>
                         <Switch>
                             {
-                                getRoutes().map(({ path, component }) => {
-                                    return <Route exact path={path} component={component} />
+                                getRoutes().map(({ path, component },i) => {
+                                    return <Route exact path={path} key={i} component={component} />
                                 })
                             }
                         </Switch>

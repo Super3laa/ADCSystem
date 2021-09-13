@@ -3,7 +3,8 @@
   "Logout":"Logout",
   "Username":"Username",
   "Password" : "Password",
-  "Home":"Home"
+  "Home":"Home",
+  "NotFoundButtonText":"Take Me Home"
 
 }
   

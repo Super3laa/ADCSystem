@@ -2,7 +2,9 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers/index';
 
-const initialState = {};
+const initialState = {
+  language:localStorage.getItem('language')?JSON.parse(localStorage.getItem('language')):{currentLanguage:"EN",languageName:"latin",direction:"ltr"}
+};
 
 const middleWare = [thunk];
 

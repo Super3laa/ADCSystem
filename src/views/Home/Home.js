@@ -19,12 +19,10 @@ const routes = {
         path:"/Home/parent2",
         icon:"FaUserAlt",
         children: {
-            "child1": { title: "cbild1", path: "/child1" },
-            "child2": { title: "child2", path: "/child2" },
-            "child3": { title: "child3", path: "/child3" },
+            "child1": { title: "cbild1", path: "/child1" ,icon :"FaChild"},
+            "child2": { title: "child2", path: "/child2" ,icon :"FaChild"},
+            "child3": { title: "child3", path: "/child3" ,icon :"FaChild"},
             "child4": { title: "child4", path: "/child4" },
-
-
         }
     }
 }

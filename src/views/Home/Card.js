@@ -17,7 +17,7 @@ export default function Card(props) {
             <Container>
                 <Row>
                     <Col>
-                        <Typography  variant="h5">{props.data.title} <IconComponent style={{verticalAlign: "initial"}}/></Typography>
+                        <Typography  variant="h5">{props.data.title} {props.data.icon ? <IconComponent style={{verticalAlign: "initial"}}/>:null}</Typography>
                     </Col>
                 </Row>
             </Container>

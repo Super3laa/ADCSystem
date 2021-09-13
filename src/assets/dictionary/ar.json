@@ -3,6 +3,6 @@
   "Logout":"خروج",
   "Username":"اسم المستخدم",
   "Password":"كلمة المرور",
-  "Home":"الرئيسيه"
-
+  "Home":"الرئيسيه",
+  "NotFoundButtonText":"إلى الرئيسيه"
 }
