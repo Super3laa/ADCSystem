@@ -5,7 +5,6 @@ import loginImg from './logo.png';
 import './Login.css'
 import FormBuilder from 'form007'
 import { useTheme } from "@material-ui/core";
-import { useTranslate } from "react-translate";
 import { useSelector } from "react-redux";
 import ar from '../../assets/dictionary/ar.json'
 import en from '../../assets/dictionary/en.json'
