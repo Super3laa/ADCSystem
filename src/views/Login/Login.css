@@ -1,10 +1,4 @@
-.LoginPage{
-    display: flex;
-    justify-content: center;
-    padding : 1rem;
-    min-height: inherit;
 
-}
 .LoginCard{
     width: fit-content;
     height: fit-content;

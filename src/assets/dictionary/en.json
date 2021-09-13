@@ -4,7 +4,8 @@
   "Username":"Username",
   "Password" : "Password",
   "Home":"Home",
-  "NotFoundButtonText":"Take Me Home"
+  "NotFoundButtonText":"Take Me Home",
+  "Edit":"Edit"
 
 }
   

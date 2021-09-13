@@ -10,3 +10,10 @@ html {
     margin-left: 6px !important;
     margin-right: 6px !important;
 }
+.Page{
+    display: flex;
+    justify-content: center;
+    padding : 1rem;
+    min-height: inherit;
+
+}
