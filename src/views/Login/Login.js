@@ -45,6 +45,7 @@ export default function Login() {
                                         value: "",
                                         size: "small",
                                         helperText: "Don't leave it blank",
+                                        placeHolder:"usernamePlaceHolder",
                                         variant: "outlined",
                                         translate:"Username",
                                         registerObject: {
@@ -58,6 +59,7 @@ export default function Login() {
                                         label: "Password",
                                         type: "password",
                                         translate:"Password",
+                                        placeHolder:"passwordPlaceHolder",
                                         value: "",
                                         size: "small",
                                         helperText: "Don't leave it blank",

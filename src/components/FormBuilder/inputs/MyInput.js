@@ -15,6 +15,7 @@ export default function MyInput({
   variant,
   color,
   fullWidth,
+  placeHolder
 }) {
   return (
     <div style={{ /*marginTop: "10px"*/ }}>
@@ -29,6 +30,7 @@ export default function MyInput({
             id={(variant ? variant : "outlined") + "-basic"}
             variant={variant ? variant : "outlined"}
             size={size ? size : "small"}
+            placeholder={placeHolder}
             id={name}
             type={type}
           />

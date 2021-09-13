@@ -23,8 +23,9 @@ import logo from "./logo.png";
 import { useTheme } from "@material-ui/core";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { useTranslate } from "react-translate"
 import languageTable from './languageTable';
+import CounterPart from 'counterpart';
+import Translate from 'react-translate-component';
 
 export default function AbstractHeader(props) {
     const history = useHistory();
@@ -36,7 +37,6 @@ export default function AbstractHeader(props) {
     const theme = useTheme();
     let title;
     const lang = useSelector(state=>state.language)
-    const translator = useTranslate(lang.currentLanguage);
     const [anchorEl, setAnchorEl] = useState(null);
     const [currentLanguage, setcurrentLanguage]=useState(lang.currentLanguage);
     const [anchorElProfile, setAnchorElProfile] = useState(null);
@@ -47,6 +47,7 @@ export default function AbstractHeader(props) {
     const handleChangeLang = (e)=>{
         try {
             const languageProps = languageTable.get(e.currentTarget.textContent)
+            CounterPart.setLocale(e.currentTarget.textContent);
             dispatch(changeLanguage(languageProps))
             localStorage.setItem('language',JSON.stringify(languageProps))
             setcurrentLanguage(e.currentTarget.textContent);
@@ -208,7 +209,7 @@ export default function AbstractHeader(props) {
                                             open={Boolean(anchorElProfile)}
                                             onClose={handleProfileMenu}
                                         >
-                                            <MenuItem onClick={handleProfileMenu}>{translator("Logout")} <IoMdLogOut
+                                            <MenuItem onClick={handleProfileMenu}>{<Translate content="Logout"/>} <IoMdLogOut
                                                 id="Logout"
                                             /></MenuItem>
                                         </Menu>

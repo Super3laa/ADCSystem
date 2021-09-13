@@ -5,7 +5,9 @@
   "Password" : "Password",
   "Home":"Home",
   "NotFoundButtonText":"Take Me Home",
-  "Edit":"Edit"
+  "Edit":"Edit",
+  "usernamePlaceHolder":"Username..",
+  "passwordPlaceHolder":"Password.."
 
 }
   

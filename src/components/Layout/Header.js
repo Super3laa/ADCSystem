@@ -1,10 +1,7 @@
 import React from "react";
 import AbstractHeader from "./AbstractHeader";
-import { useTranslate } from "react-translate"
-import { useSelector } from "react-redux";
-
+import Translate from 'react-translate-component';
 export default function Header() {
-    const translator = useTranslate(useSelector(state=>state.language.currentLanguage))
     return (
         <React.Fragment>
                     {/*depending on permissions pass deffernet props */}
@@ -13,8 +10,8 @@ export default function Header() {
                 badge={true}
                 toolbar={[]}
                 navigations={[
-                    [{ title: translator("Login"), path: "/Login" }],
-                    [{ title: translator("Home"), path: "/Home" }],
+                    [{ title: <Translate content = "Login" />, path: "/Login" }],
+                    [{ title: <Translate content= "Home" />, path: "/Home" }],
                 ]}
                 exitIcon={true}
             />

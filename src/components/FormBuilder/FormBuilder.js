@@ -58,6 +58,7 @@ export default function GenericForm({
       submitHandler(data, setError, language);
     }
   };
+
   const titleHeader = () =>
     title ? (
       <h3 style={{ textAlign: "center" }}>
@@ -96,6 +97,11 @@ export default function GenericForm({
                             dictionary[language][input.label]
                               ? dictionary[language][input.label]
                               : input.label;
+                          input.placeHolder = 
+                          dictionary[language] &&
+                          dictionary[language][input.placeHolder]
+                            ? dictionary[language][input.placeHolder]
+                            : input.translate;
                           input.color = color;
                           return (
                             <Col
