@@ -1,4 +1,9 @@
 {
-  "Login":"Login"
+  "Login":"Login",
+  "Logout":"Logout",
+  "Username":"Username",
+  "Password" : "Password",
+  "Home":"Home"
+
 }
   

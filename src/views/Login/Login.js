@@ -5,11 +5,14 @@ import loginImg from './logo.png';
 import './Login.css'
 import FormBuilder from 'form007'
 import { useTheme } from "@material-ui/core";
+import { useTranslate } from "react-translate";
+import { useSelector } from "react-redux";
 import ar from '../../assets/dictionary/ar.json'
 import en from '../../assets/dictionary/en.json'
 
 export default function Login() {
     const theme = useTheme();
+    const lang = useSelector(state=>state.language)
     function Logo() {
         return <div style={{textAlign:"center"}}><img style={{
             objectFit: "contain",
@@ -44,6 +47,7 @@ export default function Login() {
                                         size: "small",
                                         helperText: "Don't leave it blank",
                                         variant: "outlined",
+                                        translate:"Username",
                                         registerObject: {
                                             required: true,
                                         },
@@ -54,6 +58,7 @@ export default function Login() {
                                         name: "password",
                                         label: "Password",
                                         type: "password",
+                                        translate:"Password",
                                         value: "",
                                         size: "small",
                                         helperText: "Don't leave it blank",
@@ -71,7 +76,8 @@ export default function Login() {
                                 grid={{ xs: 12, md: 12 }}
                                 submitButtonText="Login"
                                 dictionary={{ar,en}}
-                                language="en"
+                                dir={lang.direction}
+                                language={lang.currentLanguage.toLowerCase()}
                                 submitButtonFullWidth={true}
                                 submitHandler={loginHandler}
                             />

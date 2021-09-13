@@ -1,6 +1,12 @@
-#body{
+#body {
     background-color: hsl(0, 0%, 98%)
 }
+
 html {
     --color-primary: #3f51b5;
-  }
+}
+
+.MuiButton-startIcon {
+    margin-left: 6px !important;
+    margin-right: 6px !important;
+}

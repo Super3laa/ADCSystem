@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Collapse,
     Navbar,
@@ -16,11 +16,17 @@ import {
 } from 'reactstrap'; import { IoMdLogOut } from "react-icons/io";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {FaUserCircle} from 'react-icons/fa'
-import jwtDecode from 'jwt-decode';
-import {IoMenuSharp} from 'react-icons/io5'
+import {changeLanguage} from '../../redux/actions/language';
+import { FaUserCircle } from 'react-icons/fa'
+import Button from '@material-ui/core/Button';
+import { IoMenuSharp } from 'react-icons/io5'
 import logo from "./logo.png";
 import { useTheme } from "@material-ui/core";
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import { useTranslate } from "react-translate"
+import languageTable from './languageTable';
+
 export default function AbstractHeader(props) {
     const history = useHistory();
     const [isOpen, setIsOpen] = useState(false);
@@ -30,8 +36,31 @@ export default function AbstractHeader(props) {
     const dispatch = useDispatch();
     const theme = useTheme();
     let title;
+    const lang = useSelector(state=>state.language)
+    const translator = useTranslate(lang.currentLanguage);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [currentLanguage, setcurrentLanguage]=useState(lang.currentLanguage);
+    const [anchorElProfile, setAnchorElProfile] = useState(null);
+   
+    const handleLangMenuClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleChangeLang = (e)=>{
+        dispatch(changeLanguage(languageTable.get(e.currentTarget.textContent)))
+        setcurrentLanguage(e.currentTarget.textContent);
+        setAnchorEl(null);
+    }
+
+    const handleProfileMenuClick = (event) => {
+        setAnchorElProfile(event.currentTarget);
+    };
+
+    const handleProfileMenu = (e) =>{
+
+        setAnchorElProfile(null);
+    }
     try {
-        title= "ERP"
+        title = "ERP"
         // title = JSON.parse(jwtDecode(localStorage.getItem('EnterpriseProps')).properties).name
 
     } catch (error) {
@@ -56,8 +85,9 @@ export default function AbstractHeader(props) {
                     border: "0",
                     padding: "0.5rem",
                     borderRadius: "0",
-                    backgroundColor:theme.palette.primary.main,
-                    color:theme.palette.primary.contrastText
+                    backgroundColor: theme.palette.primary.main,
+                    color: theme.palette.primary.contrastText,
+                    direction:lang.direction
                 }}
             >
                 <NavbarBrand
@@ -74,7 +104,7 @@ export default function AbstractHeader(props) {
                     />{" "}
                     {title}
                 </NavbarBrand>
-                <NavbarToggler onClick={toggle} className="mr-2"  style={{color:"white"}}><IoMenuSharp/></NavbarToggler>
+                <NavbarToggler onClick={toggle} className="mr-2" style={{ color: "white" }}><IoMenuSharp /></NavbarToggler>
                 <Collapse isOpen={isOpen} navbar>
                     <Nav navbar>
                         {props.navigations.map((x, i) => {
@@ -84,9 +114,10 @@ export default function AbstractHeader(props) {
                                         <NavLink
                                             href=""
                                             key={i}
-                                            style={{                    color:theme.palette.primary.contrastText
+                                            style={{
+                                                color: theme.palette.primary.contrastText
                                             }}
-                                            onClick={() => history.push(`${x[0].path}`)}
+                                            onClick={(e) => {e.preventDefault();history.push(`${x[0].path}`)}}
                                         >
                                             {x[0].title}
                                         </NavLink>
@@ -140,20 +171,44 @@ export default function AbstractHeader(props) {
                 </Nav>
                 {
                     props.exitIcon ? <Nav>
-                        <NavbarText style={{ fontSize: "1.1rem" }}>
+                        <NavbarText style={{ fontSize: "1.1rem", color: "#fff" }}>
                             {
-                                props.badge ? 
-                                <>
-                                <FaUserCircle />
-                                <Badge
-                                  > {"Alaa"}{" "}
-                                </Badge> </>: null
+                                props.badge ?
+                                    <>
+                                        <Button
+                                            aria-controls="LanguageMenu"
+                                            aria-haspopup="true"
+                                            onClick={handleLangMenuClick}
+                                            style={menuButtonStyle} >{currentLanguage}</Button>
+                                        <Menu
+                                            id="LanguageMenu"
+                                            anchorEl={anchorEl}
+                                            keepMountedmenu
+                                            open={Boolean(anchorEl)}
+                                            onClose={handleChangeLang}
+                                        >
+                                            <MenuItem onClick={handleChangeLang}>EN</MenuItem>
+                                            <MenuItem onClick={handleChangeLang}>AR</MenuItem>
+                                        </Menu>
+                                        <Button
+                                            aria-controls="ProfileMenu"
+                                            style={menuButtonStyle}
+                                            onClick={handleProfileMenuClick}
+                                            startIcon={<FaUserCircle />}
+                                             > Alaa</Button>
+                                        <Menu
+                                            id="ProfileMenu"
+                                            anchorEl={anchorElProfile}
+                                            keepMountedmenu
+                                            open={Boolean(anchorElProfile)}
+                                            onClose={handleProfileMenu}
+                                        >
+                                            <MenuItem onClick={handleProfileMenu}>{translator("Logout")} <IoMdLogOut
+                                                id="Logout"
+                                            /></MenuItem>
+                                        </Menu>
+                                        </> : null
                             }
-                            <IoMdLogOut
-                                onClick={handleLogout}
-                                id="Logout"
-                                style={{ fontSize: "1.2rem", cursor: "pointer" }}
-                            />
                         </NavbarText>
                     </Nav>
                         : null
@@ -163,3 +218,5 @@ export default function AbstractHeader(props) {
         </React.Fragment>
     );
 }
+
+const menuButtonStyle={color: "#fff", minWidth: 0, padding: "0 0.35rem",textTransform: "none"}
