@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector ,useDispatch} from 'react-redux';
 import {  Modal, ModalBody } from 'reactstrap';
 import FormBuilder from '../FormBuilder/FormBuilder';
-
+import { updateForm } from '../../redux/actions/form';
 export default function ModalForm(){
-  const formProps = useSelector(state=>state.form.state)
-  const [modal, setModal] = useState(formProps.state);
-  const toggle = () => setModal(!modal);
+  const formProps = useSelector(state=>state.form);
+  const dispatch = useDispatch();
+  const toggle = () => dispatch(updateForm({state:null}));
 
   return (
-      <Modal isOpen={modal} centered  toggle={toggle} className={"ModalApp"}>
+      <Modal isOpen={formProps.state} centered  toggle={toggle} className={"ModalApp"}>
         <ModalBody>
           {formProps.isCustomComponent?formProps.customComponent:
             <FormBuilder 

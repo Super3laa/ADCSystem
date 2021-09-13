@@ -15,5 +15,9 @@ html {
     justify-content: center;
     padding : 1rem;
     min-height: inherit;
+}
+.modal-content {
 
+    background-color: inherit  !important;
+    border: 0 !important;
 }
