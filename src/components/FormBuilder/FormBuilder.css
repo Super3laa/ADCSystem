@@ -2,23 +2,23 @@
   box-shadow: 0 0 8px 0 rgba(17, 22, 26, 0.16),
     0 4px 8px 0 rgba(17, 22, 26, 0.08), 0 8px 16px 0 rgba(17, 22, 26, 0.08);
   background-color: #fff;
-  padding: 1rem;
   text-align: justify;
   margin: auto;
+}
+.genericForm.disableBoxShadow{
+	box-shadow:none !important;
 }
 #error-area {
   color: red;
 }
-.btn-form{
+.btn-form {
   text-align: center;
-}
-.MuiOutlinedInput-inputMarginDense-88 {
-    padding: 0.5rem 0.5rem !important;
 }
 .form {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
+  padding: 20px;
 }
 .form-row {
   flex-basis: 100%;
@@ -29,7 +29,6 @@
   flex: 1;
   margin: 15px;
 }
-
 .form-label {
   display: flex;
   flex-direction: column;
@@ -73,4 +72,13 @@
 
 .form-submitBtn {
   padding: 7px 20px;
+}
+.MuiFormControl-root {
+  width: 100%;
+}
+.reactSelectFullWidth {
+  width: 100%;
+}
+.MuiOutlinedInput-notchedOutline {
+  border-width: 2px !important;
 }

@@ -15,14 +15,13 @@ export default function MyCheckBox({
             <label className={"form-checkLabel"}>
                 <Controller
                     render={({ field }) => (
-                        <Checkbox {...field} checked={value}/>
+                        <Checkbox {...field} checked={field.value}/>
                     )}
                     name={name}
                     control={control}
                     value={value}
                     rules={registerObject}
                 />
-                {name}
               {/*  <Translate content={name} />*/}
             </label>
         </>

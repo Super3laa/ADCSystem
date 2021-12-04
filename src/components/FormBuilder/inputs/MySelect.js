@@ -1,14 +1,14 @@
 import React from "react";
 import { Controller } from "react-hook-form";
-import { Select, MenuItem, FormControl } from "@material-ui/core";
+/*import { Select, MenuItem, FormControl } from "@material-ui/core";*/
 //import Translate from "react-translate-component";
 import { create } from "jss";
 import rtl from "jss-rtl";
-import { StylesProvider, jssPreset } from "@material-ui/core/styles";
-
+import { jssPreset } from "@material-ui/core/styles";
+import Select from "react-select";
+import { useTheme } from "@material-ui/core";
 // Configure JSS
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
-
 export default function MySelect({
   name,
   language,
@@ -23,92 +23,87 @@ export default function MySelect({
   variant,
   size,
   translateType,
-  color,
   fullWidth,
   maxWidth,
   minWidth,
   arrayFlag,
+  defaultValue,
+  latinArabicIdProcessing,
+  languageName,
+  labelMargin,
 }) {
-  /*
-    if (!control.defaultValuesRef.current[name]) {
-        if (!value && rows && rows[0] && rows[0].id) {
-            control.defaultValuesRef.current[name] = rows[0].id;
-        } else if (!value && rows && rows[0] && rows[0].value) {
-            control.defaultValuesRef.current[name] = rows[0].value;
-        }
-    }
-*/
-  if (!color) {
-    color = "#000";
+  if (latinArabicIdProcessing) {
+    let parsedRows = [];
+    rows.map((row) => {
+      let parsedRow = {};
+      parsedRow.value = row.id;
+      parsedRow.label = row[languageName];
+      parsedRows.push(parsedRow);
+    });
+    rows = parsedRows;
   }
- /** if (!maxWidth) {
-    maxWidth = "400px";
-  }**/
-  if (!minWidth) {
-    minWidth = "100px";
-  }
-  let defaultValue = "";
-  if (value) defaultValue = value;
-  else if (rows && rows[0] && rows[0].id) defaultValue = rows[0].id;
-  else if (rows && rows[0] && rows[0].value) defaultValue = rows[0].value;
-
+  let defaultLabelMargin = "0 0 0.75rem 0";
+  defaultLabelMargin = labelMargin ? labelMargin : defaultLabelMargin;
+  const theme = useTheme();
+  let color = theme.palette.primary.main;
   return (
-    <label className="form-label" /*style={{ margin: "20px" }}*/>
-      <p style={{ color: color }}>{translate}</p>
-      {/*  <Translate content={name} style={{ margin: "0 0 5px 0" }} />*/}
-      <FormControl
-        fullWidth
-        style={{ textAlign: "justify", maxWidth: maxWidth, minWidth: minWidth }}
-        size={size ? size : "small"}
-      >
-        <Controller
-          name={name}
-          control={control}
-          defaultValue={value}
-          handleChange={handleChange && handleChange}
-          render={({ field }) => {
-            return (
-              <StylesProvider jss={jss}>
-                <Select
-                  {...field}
-                  helperText={errors[name] ? helperText : null}
-                  error={errors[name] ? true : false}
-                  labelId={name + "Id"}
-                  label={name}
-                  id={name}
-                  defaultValue={defaultValue}
-                  id={(variant ? variant : "outlined") + "-basic"}
-                  variant={variant ? variant : undefined}
-                  size={size ? size : "small"}
-                >
-                  {rows &&
-                    rows.map((row, idx) => {
-                      let imaginaryRow={};
-                      if(arrayFlag){
-                        imaginaryRow.value=row;
-                        row=imaginaryRow;
-                      }
-                      return (
-                        <MenuItem
-                          key={idx}
-                          value={row.id ? row.id : row.value ? row.value : idx}
-                        >
-                          {row[language]
-                            ? row[language]
-                            : row.name
-                            ? row.name
-                            : row.value
-                            ? row.value
-                            : idx}
-                        </MenuItem>
-                      );
-                    })}
-                </Select>
-              </StylesProvider>
-            );
-          }}
-        />
-      </FormControl>
+    <label style={{ width: "100%" }}>
+      <p style={{ color: color, margin: 0, margin: defaultLabelMargin }}>
+        {translate ? translate : name}
+      </p>
+      <Controller
+        name={name}
+        control={control}
+        defaultValue={defaultValue ? defaultValue : rows[0].value}
+        value={value ? value : rows[0].value}
+        //handleChange={handleChange && handleChange}
+        render={({ field }) => {
+          return (
+            <Select
+              className="reactSelectFullWidth"
+              isRtl={language == "ar" ? true : false}
+              isSearchable={true}
+              name={name}
+              defaultValue={
+                defaultValue
+                  ? rows.find((row) => row.value == defaultValue)
+                  : rows[0]
+              }
+              options={rows}
+              value={rows.find((row) => row.value == field.value)}
+              onChange={(data) => {
+                field.onChange(data.value);
+              }}
+              styles={{
+                option: (provided, state) => ({
+                  ...provided,
+                  // color: state.isSelected ? "red" : "blue",
+                }),
+                menu: (provided, state) => ({
+                  ...provided,
+                  borderBottom: "1px dotted pink",
+                  color: color,
+                }),
+                input: (provided, state) => ({
+                  ...provided,
+                  paddingTop: 5,
+                  paddingBottom: 5,
+                }),
+              }}
+              theme={(theme) => ({
+                ...theme,
+                borderRadius: 0,
+                colors: {
+                  ...theme.colors,
+                  //primary25: color,
+                  primary: color,
+                },
+                padding: 50,
+              })}
+            />
+          );
+        }}
+      />
     </label>
   );
 }

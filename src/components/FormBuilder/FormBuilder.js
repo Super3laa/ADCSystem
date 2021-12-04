@@ -1,38 +1,41 @@
 import React, { useEffect } from "react";
 //import Translate from "react-translate-component";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import MyInput from "./inputs/MyInput.js";
 import MySelect from "./inputs/MySelect.js";
 import MyCheckBox from "./inputs/MyCheckbox.js";
 import ErrorArea from "./errors/ErrorArea.js";
 import MySubmit from "./inputs/MySubmit.js";
-import { Container,Row,Col } from "reactstrap/";
+import { Container, Row, Col } from "reactstrap/";
 import "./FormBuilder.css";
 import {
   StylesProvider,
   jssPreset,
   ThemeProvider,
-  createTheme,
 } from "@material-ui/core/styles";
 
 import { create } from "jss";
 import rtl from "jss-rtl";
+import Typography from '@material-ui/core/Typography';
+
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
 export default function GenericForm({
   rows,
-  language,
+  language = "en",
+  languageName = "latinName",
   dictionary = {},
-  dir="ltr",
+  dir = "ltr",
   title,
   submitHandler,
-  grid={xs:12,md:6},
+  grid = { xs: 12, md: 6 },
   values,
   noSubmit,
   fullWidth,
   submitButtonText,
   submitButtonFullWidth,
-  color
+  disableFormBoxShadow=false,
+  color,
 }) {
   const {
     handleSubmit,
@@ -46,13 +49,9 @@ export default function GenericForm({
   } = useForm({
     defaultValues: values,
   });
-  if(!color){color="#000";}
-  const theme = createTheme({
-    palette: {
-      primary: { main: color },
-      type:"light"
-    },
-  });
+  if (!color) {
+    color = "#000";
+  }
   const onSubmit = (data) => {
     if (submitHandler) {
       submitHandler(data, setError, language);
@@ -61,87 +60,86 @@ export default function GenericForm({
 
   const titleHeader = () =>
     title ? (
-      <h3 style={{ textAlign: "center" }}>
+      <Typography color="primary" component="h4" variant="h4" style={{ textAlign: "center" }}>
         {dictionary[language] && dictionary[language][title]
           ? dictionary[language][title]
           : title}
         {/* <Translate content={title} />*/}
-      </h3>
+      </Typography>
     ) : null;
   return (
     <StylesProvider jss={jss}>
-      <ThemeProvider theme={theme}>
-        <div
-          className="genericForm"
-          style={fullWidth ? { width: "100%" } : null}
-        >
-          {titleHeader()}
-          <form className="form" dir={dir} onSubmit={handleSubmit(onSubmit)}>
-            <Container>
-              {rows &&
-                rows.map((inputs, key) => {
-                  return (
-                    <Row key={key}>
-                      {inputs &&
-                        inputs.map((input, index) => {
-                          input.control = control;
-                          input.errors = errors;
-                          input.reset = reset;
-                          input.setValue = setValue;
-                          input.getValues = getValues;
-                          input.language = language;
-                          input.onChange = onChange;
-                          input.handleSubmit = handleSubmit;
-                          input.translate =
-                            dictionary[language] &&
-                            dictionary[language][input.label]
-                              ? dictionary[language][input.label]
-                              : input.label;
-                          input.placeHolder = 
+      <div className="genericForm" style={fullWidth ? { width: "100%" } : null}>
+        {titleHeader()}
+        <form className="form" dir={dir} onSubmit={handleSubmit(onSubmit)}>
+          <Container>
+            {rows &&
+              rows.map((inputs, key) => {
+                return (
+                  <Row key={key}>
+                    {inputs &&
+                      inputs.map((input, index) => {
+                        input.label = input.label ? input.label : input.name;
+                        input.control = control;
+                        input.errors = errors;
+                        input.reset = reset;
+                        input.setValue = setValue;
+                        input.getValues = getValues;
+                        input.language = language;
+                        input.languageName = languageName;
+                        input.onChange = onChange;
+                        input.handleSubmit = handleSubmit;
+                        input.translate =
+                          dictionary[language] &&
+                          dictionary[language][input.label]
+                            ? dictionary[language][input.label]
+                            : input.label;
+                        input.placeHolder =
                           dictionary[language] &&
                           dictionary[language][input.placeHolder]
                             ? dictionary[language][input.placeHolder]
-                            : input.translate;
-                          input.color = color;
-                          return (
-                            <Col
-                              key={index}
-                              xs={input.fullWidth ? 12 : grid.xs }
-                              md={input.fullWidth ? 12 : grid.md}
-                              style={{ marginBottom: "1rem" }}
-                            >
-                              {input.type === "select" ? (
-                                <MySelect key={key} {...input} />
-                              ) : input.type === "checkbox" ? (
-                                <MyCheckBox key={key} {...input} />
-                              ) : input.type === "custom" ? (
-                                <input.component key={key} {...input} />
-                              ) : (
-                                <MyInput key={key} {...input} />
-                              )}
-                            </Col>
-                          );
-                        })}
-                    </Row>
-                  );
-                })}
-              {/*<ErrorArea errors={errors} />*/}
-              {!noSubmit ? (
-                <MySubmit
-                  color={color}
-                  fullWidth={submitButtonFullWidth}
-                  submitButtonText={
-                    dictionary[language] &&
-                    dictionary[language][submitButtonText]
-                      ? dictionary[language][submitButtonText]
-                      : "Submit"
-                  }
-                />
-              ) : null}
-            </Container>
-          </form>
-        </div>
-      </ThemeProvider>
+                            : input.placeHolder;
+                        input.helperText =
+                          dictionary[language] &&
+                          dictionary[language][input.helperText]
+                            ? dictionary[language][input.helperText]
+                            : input.helperText;
+                        input.color = color;
+                        let xs = input.xs ? input.xs : grid.xs;
+                        let md = input.md ? input.md : grid.md;
+                        return (
+                          <Col
+                            key={index}
+                            xs={input.fullWidth ? 12 : xs}
+                            md={input.fullWidth ? 12 : md}
+                            style={{ marginBottom: "1rem" }}
+                          >
+                            {input.type === "select" ? (
+                              <MySelect key={key} {...input} />
+                            ) : input.type === "checkbox" ? (
+                              <MyCheckBox key={key} {...input} />
+                            ) : input.type === "custom" ? (
+                              <input.component key={key} {...input} />
+                            ) : (
+                              <MyInput key={key} {...input} />
+                            )}
+                          </Col>
+                        );
+                      })}
+                  </Row>
+                );
+              })}
+            {/*<ErrorArea errors={errors} />*/}
+            {!noSubmit ? (
+              <MySubmit
+                color={color}
+                fullWidth={submitButtonFullWidth}
+                submitButtonText={submitButtonText                }
+              />
+            ) : null}
+          </Container>
+        </form>
+      </div>
     </StylesProvider>
   );
 }

@@ -13,7 +13,7 @@ import ModalForm from './components/Modal/Modal';
 function App() {
   CounterPart.registerTranslations('EN',en);
   CounterPart.registerTranslations('AR',ar);
-  CounterPart.setLocale(JSON.parse(localStorage.getItem('language')).currentLanguage);
+  CounterPart.setLocale('AR');
   /*const [appState,setAppState]=useState(null);
   const dispatch = useDispatch();
   useEffect(()=>{
