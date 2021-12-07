@@ -8,10 +8,14 @@ import { useTheme } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import ar from '../../assets/dictionary/ar.json'
 import en from '../../assets/dictionary/en.json'
-
+import axios from "axios";
+import { API } from "../../const";
+import { useDispatch } from "react-redux";
+import {addUser} from '../../redux/actions/user'
 export default function Login() {
     const theme = useTheme();
     const lang = useSelector(state=>state.language)
+    const dispatch = useDispatch()
     function Logo() {
         return <div style={{textAlign:"center"}}><img style={{
             objectFit: "contain",
@@ -20,8 +24,15 @@ export default function Login() {
         }} height="100rem" width="auto" alt="login" src={`${loginImg}`} /></div>
 
     }
-    function loginHandler(data){
-        console.log(data)
+    async function loginHandler(data){
+        const res = await axios.post(API+'user/login',{data})
+        console.log(res)
+        if(res.status == 200){
+            dispatch(addUser(res.data.token))
+             localStorage.setItem('token', res.data.token);
+             window.location.replace('/');
+        }
+        
     }
     return (
         <Layout>

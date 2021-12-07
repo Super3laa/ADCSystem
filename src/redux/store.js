@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import rootReducer from './reducers/index';
 
 const initialState = {
-  language:localStorage.getItem('language')?JSON.parse(localStorage.getItem('language')):{currentLanguage:"EN",languageName:"latin",direction:"ltr"}
+  language:localStorage.getItem('language')?JSON.parse(localStorage.getItem('language')):{currentLanguage:"AR",languageName:"arabic",direction:"rtl"}
 };
 
 const middleWare = [thunk];

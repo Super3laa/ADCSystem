@@ -15,6 +15,7 @@ import {
 } from 'reactstrap'; import { IoMdLogOut } from "react-icons/io";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import {deleteUser} from '../../redux/actions/user'
 import {changeLanguage} from '../../redux/actions/language';
 import { FaUserCircle } from 'react-icons/fa'
 import Button from '@material-ui/core/Button';
@@ -74,7 +75,7 @@ export default function AbstractHeader(props) {
     }
 
     function handleLogout() {
-
+        dispatch(deleteUser())
         history.go(0);
     }
     return (
@@ -181,12 +182,12 @@ export default function AbstractHeader(props) {
                             {
                                 props.badge ?
                                     <>
-                                        <Button
+                                      {/*  <Button
                                             aria-controls="LanguageMenu"
                                             aria-haspopup="true"
                                             onClick={handleLangMenuClick}
                                             style={menuButtonStyle} >{currentLanguage}</Button>
-                                        <Menu
+                                     <Menu
                                             id="LanguageMenu"
                                             anchorEl={anchorEl}
                                             keepMountedmenu
@@ -195,13 +196,13 @@ export default function AbstractHeader(props) {
                                         >
                                             <MenuItem onClick={handleChangeLang}>EN</MenuItem>
                                             <MenuItem onClick={handleChangeLang}>AR</MenuItem>
-                                        </Menu>
+                                       </Menu>*/}
                                         <Button
                                             aria-controls="ProfileMenu"
                                             style={menuButtonStyle}
                                             onClick={handleProfileMenuClick}
                                             startIcon={<FaUserCircle />}
-                                             > Alaa</Button>
+                                             > {props.user.username}</Button>
                                         <Menu
                                             id="ProfileMenu"
                                             anchorEl={anchorElProfile}
@@ -209,7 +210,7 @@ export default function AbstractHeader(props) {
                                             open={Boolean(anchorElProfile)}
                                             onClose={handleProfileMenu}
                                         >
-                                            <MenuItem onClick={handleProfileMenu}>{<Translate content="Logout"/>} <IoMdLogOut
+                                            <MenuItem onClick={handleLogout}>{<Translate content="Logout"/>} <IoMdLogOut
                                                 id="Logout"
                                             /></MenuItem>
                                         </Menu>

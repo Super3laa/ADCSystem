@@ -5,14 +5,14 @@ import { Container, Row, Col } from 'reactstrap';
 import { useSelector } from "react-redux";
 const routes = {
     "parent1": {
-        title: "Parent1",
-        path:"/Reports/parent1",
-        icon:"FaUserAlt",
+        title: "تقرير 1",
+        path:"/Reports/report1",
+        icon:"FaPollH",
     },
     "parent2": {
-        title: "Parent2",
-        path:"/Reports/parent2",
-        icon:"FaUserAlt",
+        title: "تقرير 2",
+        path:"/Reports/report2",
+        icon:"FaPollH",
     }
 }
 

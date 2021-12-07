@@ -1,5 +1,16 @@
-const user=(state={username:"Alaa",permissions:"admin"},action)=>{
+import jwtDecode from 'jwt-decode';
+
+const user=(state={username:"",permissions:""},action)=>{
     switch (action.type){
+        case 'addUser':
+            const userState=jwtDecode(action.payload);
+            localStorage.setItem('token', action.payload);
+            return userState.user;
+        case 'updateUser':
+            return action.payload
+        case 'deleteUser':
+            localStorage.removeItem('token');
+            window.location.reload();
         default:
             return state;
     }
