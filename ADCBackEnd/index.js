@@ -4,11 +4,12 @@ const path = require('path');
 const cors=require('cors');
 const app = express();
 let user = require('./routes/user');
-
+let student = require('./routes/student');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/user',user);
+app.use('/student',student)
 
 app.use(function (req, res, next) {
     var err = new Error('File Not Found');

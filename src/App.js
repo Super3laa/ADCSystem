@@ -12,6 +12,9 @@ import ModalForm from './components/Modal/Modal';
 import jwtDecode from 'jwt-decode';
 import {updateUser} from './redux/actions/user'
 import {loadUser} from './services/auth'
+import {ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+
 function App() {
   CounterPart.registerTranslations('EN',en);
   CounterPart.registerTranslations('AR',ar);
@@ -33,6 +36,7 @@ function App() {
   return (
       <ThemeProvider theme={theme}>
         <ModalForm />
+        <ToastContainer />
         <CssBaseline />
           <Routes />
       </ThemeProvider>

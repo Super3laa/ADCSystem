@@ -1,7 +1,7 @@
 import React from "react";
 import Layout from "../../components/Layout/Layout";
 import { Container, Row, Col } from 'reactstrap';
-import loginImg from './logo.png';
+import loginImg from './logo.svg';
 import './Login.css'
 import FormBuilder from '../../components/FormBuilder/FormBuilder'
 import { useTheme } from "@material-ui/core";
@@ -86,7 +86,7 @@ export default function Login() {
                                 color={theme.palette.primary.main}
                                 noSubmit={false}
                                 grid={{ xs: 12, md: 12 }}
-                                submitButtonText="Login"
+                                submitButtonText="تسجيل الدخول"
                                 dictionary={{ar,en}}
                                 dir={lang.direction}
                                 language={lang.currentLanguage.toLowerCase()}

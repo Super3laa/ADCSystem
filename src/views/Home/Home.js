@@ -4,16 +4,32 @@ import Card from "./Card";
 import { Container, Row, Col } from 'reactstrap';
 import { useSelector } from "react-redux";
 const routes = {
-    "parent1": {
-        title: "تقرير 1",
-        path:"/Reports/report1",
-        icon:"FaPollH",
+    "students": {
+        title: "الطلاب",
+        path:"/students",
+        icon:"FaUserAlt",
     },
-    "parent2": {
-        title: "تقرير 2",
+    "courses": {
+        title: "المواد",
+        path:"/courses",
+        icon:"FaBook",
+    },
+    "Doctors": {
+        title: "الدكاتره",
+        path:"/Reports/report1",
+        icon:"FaUser",
+    },
+    "Officers": {
+        title: "الضباط",
         path:"/Reports/report2",
-        icon:"FaPollH",
-    }
+        icon:"FaUser",
+    },
+    "TA": {
+        title: "المعيدين",
+        path:"/Reports/report2",
+        icon:"FaUser",
+    },
+    
 }
 
 export default function Home(props) {

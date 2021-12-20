@@ -20,6 +20,7 @@
     "react-router-dom": "^5.3.0",
     "react-scripts": "^3.4.4",
     "react-select": "^5.2.1",
+    "react-toastify": "^8.1.0",
     "react-translate-component": "^0.15.1",
     "reactstrap": "^8.10.0",
     "redux-thunk": "^2.3.0",

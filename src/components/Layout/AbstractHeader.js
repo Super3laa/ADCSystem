@@ -20,7 +20,7 @@ import {changeLanguage} from '../../redux/actions/language';
 import { FaUserCircle } from 'react-icons/fa'
 import Button from '@material-ui/core/Button';
 import { IoMenuSharp } from 'react-icons/io5'
-import logo from "./logo.png";
+import logo from "./logo.svg";
 import { useTheme } from "@material-ui/core";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -67,11 +67,11 @@ export default function AbstractHeader(props) {
         setAnchorElProfile(null);
     }
     try {
-        title = "ERP"
+        title = "كلية الدفاع الجوي"
         // title = JSON.parse(jwtDecode(localStorage.getItem('EnterpriseProps')).properties).name
 
     } catch (error) {
-        title = "ERP"
+        title = "كلية الدفاع الجوي"
     }
 
     function handleLogout() {
