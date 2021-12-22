@@ -3,7 +3,7 @@ import Layout from "../../components/Layout/Layout";
 import { Container, Row, Col } from 'reactstrap';
 import axios from 'axios';
 import { API } from '../../const';
-import { Typography,Button, TableBody, TableCell, TableRow, TableHead, IconButton, Divider } from '@material-ui/core';
+import { Typography,Table,Button, TableBody, TableCell, TableRow, TableHead, IconButton, Divider } from '@material-ui/core';
 import entities from '../EntityPage/Entity'
 import { useDispatch } from 'react-redux';
 import { updateForm } from '../../redux/actions/form';
@@ -18,6 +18,7 @@ export default function Student (props){
         fetch();
         async function fetch (){
             let res = await axios.get(API+`student/${props.match.params.id}`)
+            console.log(res.data)
             seStudentData(res.data);
         }
     },[]);
@@ -56,12 +57,66 @@ export default function Student (props){
         }
     }
     async function handleEdit(type,id,index){
-            dispatch(updateForm({...formsData.get(type),
+            let formsDataEdit = formsData.get(type)
+            if (type==="labsBenefits"){
+                studentData.doctors .push({label:"لايكن", value : null})
+                studentData.officers.push({label:"لايكن", value : null})
+                studentData.tassistants.push({label:"لايكن", value : null})
+
+                formsDataEdit.rows[0].push(
+                    {
+                        name: "doctorId",
+                        label: "دكتور",
+                        type: "select",
+                        value: "",
+                        size: "small",
+                        rows: studentData.doctors,
+                        helperText: "لا يترك فارغا",
+                        placeHolder:"",
+                        variant: "outlined",
+                        xs:12,
+                        md:12,
+                    },{
+                        name: "OfficerId",
+                        label: "ظابط مشرف",
+                        type: "select",
+                        value: "",
+                        size: "small",
+                        rows: studentData.officers,
+                        helperText: "لا يترك فارغا",
+                        placeHolder:"",
+                        variant: "outlined",
+                        xs:12,
+                        md:12,
+                    },{
+                        name: "TAssistantId",
+                        label: "معيد",
+                        type: "select",
+                        value: "",
+                        size: "small",
+                        rows: studentData.tassistants,
+                        helperText: "لا يترك فارغا",
+                        placeHolder:"",
+                        variant: "outlined",
+                        xs:12,
+                        md:12,
+                    }
+
+                )
+            }
+            dispatch(updateForm({...formsDataEdit,
             state:true,
             submitHandler:(data)=>handleEditAxios(data,type),
             values:studentData[type][index],
             submitButtonText:"تعديل"
         }))
+    }
+    async function handleDeleteAxios(type,id){
+        let res = await axios.delete(API+`student/${type}/${id}`);
+        if(res.status == 200){
+            toast.warning("تم المسح بنجاح")
+            window.location.reload();
+        }
     }
     
     return (
@@ -71,7 +126,7 @@ export default function Student (props){
                 <Container dir="rtl">
                 <br />
                 <Row>
-                    <Col xs={12}><Typography variant="h5"> بيانات الطالب</Typography></Col>
+                    <Col xs={12 }><Typography variant="h5"> بيانات الطالب</Typography></Col>
                 </Row>
                 <br />
                 <Row>
@@ -99,15 +154,19 @@ export default function Student (props){
                 <br />
                 <Divider />
                 <br />
-                <Row>
-                  <Col xs={12}><Typography variant="h5">العقوبات التعليمية</Typography></Col>
-                </Row>
+
                 <br />
                 <Row>
-                <Col xs={3}><Button variant="contained" color="primary" onClick={()=>handleCreate("punishment")} >إضاقة عقوبه</Button></Col>
+                  <Col xs={9}><Typography variant="h5">العقوبات التعليمية</Typography></Col>
+                  <Col xs={3} style={{textAlign: "end"}}><Button variant="contained" color="primary" onClick={()=>handleCreate("punishment")} >إضاقة عقوبه</Button></Col>
+
                 </Row>
+                <br />
+         
                 <Row>
                     <Col xs={12}>
+                    <Table>
+
                         <TableHead>
                             <TableRow>
                                 <TableCell>
@@ -143,7 +202,7 @@ export default function Student (props){
                                     {p.order}
                                 </TableCell>
                                 <TableCell>
-                                    <IconButton onClick={()=>handleEdit("punishment",p.id,i)}><MdDelete /></IconButton>
+                                    <IconButton onClick={()=>handleDeleteAxios("punishment",p.id)}><MdDelete /></IconButton>
                                     <IconButton onClick={()=>handleEdit("punishment",p.id,i)}><MdEdit/></IconButton>
                                 </TableCell>
                             </TableRow>
@@ -151,6 +210,8 @@ export default function Student (props){
                                 })
                             }
                         </TableBody>
+                        </Table>
+
                     </Col>
                 </Row>
 
@@ -158,15 +219,18 @@ export default function Student (props){
                 <br />
                 <Divider />
                 <br />
+                <br />
+
                 <Row>
-                  <Col xs={12}><Typography variant="h5">المواد التي ادت لرسوبه الترم/العام السابق</Typography></Col>
+                  <Col xs={9}><Typography variant="h5">المواد التي ادت لرسوبه الترم/العام السابق</Typography></Col>
+                  <Col xs={3} style={{textAlign: "end"}}><Button variant="contained" color="primary"  onClick={()=>handleCreate("failedCourses")}  >إضاقة مادة</Button></Col>
+
                 </Row>
                 <br />
+              
                 <Row>
-                <Col xs={3}><Button variant="contained" color="primary"  onClick={()=>handleCreate("failedCourses")}  >إضاقة مادة</Button></Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
+                    <Col xs={ 12}>
+                        <Table>
                         <TableHead>
                             <TableRow>
                                 <TableCell>
@@ -190,7 +254,7 @@ export default function Student (props){
                                     {f.title}
                                 </TableCell>
                                 <TableCell>
-                                    <IconButton onClick={console.log("delete")}><MdDelete /></IconButton>
+                                    <IconButton onClick={()=>handleDeleteAxios("failedCourses",f.id)}><MdDelete /></IconButton>
                                     <IconButton onClick={()=>handleEdit("failedCourses",f.id,i)}><MdEdit/></IconButton>
                                 </TableCell>
                             </TableRow>
@@ -199,6 +263,7 @@ export default function Student (props){
                             }
                             
                         </TableBody>
+                        </Table>
                     </Col>
                 </Row>
 
@@ -208,15 +273,19 @@ export default function Student (props){
                 <br />
                 <Divider />
                 <br />
+                <br />
+
                 <Row>
-                  <Col xs={12}><Typography variant="h5">موقف الاستفادة من المعامل</Typography></Col>
+                  <Col xs={9}><Typography variant="h5">موقف الاستفادة من المعامل</Typography></Col>
+                  <Col xs={3} style={{textAlign: "end"}}><Button variant="contained" color="primary"  onClick={()=>handleCreate("labsBenefits")}>إضاقة موقف</Button></Col>
+
                 </Row>
                 <br />
-                <Row>
-                <Col xs={3}><Button variant="contained" color="primary"  onClick={()=>handleCreate("labsBenefits")}>إضاقة موقف</Button></Col>
-                </Row>
+               
                 <Row>
                     <Col xs={12}>
+                    <Table>
+
                         <TableHead>
                             <TableRow>
                                 <TableCell>
@@ -235,6 +304,9 @@ export default function Student (props){
                                    الضابط المدرس 
                                 </TableCell>
                                 <TableCell>
+                                   المعيد
+                                </TableCell>
+                                <TableCell>
                                    اعدادات 
                                 </TableCell>
                             </TableRow>
@@ -250,20 +322,19 @@ export default function Student (props){
                                 <TableCell>
                                     {l.numberOfExperiment}
                                 </TableCell>
+                                <TableCell>{l.Doctor ? l.Doctor.label : "لا يكن"}</TableCell>
+                                <TableCell>{l.Officer ? l.Officer.label : "لا يكن"}</TableCell>
+                                <TableCell>{l.TAssistant ? l.TAssistant.label : "لا يكن"}</TableCell>
                                 <TableCell>
-                                    a7a1
-                                </TableCell>
-                                <TableCell>
-                                    a7a2
-                                </TableCell>
-                                <TableCell>
-                                    <IconButton onClick={console.log("delete")}><MdDelete /></IconButton>
+                                    <IconButton onClick={()=>handleDeleteAxios("labsBenefits",l.id)}><MdDelete /></IconButton>
                                     <IconButton onClick={()=>handleEdit("labsBenefits",l.id,i)}><MdEdit/></IconButton>
                                 </TableCell>
                             </TableRow>
                                 )
                             })}
                         </TableBody>
+                        </Table>
+
                     </Col>
                 </Row>
                 </Container>:<Typography>Loading...</Typography>

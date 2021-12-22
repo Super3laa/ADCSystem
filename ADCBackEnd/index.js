@@ -5,11 +5,18 @@ const cors=require('cors');
 const app = express();
 let user = require('./routes/user');
 let student = require('./routes/student');
+let doctor = require('./routes/doctor');
+let officer = require('./routes/officer');
+let tassistant = require('./routes/tassistant');
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/user',user);
 app.use('/student',student)
+app.use('/officer',officer)
+app.use('/doctor',doctor)
+app.use('/tassistant',tassistant)
 
 app.use(function (req, res, next) {
     var err = new Error('File Not Found');

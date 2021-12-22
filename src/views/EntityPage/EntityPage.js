@@ -2,7 +2,6 @@ import React, { useState ,useEffect} from "react";
 import Layout from "../../components/Layout/Layout";
 import { Container,Row,Col } from "reactstrap";
 import FormBuilder from '../../components/FormBuilder/FormBuilder'
-import Button from "@material-ui/core/Button";
 import entities from './Entity'
 import { useDispatch } from "react-redux";
 import {updateForm} from '../../redux/actions/form';
@@ -10,6 +9,8 @@ import axios from 'axios';
 import { API } from "../../const";
 import { useHistory } from "react-router";
 import './styles.css'
+import { Typography,Button,Table, TableBody, TableCell, TableRow, TableHead, IconButton, Divider } from '@material-ui/core';
+
 export default function EntityPage(props){
     const  entityName = props.match.params.entity;
     let entity = entities.get(entityName)
@@ -37,7 +38,7 @@ export default function EntityPage(props){
     }
     return(
             <Layout>
-                <Container dir='rtl'>
+                <Container dir="rtl">
                     <Row>
                         <Col xs={12}>
                             <Container style={{padding:"10px"}}>
@@ -79,14 +80,45 @@ export default function EntityPage(props){
                         </Col>
                     </Row>
                     <Row>
-                        <Container  style={{padding:"10px"}}>
-                            {
-                                entityList.map(data=>{
-                                   return <Row >
-                                        <Col onClick={()=>history.push(`/${entityName}/${data.id}`)} className="listItem">{data[entity.displayRow]}</Col>
-                                    </Row>
-                                })
-                            }
+                        <Container >
+                            <Row>
+                                <Col >
+                                <Table>
+                                <TableHead>
+                                            <TableRow >
+                                                {
+                                                    entity.tableHead.map(title=>{
+                                                        return(
+                                                            <TableCell style={{textAlign:"right"}}>
+                                                                {title}
+                                                            </TableCell>
+                                                        )
+                                                    })
+                                                }
+                                                
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {
+                                                entityList.map(data=>{
+                                                    return(
+                                                        <TableRow  className="EntityRow" onClick={()=>history.push(`/${entityName}/${data.id}`)}>
+                                                        <TableCell style={{textAlign:"right"}}>{data.name}</TableCell>
+                                                        <TableCell style={{textAlign:"right"}}>
+                                                            {data.militaryId}
+                                                        </TableCell>
+                                                        <TableCell style={{textAlign:"right"}}>
+                                                            {data.type}
+                                                        </TableCell>
+                                                        </TableRow>
+                                                    )
+                                                })
+                                            }
+
+                                        </TableBody>
+                                        </Table>
+                                </Col>
+                            </Row>
                         </Container>
                     </Row>
                 </Container>

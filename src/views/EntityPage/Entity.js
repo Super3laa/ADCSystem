@@ -12,7 +12,7 @@ let entities = new Map();
 entities.set('students',{
     text:"طالب",
     api:"student/",
-    displayRow:"name",
+    tableHead:["القسم","الرقم العسكري","الاسم"],
     FormData:{
         rows:[
             [{
@@ -176,6 +176,92 @@ entities.set('students',{
 entities.set('courses',{
     addText:"إضافة مادة",
     api:"course/",
+    
+})
+
+entities.set('doctors',{
+    addText:"إضافة دكتور",
+    api:"doctor/",
+    tableHead:["الاسم"],
+    FormData:{
+        rows:[
+            [{
+                name: "name",
+                label: "الأسم",
+                type: "text",
+                value: "",
+                size: "small",
+                helperText: "لا يترك فارغا",
+                placeHolder:"",
+                variant: "outlined",
+                xs:12,
+                md:12,
+            },
+            ]
+        ],
+        noSubmit:false,
+        grid:{ xs: 12, md: 12 },
+        dir:"rtl",
+        submitButtonText:"إضافة",
+        submitButtonFullWidth:true,
+        submitHandler:(data)=>PostEntity(data,"doctor/")
+    }
+})
+entities.set('officers',{
+    addText:"إضافة ضابط مشرف",
+    api:"officer/",
+    tableHead:["الاسم"],
+    FormData:{
+        rows:[
+            [{
+                name: "name",
+                label: "الأسم",
+                type: "text",
+                value: "",
+                size: "small",
+                helperText: "لا يترك فارغا",
+                placeHolder:"",
+                variant: "outlined",
+                xs:12,
+                md:12,
+            },
+            ]
+        ],
+        noSubmit:false,
+        grid:{ xs: 12, md: 12 },
+        dir:"rtl",
+        submitButtonText:"إضافة",
+        submitButtonFullWidth:true,
+        submitHandler:(data)=>PostEntity(data,"officer/")
+    }
+})
+entities.set('tassistants',{
+    addText:"إضافة معيد",
+    api:"tassistant/",
+    tableHead:["الاسم"],
+    FormData:{
+        rows:[
+            [{
+                name: "name",
+                label: "الأسم",
+                type: "text",
+                value: "",
+                size: "small",
+                helperText: "لا يترك فارغا",
+                placeHolder:"",
+                variant: "outlined",
+                xs:12,
+                md:12,
+            },
+            ]
+        ],
+        noSubmit:false,
+        grid:{ xs: 12, md: 12 },
+        dir:"rtl",
+        submitButtonText:"إضافة",
+        submitButtonFullWidth:true,
+        submitHandler:(data)=>PostEntity(data,"tassistant/")
+    }
 })
 
 export default entities;

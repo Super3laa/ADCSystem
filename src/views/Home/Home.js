@@ -14,19 +14,19 @@ const routes = {
         path:"/courses",
         icon:"FaBook",
     },
-    "Doctors": {
+    "doctors": {
         title: "الدكاتره",
-        path:"/Reports/report1",
+        path:"/doctors",
         icon:"FaUser",
     },
-    "Officers": {
+    "officers": {
         title: "الضباط",
-        path:"/Reports/report2",
+        path:"/officers",
         icon:"FaUser",
     },
-    "TA": {
+    "tassistants": {
         title: "المعيدين",
-        path:"/Reports/report2",
+        path:"/tassistants",
         icon:"FaUser",
     },
     

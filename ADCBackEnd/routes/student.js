@@ -26,7 +26,14 @@ router.put('/punishment',async function(req,res,next){
       console.log(error);
   }
 });
-
+router.delete('/punishment/:id',async function(req,res,next){
+  try {
+        await models.punishment.destroy({where:{id:req.params.id}});
+        res.sendStatus(200);
+  } catch (error) {
+      console.log(error);
+  }
+});
 
 router.post('/failedCourses',async function(req,res,next){
   try {
@@ -44,7 +51,14 @@ router.put('/failedCourses',async function(req,res,next){
       console.log(error);
   }
 });
-
+router.delete('/failedCourses/:id',async function(req,res,next){
+  try {
+        await models.failedCourse.destroy({where:{id:req.params.id}});
+        res.sendStatus(200);
+  } catch (error) {
+      console.log(error);
+  }
+});
 
 router.post('/labsBenefits',async function(req,res,next){
   try {
@@ -62,7 +76,14 @@ router.put('/labsBenefits',async function(req,res,next){
       console.log(error);
   }
 });
-
+router.delete('/labsBenefits/:id',async function(req,res,next){
+  try {
+        await models.labsBenefit.destroy({where:{id:req.params.id}});
+        res.sendStatus(200);
+  } catch (error) {
+      console.log(error);
+  }
+});
 
 router.get('/', async (req,res,next)=>{
   try {
@@ -82,9 +103,16 @@ router.get('/:id', async (req,res,next)=>{
 
     let FailedCourses = await models.failedCourse.findAll({where:{studentId:id}})
     let Punishments = await models.punishment.findAll({where:{studentId:id}})
-    let LabsBenefits = await models.labsBenefit.findAll({where:{studentId:id}})
+    let LabsBenefits = await models.labsBenefit.findAll({where:{studentId:id}, include:[
+         {model:models.Doctor,as:"Doctor",foreignKey:"doctorId",attributes:[['name','label'],['id','value']]},
+         {model:models.Officer,as:"Officer",foreignKey:"OfficerId",attributes:[['name','label'],['id','value']]},
+         {model:models.TAssistant,as:"TAssistant",foreignKey:"TAssistantId",attributes:[['name','label'],['id','value']]},
+       ]})
+    let doctors = await models.Doctor.findAll({attributes:[['name','label'],['id','value']]});
+    let officers = await models.Officer.findAll({attributes:[['name','label'],['id','value']]});
+    let tassistants = await models.TAssistant.findAll({attributes:[['name','label'],['id','value']]});
 
-    res.send({student:students,failedCourses:FailedCourses,punishment:Punishments,labsBenefits:LabsBenefits}).status(200);
+    res.send({tassistants,doctors,officers,student:students,failedCourses:FailedCourses,punishment:Punishments,labsBenefits:LabsBenefits}).status(200);
   } catch (error) {
     console.log(error)
 
