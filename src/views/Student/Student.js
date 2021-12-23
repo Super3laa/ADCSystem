@@ -14,6 +14,7 @@ export default function Student (props){
     const [studentData, seStudentData] = useState(null);
     let studentSkeleton = entities.get("students");
     const dispatch = useDispatch();
+
     useEffect(()=>{
         fetch();
         async function fetch (){
@@ -54,7 +55,7 @@ export default function Student (props){
             studentData.officers.push({label:"لايكن", value : null})
             studentData.tassistants.push({label:"لايكن", value : null})
 
-            formsDataEdit.rows[0].push(
+            formsDataEdit.rows[0].length < 6 && formsDataEdit.rows[0].push(
                 {
                     name: "doctorId",
                     label: "دكتور",
@@ -111,7 +112,8 @@ export default function Student (props){
                 studentData.officers.push({label:"لايكن", value : null})
                 studentData.tassistants.push({label:"لايكن", value : null})
 
-                formsDataEdit.rows[0].push(
+                
+            formsDataEdit.rows[0].length < 6 && formsDataEdit.rows[0].push(
                     {
                         name: "doctorId",
                         label: "دكتور",
