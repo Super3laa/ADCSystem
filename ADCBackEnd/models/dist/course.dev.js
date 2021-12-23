@@ -22,18 +22,18 @@ var _require = require('sequelize'),
     Model = _require.Model;
 
 module.exports = function (sequelize, DataTypes) {
-  var Doctor =
+  var course =
   /*#__PURE__*/
   function (_Model) {
-    _inherits(Doctor, _Model);
+    _inherits(course, _Model);
 
-    function Doctor() {
-      _classCallCheck(this, Doctor);
+    function course() {
+      _classCallCheck(this, course);
 
-      return _possibleConstructorReturn(this, _getPrototypeOf(Doctor).apply(this, arguments));
+      return _possibleConstructorReturn(this, _getPrototypeOf(course).apply(this, arguments));
     }
 
-    _createClass(Doctor, null, [{
+    _createClass(course, null, [{
       key: "associate",
 
       /**
@@ -43,24 +43,33 @@ module.exports = function (sequelize, DataTypes) {
        */
       value: function associate(models) {
         // define association here
-        Doctor.hasMany(models.labsBenefit, {
-          foreignKey: "doctorId"
+        course.belongsTo(models.Officer, {
+          foreignKey: "OfficerId"
         });
-        Doctor.hasMany(models.course, {
+        course.belongsTo(models.TAssistant, {
+          foreignKey: "TAssistantId"
+        });
+        course.belongsTo(models.Doctor, {
           foreignKey: "doctorId"
         });
       }
     }]);
 
-    return Doctor;
+    return course;
   }(Model);
 
   ;
-  Doctor.init({
-    name: DataTypes.STRING
+  course.init({
+    title: DataTypes.STRING,
+    code: DataTypes.STRING,
+    type: DataTypes.STRING,
+    year: DataTypes.STRING,
+    doctorId: DataTypes.INTEGER,
+    officerId: DataTypes.INTEGER,
+    TAssistantId: DataTypes.INTEGER
   }, {
     sequelize: sequelize,
-    modelName: 'Doctor'
+    modelName: 'course'
   });
-  return Doctor;
+  return course;
 };

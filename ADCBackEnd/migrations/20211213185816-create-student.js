@@ -28,6 +28,9 @@ module.exports = {
       }, town: {
         allowNull: true,
         type: Sequelize.STRING
+      },year: {
+        allowNull: true,
+        type: Sequelize.STRING
       }, country: {
         allowNull: true,
         type: Sequelize.STRING

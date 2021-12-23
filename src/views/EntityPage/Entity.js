@@ -12,7 +12,10 @@ let entities = new Map();
 entities.set('students',{
     text:"طالب",
     api:"student/",
-    tableHead:["القسم","الرقم العسكري","الاسم"],
+    tableHead:["الاسم","الرقم العسكري","القسم","سنه"],
+    tableBody:["name","militaryId","type","year"],
+    settingsCol:false,
+    clickableRow:true,
     FormData:{
         rows:[
             [{
@@ -105,9 +108,27 @@ entities.set('students',{
                 value: "",
                 size: "small",
                 rows: [
-                    { value: "Communications", label: "اتصالات" },
-                    { value: "Mechatronics", label: "ميكاترونكس" },
-                    { value: "CS", label: "حواسب" },
+                    { value: "اتصالات", label: "اتصالات" },
+                    { value: "ميكاترونكس", label: "ميكاترونكس" },
+                    { value: "حواسب", label: "حواسب" },
+                ],
+                helperText: "لا يترك فارغا",
+                placeHolder:"",
+                variant: "outlined",
+                xs:12,
+                md:6,
+            },{
+                name: "year",
+                label: "سنه دراسية",
+                type: "select",
+                value: "",
+                size: "small",
+                rows: [
+                    { value: "اولى", label: "اولى" },
+                    { value: "تانيه", label: "تانيه" },
+                    { value: "تالته", label: "تالته" },
+                    { value: "رابعه", label: "رابعه" },
+                    { value: "تكميلية", label: "تكميلية" },
                 ],
                 helperText: "لا يترك فارغا",
                 placeHolder:"",
@@ -175,14 +196,95 @@ entities.set('students',{
 })
 entities.set('courses',{
     addText:"إضافة مادة",
+    text:"مادة",
     api:"course/",
+    tableHead:["الكود","الاسم","سنة","القسم","دكتور","ضابط","معيد"],
+    tableBody:["code","title","type","year","Doctor.label","Officer.label","TAssistant.label"],
+    settingsCol:true,
+    clickableRow:false,
+    FormData:{
+        rows:[
+            [{
+                name: "title",
+                label: "الأسم",
+                type: "text",
+                value: "",
+                size: "small",
+                helperText: "لا يترك فارغا",
+                placeHolder:"",
+                variant: "outlined",
+                xs:12,
+                md:12,
+            },
+            {
+                name: "code",
+                label:"كود المادة",
+                type: "text",
+                value: "",
+                size: "small",
+                helperText: "لا يترك فارغا",
+                placeHolder:"",
+                variant: "outlined",
+                xs:12,
+                md:12,
+            },
+            {
+                name: "type",
+                label: "القسم",
+                type: "select",
+                value: "",
+                size: "small",
+                rows: [
+                    { value: "اتصالات", label: "اتصالات" },
+                    { value: "ميكاترونكس", label: "ميكاترونكس" },
+                    { value: "حواسب", label: "حواسب" },
+                    { value: "عام", label: "عام" },
+                ],
+                helperText: "لا يترك فارغا",
+                placeHolder:"",
+                variant: "outlined",
+                xs:12,
+                md:6,
+            },
+            {
+                name: "year",
+                label: "سنه دراسية",
+                type: "select",
+                value: "",
+                size: "small",
+                rows: [
+                    { value: "اولى", label: "اولى" },
+                    { value: "تانيه", label: "تانيه" },
+                    { value: "تالته", label: "تالته" },
+                    { value: "رابعه", label: "رابعه" },
+                    { value: "تكميلية", label: "تكميلية" },
+                ],
+                helperText: "لا يترك فارغا",
+                placeHolder:"",
+                variant: "outlined",
+                xs:12,
+                md:6,
+            },
+            ]
+        ],
+        noSubmit:false,
+        grid:{ xs: 12, md: 12 },
+        dir:"rtl",
+        submitButtonText:"إضافة",
+        submitButtonFullWidth:true,
+        submitHandler:(data)=>PostEntity(data,"course/")
+    }
     
 })
 
 entities.set('doctors',{
     addText:"إضافة دكتور",
+    text:"دكتور",
     api:"doctor/",
+    settingsCol:false,
     tableHead:["الاسم"],
+    clickableRow:false,
+    tableBody:["name"],
     FormData:{
         rows:[
             [{
@@ -209,8 +311,13 @@ entities.set('doctors',{
 })
 entities.set('officers',{
     addText:"إضافة ضابط مشرف",
+    text:"ضابط",
     api:"officer/",
+    settingsCol:false,
+    clickableRow:false,
+
     tableHead:["الاسم"],
+    tableBody:["name"],
     FormData:{
         rows:[
             [{
@@ -237,8 +344,13 @@ entities.set('officers',{
 })
 entities.set('tassistants',{
     addText:"إضافة معيد",
+    text:"معيد",
     api:"tassistant/",
+    tableBody:["name"],
     tableHead:["الاسم"],
+    settingsCol:false,
+    clickableRow:false,
+
     FormData:{
         rows:[
             [{

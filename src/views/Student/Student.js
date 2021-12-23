@@ -23,6 +23,7 @@ export default function Student (props){
         }
     },[]);
     async function handleEditStudent(data){
+        console.log(data)
        let res = await  axios.put(API+`student/${studentData.id}`,{data});
        if (res.status ==200){
         seStudentData({...studentData , student:res.data});
@@ -47,7 +48,54 @@ export default function Student (props){
         }
     }
     async function handleCreate(type){
-        dispatch(updateForm({...formsData.get(type),state:true,submitHandler:(data)=>handleCreateAxios(data,type)}))
+        let formsDataEdit = formsData.get(type)
+        if (type==="labsBenefits"){
+            studentData.doctors .push({label:"لايكن", value : null})
+            studentData.officers.push({label:"لايكن", value : null})
+            studentData.tassistants.push({label:"لايكن", value : null})
+
+            formsDataEdit.rows[0].push(
+                {
+                    name: "doctorId",
+                    label: "دكتور",
+                    type: "select",
+                    value: "",
+                    size: "small",
+                    rows: studentData.doctors,
+                    helperText: "لا يترك فارغا",
+                    placeHolder:"",
+                    variant: "outlined",
+                    xs:12,
+                    md:12,
+                },{
+                    name: "OfficerId",
+                    label: "ظابط مشرف",
+                    type: "select",
+                    value: "",
+                    size: "small",
+                    rows: studentData.officers,
+                    helperText: "لا يترك فارغا",
+                    placeHolder:"",
+                    variant: "outlined",
+                    xs:12,
+                    md:12,
+                },{
+                    name: "TAssistantId",
+                    label: "معيد",
+                    type: "select",
+                    value: "",
+                    size: "small",
+                    rows: studentData.tassistants,
+                    helperText: "لا يترك فارغا",
+                    placeHolder:"",
+                    variant: "outlined",
+                    xs:12,
+                    md:12,
+                }
+
+            )
+        }
+        dispatch(updateForm({...formsDataEdit,state:true,submitHandler:(data)=>handleCreateAxios(data,type)}))
     }
     async function handleEditAxios(data,type){
         let res = await axios.put(API+`student/${type}`,{data});
@@ -150,6 +198,62 @@ export default function Student (props){
                     <Col xs={3}><Button variant="contained" color="primary" onClick={handleEditProfile} >تعديل بيانات</Button></Col>
                 </Row>
 
+                <br />
+                <Divider />
+                <br />
+                <Row>
+                    <Col xs={12 }><Typography variant="h5"> مواد الطالب</Typography></Col>
+                </Row>
+                <br />
+                <Row>
+                    <Col xs={12}>
+                    <Table>
+
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>
+                                   كود
+                                </TableCell>
+                                <TableCell>
+                                   اسم الماده
+                                </TableCell>
+                                <TableCell>
+                                   دكتور 
+                                </TableCell>
+                                <TableCell>
+                                    ضابط المشرف
+                                </TableCell>
+                                <TableCell>
+                                   معيد 
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {
+                                studentData.courses.map((c,i)=>{
+                                    return(
+                            <TableRow>
+                                <TableCell>{c.code}</TableCell>
+                                <TableCell>
+                                    {c.title}
+                                </TableCell>
+                                <TableCell>
+                                    {c.Doctor && c.Doctor.label}
+                                </TableCell>
+                                <TableCell>
+                                {c.Officer && c.Officer.label}
+                                </TableCell>
+                                <TableCell>
+                                {c.TAssistant && c.TAssistant.label}
+                               </TableCell>
+                            </TableRow>
+                                    )
+                                })
+                            }
+                        </TableBody>
+                        </Table>
+                        </Col>
+                        </Row>
 
                 <br />
                 <Divider />

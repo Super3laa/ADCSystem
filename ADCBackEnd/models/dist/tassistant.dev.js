@@ -46,6 +46,9 @@ module.exports = function (sequelize, DataTypes) {
         TAssistant.hasMany(models.labsBenefit, {
           foreignKey: "TAssistantId"
         });
+        TAssistant.hasMany(models.course, {
+          foreignKey: "TAssistantId"
+        });
       }
     }]);
 

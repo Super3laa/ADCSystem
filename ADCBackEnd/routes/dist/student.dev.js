@@ -328,7 +328,7 @@ router.get('/', function _callee11(req, res, next) {
   }, null, null, [[0, 7]]);
 });
 router.get('/:id', function _callee12(req, res, next) {
-  var id, students, FailedCourses, Punishments, LabsBenefits, doctors, officers, tassistants;
+  var id, students, courses, FailedCourses, Punishments, LabsBenefits, doctors, officers, tassistants;
   return regeneratorRuntime.async(function _callee12$(_context12) {
     while (1) {
       switch (_context12.prev = _context12.next) {
@@ -345,24 +345,49 @@ router.get('/:id', function _callee12(req, res, next) {
         case 4:
           students = _context12.sent;
           _context12.next = 7;
+          return regeneratorRuntime.awrap(models.course.findAll({
+            where: {
+              year: "تانيه"
+            },
+            include: [{
+              model: models.Doctor,
+              as: "Doctor",
+              foreignKey: "doctorId",
+              attributes: [['name', 'label'], ['id', 'value']]
+            }, {
+              model: models.Officer,
+              as: "Officer",
+              foreignKey: "OfficerId",
+              attributes: [['name', 'label'], ['id', 'value']]
+            }, {
+              model: models.TAssistant,
+              as: "TAssistant",
+              foreignKey: "TAssistantId",
+              attributes: [['name', 'label'], ['id', 'value']]
+            }]
+          }));
+
+        case 7:
+          courses = _context12.sent;
+          _context12.next = 10;
           return regeneratorRuntime.awrap(models.failedCourse.findAll({
             where: {
               studentId: id
             }
           }));
 
-        case 7:
+        case 10:
           FailedCourses = _context12.sent;
-          _context12.next = 10;
+          _context12.next = 13;
           return regeneratorRuntime.awrap(models.punishment.findAll({
             where: {
               studentId: id
             }
           }));
 
-        case 10:
+        case 13:
           Punishments = _context12.sent;
-          _context12.next = 13;
+          _context12.next = 16;
           return regeneratorRuntime.awrap(models.labsBenefit.findAll({
             where: {
               studentId: id
@@ -385,91 +410,93 @@ router.get('/:id', function _callee12(req, res, next) {
             }]
           }));
 
-        case 13:
+        case 16:
           LabsBenefits = _context12.sent;
-          _context12.next = 16;
+          _context12.next = 19;
           return regeneratorRuntime.awrap(models.Doctor.findAll({
             attributes: [['name', 'label'], ['id', 'value']]
           }));
 
-        case 16:
+        case 19:
           doctors = _context12.sent;
-          _context12.next = 19;
+          _context12.next = 22;
           return regeneratorRuntime.awrap(models.Officer.findAll({
             attributes: [['name', 'label'], ['id', 'value']]
           }));
 
-        case 19:
+        case 22:
           officers = _context12.sent;
-          _context12.next = 22;
+          _context12.next = 25;
           return regeneratorRuntime.awrap(models.TAssistant.findAll({
             attributes: [['name', 'label'], ['id', 'value']]
           }));
 
-        case 22:
+        case 25:
           tassistants = _context12.sent;
           res.send({
             tassistants: tassistants,
             doctors: doctors,
             officers: officers,
+            courses: courses,
             student: students,
             failedCourses: FailedCourses,
             punishment: Punishments,
             labsBenefits: LabsBenefits
           }).status(200);
-          _context12.next = 29;
+          _context12.next = 32;
           break;
 
-        case 26:
-          _context12.prev = 26;
+        case 29:
+          _context12.prev = 29;
           _context12.t0 = _context12["catch"](1);
           console.log(_context12.t0);
 
-        case 29:
+        case 32:
         case "end":
           return _context12.stop();
       }
     }
-  }, null, null, [[1, 26]]);
+  }, null, null, [[1, 29]]);
 });
-router.put("/:id", function _callee13(req, res, nect) {
+router.put("/:id", function _callee13(req, res, next) {
   var students;
   return regeneratorRuntime.async(function _callee13$(_context13) {
     while (1) {
       switch (_context13.prev = _context13.next) {
         case 0:
           _context13.prev = 0;
-          _context13.next = 3;
+          console.log(req.body.data);
+          _context13.next = 4;
           return regeneratorRuntime.awrap(student.update(req.body.data, {
             where: {
               id: req.params.id
             }
           }));
 
-        case 3:
-          _context13.next = 5;
+        case 4:
+          _context13.next = 6;
           return regeneratorRuntime.awrap(student.findOne({
             where: {
               id: req.params.id
             }
           }));
 
-        case 5:
+        case 6:
           students = _context13.sent;
           res.send(students).status(200);
-          _context13.next = 12;
+          _context13.next = 13;
           break;
 
-        case 9:
-          _context13.prev = 9;
+        case 10:
+          _context13.prev = 10;
           _context13.t0 = _context13["catch"](0);
           console.log(_context13.t0);
 
-        case 12:
+        case 13:
         case "end":
           return _context13.stop();
       }
     }
-  }, null, null, [[0, 9]]);
+  }, null, null, [[0, 10]]);
 });
 module.exports = router;

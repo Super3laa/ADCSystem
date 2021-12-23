@@ -100,7 +100,12 @@ router.get('/:id', async (req,res,next)=>{
     let students = await student.findOne({
       where:{id:id}
     });
-
+    let courses  = await models.course.findAll({where:{year:"تانيه"},include:[
+      {model:models.Doctor,as:"Doctor",foreignKey:"doctorId",attributes:[['name','label'],['id','value']]},
+         {model:models.Officer,as:"Officer",foreignKey:"OfficerId",attributes:[['name','label'],['id','value']]},
+         {model:models.TAssistant,as:"TAssistant",foreignKey:"TAssistantId",attributes:[['name','label'],['id','value']]},
+       
+    ]})
     let FailedCourses = await models.failedCourse.findAll({where:{studentId:id}})
     let Punishments = await models.punishment.findAll({where:{studentId:id}})
     let LabsBenefits = await models.labsBenefit.findAll({where:{studentId:id}, include:[
@@ -112,14 +117,15 @@ router.get('/:id', async (req,res,next)=>{
     let officers = await models.Officer.findAll({attributes:[['name','label'],['id','value']]});
     let tassistants = await models.TAssistant.findAll({attributes:[['name','label'],['id','value']]});
 
-    res.send({tassistants,doctors,officers,student:students,failedCourses:FailedCourses,punishment:Punishments,labsBenefits:LabsBenefits}).status(200);
+    res.send({tassistants,doctors,officers,courses,student:students,failedCourses:FailedCourses,punishment:Punishments,labsBenefits:LabsBenefits}).status(200);
   } catch (error) {
     console.log(error)
 
   }
 })
-router.put("/:id",async (req,res,nect)=>{
+router.put("/:id",async (req,res,next)=>{
   try {
+    console.log(req.body.data)
      await student.update(
       req.body.data 
     ,{where:{id:req.params.id}})

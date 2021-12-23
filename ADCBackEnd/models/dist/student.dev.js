@@ -22,18 +22,18 @@ var _require = require('sequelize'),
     Model = _require.Model;
 
 module.exports = function (sequelize, DataTypes) {
-  var Doctor =
+  var student =
   /*#__PURE__*/
   function (_Model) {
-    _inherits(Doctor, _Model);
+    _inherits(student, _Model);
 
-    function Doctor() {
-      _classCallCheck(this, Doctor);
+    function student() {
+      _classCallCheck(this, student);
 
-      return _possibleConstructorReturn(this, _getPrototypeOf(Doctor).apply(this, arguments));
+      return _possibleConstructorReturn(this, _getPrototypeOf(student).apply(this, arguments));
     }
 
-    _createClass(Doctor, null, [{
+    _createClass(student, null, [{
       key: "associate",
 
       /**
@@ -41,26 +41,31 @@ module.exports = function (sequelize, DataTypes) {
        * This method is not a part of Sequelize lifecycle.
        * The `models/index` file will call this method automatically.
        */
-      value: function associate(models) {
-        // define association here
-        Doctor.hasMany(models.labsBenefit, {
-          foreignKey: "doctorId"
-        });
-        Doctor.hasMany(models.course, {
-          foreignKey: "doctorId"
-        });
+      value: function associate(models) {// define association here
       }
     }]);
 
-    return Doctor;
+    return student;
   }(Model);
 
   ;
-  Doctor.init({
-    name: DataTypes.STRING
+  student.init({
+    name: DataTypes.STRING,
+    militaryId: DataTypes.INTEGER,
+    group: DataTypes.STRING,
+    section: DataTypes.STRING,
+    unit: DataTypes.STRING,
+    town: DataTypes.STRING,
+    country: DataTypes.STRING,
+    type: DataTypes.STRING,
+    email: DataTypes.STRING,
+    year: DataTypes.STRING,
+    collegeDegree: DataTypes.FLOAT,
+    prevTermDegree: DataTypes.FLOAT,
+    prevTermweekestDegree: DataTypes.FLOAT
   }, {
     sequelize: sequelize,
-    modelName: 'Doctor'
+    modelName: 'student'
   });
-  return Doctor;
+  return student;
 };
