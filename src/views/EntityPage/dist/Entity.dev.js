@@ -185,7 +185,7 @@ entities.set('students', {
     }, {
       name: "collegeDegree",
       label: "مجموع الثانوية العامة",
-      type: "number",
+      type: "float",
       value: "",
       size: "small",
       helperText: "لا يترك فارغا",
@@ -196,7 +196,7 @@ entities.set('students', {
     }, {
       name: "prevTermDegree",
       label: "تقدير الترم /العام السابق",
-      type: "number",
+      type: "float",
       value: "",
       size: "small",
       helperText: "لا يترك فارغا",
@@ -207,14 +207,14 @@ entities.set('students', {
     }, {
       name: "prevTermweekestDegree",
       label: "اضعف تقدير الترم /العام السابق",
-      type: "number",
+      type: "float",
       value: "",
       size: "small",
       helperText: "لا يترك فارغا",
       placeHolder: "",
       variant: "outlined",
       xs: 12,
-      md: 6
+      md: 12
     }]],
     noSubmit: false,
     grid: {
@@ -233,7 +233,7 @@ entities.set('courses', {
   addText: "إضافة مادة",
   text: "مادة",
   api: "course/",
-  tableHead: ["الكود", "الاسم", "سنة", "القسم", "دكتور", "ضابط", "معيد"],
+  tableHead: ["الكود", "الاسم", "قسم", "سنة", "دكتور", "ضابط", "معيد"],
   tableBody: ["code", "title", "type", "year", "Doctor.label", "Officer.label", "TAssistant.label"],
   settingsCol: true,
   clickableRow: false,
@@ -424,6 +424,93 @@ entities.set('tassistants', {
     submitButtonFullWidth: true,
     submitHandler: function submitHandler(data) {
       return PostEntity(data, "tassistant/");
+    }
+  }
+});
+entities.set('users', {
+  addText: "إضافة مستخدم",
+  text: "مستخدم",
+  api: "user/",
+  tableBody: ["username", "type"],
+  tableHead: ["الاسم", "القسم المتاح"],
+  settingsCol: false,
+  clickableRow: false,
+  FormData: {
+    rows: [[{
+      name: "username",
+      label: "الأسم",
+      type: "text",
+      value: "",
+      size: "small",
+      helperText: "لا يترك فارغا",
+      placeHolder: "",
+      variant: "outlined",
+      xs: 12,
+      md: 12
+    }, {
+      name: "password",
+      label: "كلمة المرور",
+      type: "password",
+      value: "",
+      size: "small",
+      helperText: "لا يترك فارغا",
+      placeHolder: "",
+      variant: "outlined",
+      xs: 12,
+      md: 12
+    }, {
+      name: "permissions",
+      label: "الصلاحية",
+      type: "select",
+      value: "",
+      size: "small",
+      rows: [{
+        value: "superadmin",
+        label: "مشرف عام"
+      }, {
+        value: "admin",
+        label: "مشرف اكاديمي"
+      }],
+      helperText: "لا يترك فارغا",
+      placeHolder: "",
+      variant: "outlined",
+      xs: 12,
+      md: 12
+    }, {
+      name: "type",
+      label: "القسم المتاح",
+      type: "select",
+      value: "",
+      size: "small",
+      rows: [{
+        value: "اتصالات",
+        label: "اتصالات"
+      }, {
+        value: "ميكاترونكس",
+        label: "ميكاترونكس"
+      }, {
+        value: "حواسب",
+        label: "حواسب"
+      }, {
+        value: "عام",
+        label: "عام"
+      }],
+      helperText: "لا يترك فارغا",
+      placeHolder: "",
+      variant: "outlined",
+      xs: 12,
+      md: 12
+    }]],
+    noSubmit: false,
+    grid: {
+      xs: 12,
+      md: 12
+    },
+    dir: "rtl",
+    submitButtonText: "إضافة",
+    submitButtonFullWidth: true,
+    submitHandler: function submitHandler(data) {
+      return PostEntity(data, "user/");
     }
   }
 });

@@ -9,17 +9,17 @@ import { useDispatch } from 'react-redux';
 import { updateForm } from '../../redux/actions/form';
 import {MdDelete,MdEdit} from 'react-icons/md'
 import  {toast}  from 'react-toastify';
+import {AiFillPrinter} from 'react-icons/ai'
 import  formsData  from './StudentFormsData';
 export default function Student (props){
     const [studentData, seStudentData] = useState(null);
     let studentSkeleton = entities.get("students");
     const dispatch = useDispatch();
-
     useEffect(()=>{
         fetch();
         async function fetch (){
             let res = await axios.get(API+`student/${props.match.params.id}`)
-            console.log(res.data)
+            //console.log(res.data)
             seStudentData(res.data);
         }
     },[]);
@@ -168,15 +168,25 @@ export default function Student (props){
             window.location.reload();
         }
     }
-    
+    function handlePrint (e){
+        e.preventDefault();
+        let components =  document.getElementsByClassName("ButtonRow")
+        for (let i =0 ; i<components.length ; i++){
+           components[i].style.display = "none"
+        }
+        window.print();
+        window.location.reload()
+    }
     return (
         <Layout >
             {
                 studentData ? 
-                <Container dir="rtl">
+                <Container  dir="rtl" id ="studentData">
                 <br />
                 <Row>
-                    <Col xs={12 }><Typography variant="h5"> بيانات الطالب</Typography></Col>
+                    <Col xs={9 }>
+                        <Typography variant="h5"> بيانات الطالب</Typography></Col>
+                    <Col xs={3 }><Button variant="outlined" className="ButtonRow" color="primary" onClick={handlePrint} > <AiFillPrinter /> طباعة</Button></Col>
                 </Row>
                 <br />
                 <Row>
@@ -196,9 +206,9 @@ export default function Student (props){
                     <Col  xs={4} ><Typography >اضعف تقدير الترم /العام السابق : {`${studentData.student.prevTermweekestDegree}`}</Typography></Col>
                 </Row>
                 <br/>
-                <Row>
+                {/*<Row className="ButtonRow">
                     <Col xs={3}><Button variant="contained" color="primary" onClick={handleEditProfile} >تعديل بيانات</Button></Col>
-                </Row>
+            </Row>*/}
 
                 <br />
                 <Divider />
@@ -264,7 +274,7 @@ export default function Student (props){
                 <br />
                 <Row>
                   <Col xs={9}><Typography variant="h5">العقوبات التعليمية</Typography></Col>
-                  <Col xs={3} style={{textAlign: "end"}}><Button variant="contained" color="primary" onClick={()=>handleCreate("punishment")} >إضاقة عقوبه</Button></Col>
+                  <Col  className="ButtonRow" xs={3} style={{textAlign: "end"}}><Button variant="contained" color="primary" onClick={()=>handleCreate("punishment")} >إضاقة عقوبه</Button></Col>
 
                 </Row>
                 <br />
@@ -287,7 +297,7 @@ export default function Student (props){
                                 <TableCell>
                                    الأمر بالعقوبة 
                                 </TableCell>
-                                <TableCell>
+                                <TableCell className="ButtonRow">
                                    اعدادات 
                                 </TableCell>
                             </TableRow>
@@ -307,7 +317,7 @@ export default function Student (props){
                                 <TableCell>
                                     {p.order}
                                 </TableCell>
-                                <TableCell>
+                                <TableCell className="ButtonRow">
                                     <IconButton onClick={()=>handleDeleteAxios("punishment",p.id)}><MdDelete /></IconButton>
                                     <IconButton onClick={()=>handleEdit("punishment",p.id,i)}><MdEdit/></IconButton>
                                 </TableCell>
@@ -329,7 +339,7 @@ export default function Student (props){
 
                 <Row>
                   <Col xs={9}><Typography variant="h5">المواد التي ادت لرسوبه الترم/العام السابق</Typography></Col>
-                  <Col xs={3} style={{textAlign: "end"}}><Button variant="contained" color="primary"  onClick={()=>handleCreate("failedCourses")}  >إضاقة مادة</Button></Col>
+                  <Col xs={3} className="ButtonRow" style={{textAlign: "end"}}><Button variant="contained" color="primary"  onClick={()=>handleCreate("failedCourses")}  >إضاقة مادة</Button></Col>
 
                 </Row>
                 <br />
@@ -345,7 +355,7 @@ export default function Student (props){
                                 <TableCell>
                                    اسم المادة
                                 </TableCell>
-                                <TableCell>
+                                <TableCell className="ButtonRow">
                                    اعدادات 
                                 </TableCell>
                             </TableRow>
@@ -359,7 +369,7 @@ export default function Student (props){
                                 <TableCell>
                                     {f.title}
                                 </TableCell>
-                                <TableCell>
+                                <TableCell className="ButtonRow">
                                     <IconButton onClick={()=>handleDeleteAxios("failedCourses",f.id)}><MdDelete /></IconButton>
                                     <IconButton onClick={()=>handleEdit("failedCourses",f.id,i)}><MdEdit/></IconButton>
                                 </TableCell>
@@ -383,7 +393,7 @@ export default function Student (props){
 
                 <Row>
                   <Col xs={9}><Typography variant="h5">موقف الاستفادة من المعامل</Typography></Col>
-                  <Col xs={3} style={{textAlign: "end"}}><Button variant="contained" color="primary"  onClick={()=>handleCreate("labsBenefits")}>إضاقة موقف</Button></Col>
+                  <Col className="ButtonRow" xs={3} style={{textAlign: "end"}}><Button variant="contained" color="primary"  onClick={()=>handleCreate("labsBenefits")}>إضاقة موقف</Button></Col>
 
                 </Row>
                 <br />
@@ -412,7 +422,7 @@ export default function Student (props){
                                 <TableCell>
                                    المعيد
                                 </TableCell>
-                                <TableCell>
+                                <TableCell className="ButtonRow">
                                    اعدادات 
                                 </TableCell>
                             </TableRow>
@@ -431,7 +441,7 @@ export default function Student (props){
                                 <TableCell>{l.Doctor ? l.Doctor.label : "لا يكن"}</TableCell>
                                 <TableCell>{l.Officer ? l.Officer.label : "لا يكن"}</TableCell>
                                 <TableCell>{l.TAssistant ? l.TAssistant.label : "لا يكن"}</TableCell>
-                                <TableCell>
+                                <TableCell className="ButtonRow">
                                     <IconButton onClick={()=>handleDeleteAxios("labsBenefits",l.id)}><MdDelete /></IconButton>
                                     <IconButton onClick={()=>handleEdit("labsBenefits",l.id,i)}><MdEdit/></IconButton>
                                 </TableCell>
