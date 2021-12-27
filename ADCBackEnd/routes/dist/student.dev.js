@@ -7,6 +7,9 @@ var router = express.Router();
 var models = require('../models');
 
 var student = models.student;
+
+var jwt = require('jsonwebtoken');
+
 router.post('/', function _callee(req, res, next) {
   var userdb;
   return regeneratorRuntime.async(function _callee$(_context) {
@@ -300,32 +303,38 @@ router["delete"]('/labsBenefits/:id', function _callee10(req, res, next) {
   }, null, null, [[0, 6]]);
 });
 router.get('/', function _callee11(req, res, next) {
-  var students;
+  var token, decoded, students;
   return regeneratorRuntime.async(function _callee11$(_context11) {
     while (1) {
       switch (_context11.prev = _context11.next) {
         case 0:
           _context11.prev = 0;
-          _context11.next = 3;
-          return regeneratorRuntime.awrap(student.findAll());
+          token = req.headers['x-auth-token'];
+          decoded = jwt.verify(token, 'WizzardOz');
+          _context11.next = 5;
+          return regeneratorRuntime.awrap(student.findAll({
+            where: {
+              type: decoded.user.type !== "عام" && decoded.user.type
+            }
+          }));
 
-        case 3:
+        case 5:
           students = _context11.sent;
           res.send(students).status(200);
-          _context11.next = 10;
+          _context11.next = 12;
           break;
 
-        case 7:
-          _context11.prev = 7;
+        case 9:
+          _context11.prev = 9;
           _context11.t0 = _context11["catch"](0);
           console.log(_context11.t0);
 
-        case 10:
+        case 12:
         case "end":
           return _context11.stop();
       }
     }
-  }, null, null, [[0, 7]]);
+  }, null, null, [[0, 9]]);
 });
 router.get('/:id', function _callee12(req, res, next) {
   var id, students, courses, FailedCourses, Punishments, LabsBenefits, doctors, officers, tassistants;
@@ -467,7 +476,21 @@ router.put("/:id", function _callee13(req, res, next) {
           _context13.prev = 0;
           console.log(req.body.data);
           _context13.next = 4;
-          return regeneratorRuntime.awrap(student.update(req.body.data, {
+          return regeneratorRuntime.awrap(student.update({
+            name: req.body.data.name,
+            militaryId: req.body.data.militaryId,
+            group: req.body.data.group,
+            section: req.body.data.section,
+            unit: req.body.data.unit,
+            town: req.body.data.town,
+            country: req.body.data.country,
+            type: req.body.data.type,
+            email: req.body.data.email,
+            year: req.body.data.year,
+            collegeDegree: req.body.data.collegeDegree,
+            prevTermDegree: req.body.data.prevTermDegree,
+            prevTermweekestDegree: req.body.data.prevTermweekestDegree
+          }, {
             where: {
               id: req.params.id
             }

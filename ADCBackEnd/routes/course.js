@@ -1,7 +1,7 @@
 const express = require('express');
 var router = express.Router();
 var models = require('../models');
-
+var jwt = require('jsonwebtoken');
 
 router.post('/', async function (req, res, next) {
     try {
@@ -14,7 +14,12 @@ router.post('/', async function (req, res, next) {
 
 router.get('/', async (req, res, next) => {
     try {
-        let courses = await models.course.findAll({include:[
+        let token = req.headers['x-auth-token'];
+        var decoded = jwt.verify(token, 'WizzardOz');
+        let courses = await models.course.findAll({
+            where:{type:decoded.user.type !== "عام" && decoded.user.type 
+        },
+            include:[
             {model:models.Doctor,as:"Doctor",foreignKey:"doctorId",attributes:[['name','label'],['id','value']]},
             {model:models.Officer,as:"Officer",foreignKey:"OfficerId",attributes:[['name','label'],['id','value']]},
             {model:models.TAssistant,as:"TAssistant",foreignKey:"TAssistantId",attributes:[['name','label'],['id','value']]},

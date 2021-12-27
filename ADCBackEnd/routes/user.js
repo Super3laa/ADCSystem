@@ -6,7 +6,7 @@ router.post('/getUser',async function(req,res,next){
   try {
       console.log(req.body.data)
     let userdb = await models.user.findOne({
-        attributes:["id","username","permissions"],
+        attributes:["id","username","permissions","type"],
         where:{id:req.body.data.id}
     })
     if(userdb){
@@ -33,7 +33,23 @@ router.post('/login',async function (req,res,next){
     }
 });
 
+router.post('/', async function (req, res, next) {
+  try {
+      await models.user.create(req.body.data);
+      res.sendStatus(200);
+  } catch (error) {
+      console.log(error);
+  }
+});
 
+router.get('/', async (req, res, next) => {
+  try {
+      let Officers = await models.user.findAll();
+      res.send(Officers).status(200);
+  } catch (error) {
+      console.log(error)
+  }
+})
 /*router.put('/',auth.auth,function(req,res,next){
   const salt=bcrypt.genSaltSync();
   

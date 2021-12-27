@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     username: DataTypes.STRING,
     password:DataTypes.STRING,
     permissions: DataTypes.STRING,
+    type: DataTypes.STRING,
   }, {
     hooks:{
       beforeCreate:(userObj)=>{

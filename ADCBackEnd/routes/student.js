@@ -2,6 +2,8 @@ const express = require('express');
 var router = express.Router();
 var models=require('../models');
 let student = models.student
+var jwt = require('jsonwebtoken');
+
 router.post('/',async function(req,res,next){
   try {
         let userdb = await student.create(req.body.data);
@@ -87,7 +89,11 @@ router.delete('/labsBenefits/:id',async function(req,res,next){
 
 router.get('/', async (req,res,next)=>{
   try {
-    let students = await student.findAll();
+    let token = req.headers['x-auth-token'];
+    var decoded = jwt.verify(token, 'WizzardOz');
+    let students = await student.findAll({where:{
+      type:decoded.user.type !== "عام" && decoded.user.type 
+    }});
     res.send(students).status(200);
   } catch (error) {
     console.log(error)
@@ -127,7 +133,21 @@ router.put("/:id",async (req,res,next)=>{
   try {
     console.log(req.body.data)
      await student.update(
-      req.body.data 
+      {
+        name:req.body.data.name,
+        militaryId:req.body.data.militaryId,
+        group:req.body.data.group,
+        section :req.body.data.section,
+        unit: req.body.data.unit,
+        town:req.body.data.town,
+        country:req.body.data.country,
+        type:req.body.data.type,
+        email:req.body.data.email,
+        year:req.body.data.year,
+        collegeDegree:req.body.data.collegeDegree,
+        prevTermDegree:req.body.data.prevTermDegree,
+        prevTermweekestDegree:req.body.data.prevTermweekestDegree
+      }
     ,{where:{id:req.params.id}})
     let students = await student.findOne({
       where:{id:req.params.id}

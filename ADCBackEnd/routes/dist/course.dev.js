@@ -6,6 +6,8 @@ var router = express.Router();
 
 var models = require('../models');
 
+var jwt = require('jsonwebtoken');
+
 router.post('/', function _callee(req, res, next) {
   return regeneratorRuntime.async(function _callee$(_context) {
     while (1) {
@@ -33,14 +35,19 @@ router.post('/', function _callee(req, res, next) {
   }, null, null, [[0, 6]]);
 });
 router.get('/', function _callee2(req, res, next) {
-  var courses, doctors, officers, tassistants;
+  var token, decoded, courses, doctors, officers, tassistants;
   return regeneratorRuntime.async(function _callee2$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
           _context2.prev = 0;
-          _context2.next = 3;
+          token = req.headers['x-auth-token'];
+          decoded = jwt.verify(token, 'WizzardOz');
+          _context2.next = 5;
           return regeneratorRuntime.awrap(models.course.findAll({
+            where: {
+              type: decoded.user.type !== "عام" && decoded.user.type
+            },
             include: [{
               model: models.Doctor,
               as: "Doctor",
@@ -60,28 +67,28 @@ router.get('/', function _callee2(req, res, next) {
             raw: true
           }));
 
-        case 3:
+        case 5:
           courses = _context2.sent;
-          _context2.next = 6;
+          _context2.next = 8;
           return regeneratorRuntime.awrap(models.Doctor.findAll({
             attributes: [['name', 'label'], ['id', 'value']]
           }));
 
-        case 6:
+        case 8:
           doctors = _context2.sent;
-          _context2.next = 9;
+          _context2.next = 11;
           return regeneratorRuntime.awrap(models.Officer.findAll({
             attributes: [['name', 'label'], ['id', 'value']]
           }));
 
-        case 9:
+        case 11:
           officers = _context2.sent;
-          _context2.next = 12;
+          _context2.next = 14;
           return regeneratorRuntime.awrap(models.TAssistant.findAll({
             attributes: [['name', 'label'], ['id', 'value']]
           }));
 
-        case 12:
+        case 14:
           tassistants = _context2.sent;
           res.send({
             courses: courses,
@@ -89,20 +96,20 @@ router.get('/', function _callee2(req, res, next) {
             officers: officers,
             tassistants: tassistants
           }).status(200);
-          _context2.next = 19;
+          _context2.next = 21;
           break;
 
-        case 16:
-          _context2.prev = 16;
+        case 18:
+          _context2.prev = 18;
           _context2.t0 = _context2["catch"](0);
           console.log(_context2.t0);
 
-        case 19:
+        case 21:
         case "end":
           return _context2.stop();
       }
     }
-  }, null, null, [[0, 16]]);
+  }, null, null, [[0, 18]]);
 });
 router.put('/', function _callee3(req, res, next) {
   return regeneratorRuntime.async(function _callee3$(_context3) {
