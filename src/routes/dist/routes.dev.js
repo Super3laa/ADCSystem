@@ -19,6 +19,8 @@ var _Student = _interopRequireDefault(require("../views/Student/Student"));
 
 var _jwtDecode = _interopRequireDefault(require("jwt-decode"));
 
+var _Course = _interopRequireDefault(require("../views/Course/Course"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function getRoutes() {
@@ -62,6 +64,9 @@ var superadmin = [{
   path: "/students/:id",
   component: _Student["default"]
 }, {
+  path: "/courses/:id",
+  component: _Course["default"]
+}, {
   path: "*",
   component: _NotFound["default"]
 }];
@@ -77,6 +82,9 @@ var admin = [{
 }, {
   path: "/students/:id",
   component: _Student["default"]
+}, {
+  path: "/courses/:id",
+  component: _Course["default"]
 }, {
   path: "*",
   component: _NotFound["default"]

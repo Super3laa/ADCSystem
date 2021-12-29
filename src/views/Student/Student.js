@@ -129,10 +129,10 @@ export default function Student (props){
                             label: "التقيم",
                             type: "select",
                             value: "",
-                            defaultValue:">95%",
+                            defaultValue:"95>%",
                             size: "small",
                             rows: [
-                                { value: ">95%", label: ">95%" },
+                                { value: "95>%", label: "95>%" },
                                 { value: "90-95%", label: "90-95%" },
                                 { value: "85-90%", label: "85-90%" },
                                 { value: "70-85%", label: "70-85%" },
@@ -447,7 +447,7 @@ export default function Student (props){
             </Row>
             <br />            <Row className="ButtonRow">
                  {studentData.studentAttendance.map(weekno=>{
-                        return<Col xs={12}><Link variant="body2" component="button" color="primary" onClick={()=>getweeklyAttendance(weekno.weekno)} >- للاسبوع بيان الحضور {weekno.weekno}</Link></Col>
+                        return<Col xs={12}><Link variant="body2" component="button" color="primary" onClick={()=>getweeklyAttendance(weekno.weekno)} >-  بيان الحضور الاسبوع {weekno.weekno}</Link></Col>
                     })}
             </Row>
                     {

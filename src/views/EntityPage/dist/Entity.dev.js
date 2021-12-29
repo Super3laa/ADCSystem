@@ -236,7 +236,7 @@ entities.set('courses', {
   tableHead: ["الكود", "الاسم", "قسم", "سنة", "دكتور", "ضابط", "معيد"],
   tableBody: ["code", "title", "type", "year", "Doctor.label", "Officer.label", "TAssistant.label"],
   settingsCol: true,
-  clickableRow: false,
+  clickableRow: true,
   FormData: {
     rows: [[{
       name: "title",
