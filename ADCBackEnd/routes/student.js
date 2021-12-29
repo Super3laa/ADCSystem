@@ -3,7 +3,7 @@ var router = express.Router();
 var models=require('../models');
 let student = models.student
 var jwt = require('jsonwebtoken');
-
+let sequelize = models.sequelize
 router.post('/',async function(req,res,next){
   try {
         let userdb = await student.create(req.body.data);
@@ -87,6 +87,86 @@ router.delete('/labsBenefits/:id',async function(req,res,next){
   }
 });
 
+
+
+router.post('/rating',async function(req,res,next){
+  try {
+        let userdb = await models.studentRating.create(req.body.data);
+        res.sendStatus(200);
+  } catch (error) {
+      console.log(error);
+  }
+});
+router.get('/rating/:id/:weekno',async function(req,res,next){
+  try {
+        let weeklyRating = await models.studentRating.findAll({where:{weekno:req.params.weekno,studentId:req.params.id},
+          include:[
+            {model:models.course,as:"course",foreignKey:"courseId",attributes:[['title','label'],['id','value'],'code']},
+        ]
+        });
+        res.send(weeklyRating).status(200);
+  } catch (error) {
+      console.log(error);
+  }
+});
+router.put('/rating',async function(req,res,next){
+  try {
+        await models.studentRating.update(req.body.data,{where:{id:req.body.data.id}});
+        res.sendStatus(200);
+  } catch (error) {
+      console.log(error);
+  }
+});
+router.delete('/rating/:id',async function(req,res,next){
+  try {
+        await models.studentRating.destroy({where:{id:req.params.id}});
+        res.sendStatus(200);
+  } catch (error) {
+      console.log(error);
+  }
+});
+
+
+
+router.post('/attendance',async function(req,res,next){
+  try {
+        let userdb = await models.studentAttendance.create(req.body.data);
+        res.sendStatus(200);
+  } catch (error) {
+      console.log(error);
+  }
+});
+router.get('/attendance/:id/:weekno',async function(req,res,next){
+  try {
+        let weeklyRating = await models.studentAttendance.findAll({where:{weekno:req.params.weekno,studentId:req.params.id},
+          include:[
+            {model:models.course,as:"course",foreignKey:"courseId",attributes:[['title','label'],['id','value'],'code']},
+        ]
+        });
+        res.send(weeklyRating).status(200);
+  } catch (error) {
+      console.log(error);
+  }
+});
+router.put('/attendance',async function(req,res,next){
+  try {
+        await models.studentAttendance.update(req.body.data,{where:{id:req.body.data.id}});
+        res.sendStatus(200);
+  } catch (error) {
+      console.log(error);
+  }
+});
+router.delete('/attendance/:id',async function(req,res,next){
+  try {
+        await models.studentAttendance.destroy({where:{id:req.params.id}});
+        res.sendStatus(200);
+  } catch (error) {
+      console.log(error);
+  }
+});
+
+
+
 router.get('/', async (req,res,next)=>{
   try {
     let token = req.headers['x-auth-token'];
@@ -122,8 +202,17 @@ router.get('/:id', async (req,res,next)=>{
     let doctors = await models.Doctor.findAll({attributes:[['name','label'],['id','value']]});
     let officers = await models.Officer.findAll({attributes:[['name','label'],['id','value']]});
     let tassistants = await models.TAssistant.findAll({attributes:[['name','label'],['id','value']]});
-
-    res.send({tassistants,doctors,officers,courses,student:students,failedCourses:FailedCourses,punishment:Punishments,labsBenefits:LabsBenefits}).status(200);
+    let studentRating  = await models.studentRating.findAll({
+      where:{studentId:id},
+      attributes: ['weekno', [sequelize.fn('count', sequelize.col('weekno')), 'cnt']],
+      group: ['weekno'],
+  })
+  let attendance  = await models.studentAttendance.findAll({
+    where:{studentId:id},
+    attributes: ['weekno', [sequelize.fn('count', sequelize.col('weekno')), 'cnt']],
+    group: ['weekno'],
+})
+    res.send({studentAttendance:attendance,studentRating,tassistants,doctors,officers,courses,student:students,failedCourses:FailedCourses,punishment:Punishments,labsBenefits:LabsBenefits}).status(200);
   } catch (error) {
     console.log(error)
 

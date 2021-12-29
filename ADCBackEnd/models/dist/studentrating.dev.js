@@ -22,18 +22,18 @@ var _require = require('sequelize'),
     Model = _require.Model;
 
 module.exports = function (sequelize, DataTypes) {
-  var student =
+  var studentRating =
   /*#__PURE__*/
   function (_Model) {
-    _inherits(student, _Model);
+    _inherits(studentRating, _Model);
 
-    function student() {
-      _classCallCheck(this, student);
+    function studentRating() {
+      _classCallCheck(this, studentRating);
 
-      return _possibleConstructorReturn(this, _getPrototypeOf(student).apply(this, arguments));
+      return _possibleConstructorReturn(this, _getPrototypeOf(studentRating).apply(this, arguments));
     }
 
-    _createClass(student, null, [{
+    _createClass(studentRating, null, [{
       key: "associate",
 
       /**
@@ -43,36 +43,27 @@ module.exports = function (sequelize, DataTypes) {
        */
       value: function associate(models) {
         // define association here
-        student.hasMany(models.studentRating, {
+        studentRating.belongsTo(models.student, {
           foreignKey: "studentId"
         });
-        student.hasMany(models.studentAttendance, {
-          foreignKey: "studentId"
+        studentRating.belongsTo(models.course, {
+          foreignKey: "courseId"
         });
       }
     }]);
 
-    return student;
+    return studentRating;
   }(Model);
 
   ;
-  student.init({
-    name: DataTypes.STRING,
-    militaryId: DataTypes.STRING,
-    group: DataTypes.STRING,
-    section: DataTypes.STRING,
-    unit: DataTypes.STRING,
-    town: DataTypes.STRING,
-    country: DataTypes.STRING,
-    type: DataTypes.STRING,
-    email: DataTypes.STRING,
-    year: DataTypes.STRING,
-    collegeDegree: DataTypes.FLOAT,
-    prevTermDegree: DataTypes.FLOAT,
-    prevTermweekestDegree: DataTypes.FLOAT
+  studentRating.init({
+    courseId: DataTypes.INTEGER,
+    studentId: DataTypes.INTEGER,
+    weekno: DataTypes.INTEGER,
+    rate: DataTypes.STRING
   }, {
     sequelize: sequelize,
-    modelName: 'student'
+    modelName: 'studentRating'
   });
-  return student;
+  return studentRating;
 };

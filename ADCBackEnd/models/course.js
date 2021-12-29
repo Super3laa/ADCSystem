@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       course.belongsTo(models.Officer,{foreignKey:"OfficerId"})
       course.belongsTo(models.TAssistant,{foreignKey:"TAssistantId"})
       course.belongsTo(models.Doctor,{foreignKey:"doctorId"})
+      course.hasMany(models.studentRating,{foreignKey:"courseId"})
+      course.hasMany(models.studentAttendance,{foreignKey:"courseId"})
+
     }
   };
   course.init({

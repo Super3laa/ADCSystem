@@ -16,3 +16,6 @@
     scale   : 1.05;
     opacity: 0.75;
 }
+.MuiTableCell-root{
+    text-align: right !important;
+}

@@ -3,7 +3,7 @@ import Layout from "../../components/Layout/Layout";
 import { Container, Row, Col } from 'reactstrap';
 import axios from 'axios';
 import { API } from '../../const';
-import { Typography,Table,Button, TableBody, TableCell, TableRow, TableHead, IconButton, Divider } from '@material-ui/core';
+import { Typography,Link,Table,Button, TableBody, TableCell, TableRow, TableHead, IconButton, Divider } from '@material-ui/core';
 import entities from '../EntityPage/Entity'
 import { useDispatch } from 'react-redux';
 import { updateForm } from '../../redux/actions/form';
@@ -14,13 +14,24 @@ import  formsData  from './StudentFormsData';
 export default function Student (props){
     const [studentData, seStudentData] = useState(null);
     let studentSkeleton = entities.get("students");
+    const [coursesArray,setCoursesArray] = useState([]);
     const dispatch = useDispatch();
     useEffect(()=>{
         fetch();
         async function fetch (){
             let res = await axios.get(API+`student/${props.match.params.id}`)
-            //console.log(res.data)
+            console.log(res.data)
             seStudentData(res.data);
+            let dummyArray =[]
+            res.data.courses.forEach(course=>{
+                dummyArray.push(
+                    {
+                        value:course.id,
+                        label:course.title
+                    }
+                )
+            })
+            setCoursesArray(dummyArray)
         }
     },[]);
     async function handleEditStudent(data){
@@ -50,7 +61,8 @@ export default function Student (props){
     }
     async function handleCreate(type){
         let formsDataEdit = formsData.get(type)
-        if (type==="labsBenefits"){
+        switch (type){
+            case "labsBenefits" :
             studentData.doctors .push({label:"لايكن", value : null})
             studentData.officers.push({label:"لايكن", value : null})
             studentData.tassistants.push({label:"لايكن", value : null})
@@ -95,6 +107,64 @@ export default function Student (props){
                 }
 
             )
+            break;
+            case "rating":
+                    
+                formsDataEdit.rows[0].length < 2 && formsDataEdit.rows[0].push(
+                        {
+                            name: "courseId",
+                            label: "مادة",
+                            type: "select",
+                            value: "",
+                            size: "small",
+                            defaultValue:coursesArray[0].value,
+                            rows: coursesArray,
+                            helperText: "لا يترك فارغا",
+                            placeHolder:"",
+                            variant: "outlined",
+                            xs:12,
+                            md:6,
+                        },{
+                            name: "rate",
+                            label: "التقيم",
+                            type: "select",
+                            value: "",
+                            defaultValue:">95%",
+                            size: "small",
+                            rows: [
+                                { value: ">95%", label: ">95%" },
+                                { value: "90-95%", label: "90-95%" },
+                                { value: "85-90%", label: "85-90%" },
+                                { value: "70-85%", label: "70-85%" },
+                                { value: "50-75%", label: "50-75%" },
+                                { value: "<50%", label: "<50%" },
+                            ],
+                            helperText: "لا يترك فارغا",
+                            placeHolder:"",
+                            variant: "outlined",
+                            xs:12,
+                            md:6,
+                        }
+                    )
+                    break;
+            case 'attendance':
+            formsDataEdit.rows[0].length < 4 && formsDataEdit.rows[0].push(
+                        {
+                            name: "courseId",
+                            label: "مادة",
+                            type: "select",
+                            value: "",
+                            size: "small",
+                            defaultValue:coursesArray[0].value,
+                            rows: coursesArray,
+                            helperText: "لا يترك فارغا",
+                            placeHolder:"",
+                            variant: "outlined",
+                            xs:12,
+                            md:6,
+                        }
+            )
+            break;
         }
         dispatch(updateForm({...formsDataEdit,state:true,submitHandler:(data)=>handleCreateAxios(data,type)}))
     }
@@ -107,13 +177,13 @@ export default function Student (props){
     }
     async function handleEdit(type,id,index){
             let formsDataEdit = formsData.get(type)
-            if (type==="labsBenefits"){
+            switch (type){
+                case "labsBenefits" :
                 studentData.doctors .push({label:"لايكن", value : null})
                 studentData.officers.push({label:"لايكن", value : null})
                 studentData.tassistants.push({label:"لايكن", value : null})
-
-                
-            formsDataEdit.rows[0].length < 6 && formsDataEdit.rows[0].push(
+    
+                formsDataEdit.rows[0].length < 6 && formsDataEdit.rows[0].push(
                     {
                         name: "doctorId",
                         label: "دكتور",
@@ -151,8 +221,71 @@ export default function Student (props){
                         xs:12,
                         md:12,
                     }
-
+    
                 )
+                break;
+                case "rating":
+                        
+                    formsDataEdit.rows[0].length < 2 && formsDataEdit.rows[0].push(
+                            {
+                                name: "courseId",
+                                label: "مادة",
+                                type: "select",
+                                value: "",
+                                size: "small",
+                                defaultValue:coursesArray[0].value,
+                                rows: coursesArray,
+                                helperText: "لا يترك فارغا",
+                                placeHolder:"",
+                                variant: "outlined",
+                                xs:12,
+                                md:6,
+                            },{
+                                name: "rate",
+                                label: "التقيم",
+                                type: "select",
+                                value: "",
+                                defaultValue:">95%",
+                                size: "small",
+                                rows: [
+                                    { value: ">95%", label: ">95%" },
+                                    { value: "90-95%", label: "90-95%" },
+                                    { value: "85-90%", label: "85-90%" },
+                                    { value: "70-85%", label: "70-85%" },
+                                    { value: "50-75%", label: "50-75%" },
+                                    { value: "<50%", label: "<50%" },
+                                ],
+                                helperText: "لا يترك فارغا",
+                                placeHolder:"",
+                                variant: "outlined",
+                                xs:12,
+                                md:6,
+                            }
+                        )
+                    console.log('blah 1')
+                    break;
+                case 'attendance':
+                    formsDataEdit.rows[0].length < 4 && formsDataEdit.rows[0].push(
+                            {
+                                name: "courseId",
+                                label: "مادة",
+                                type: "select",
+                                value: "",
+                                size: "small",
+                                defaultValue:coursesArray[0].value,
+                                rows: coursesArray,
+                                helperText: "لا يترك فارغا",
+                                placeHolder:"",
+                                variant: "outlined",
+                                xs:12,
+                                md:6,
+                            }
+                )
+                console.log('blah 1')
+
+                    break;
+                default:
+                    break;
             }
             dispatch(updateForm({...formsDataEdit,
             state:true,
@@ -168,9 +301,39 @@ export default function Student (props){
             window.location.reload();
         }
     }
-    function handlePrint (e){
-        e.preventDefault();
-        let components =  document.getElementsByClassName("ButtonRow")
+    async function getweeklyRating(weekno){
+        let res = await axios.get(API+`student/rating/${studentData.student.id}/${weekno}`);
+        console.log(res.data);
+        if(res.status == 200){
+            seStudentData({...studentData,rating:res.data});
+        }
+    }
+    async function getweeklyAttendance(weekno){
+        let res = await axios.get(API+`student/attendance/${studentData.student.id}/${weekno}`);
+        console.log(res.data);
+        if(res.status == 200){
+            seStudentData({...studentData,attendance:res.data});
+        }
+    }
+    function handlePrint (type){
+        switch (type){
+            case "general":
+                var components =  document.getElementsByClassName("rating")
+                for (let i =0 ; i<components.length ; i++){
+                components[i].style.display = "none"
+                }
+                break;
+            case "weekly":
+                 var componentssubjects =  document.getElementsByClassName("subjects")
+                for (let i =0 ; i<componentssubjects.length ; i++){
+                componentssubjects[i].style.display = "none"
+                }
+                break;
+            default:
+                break;
+
+        }
+        var components =  document.getElementsByClassName("ButtonRow")
         for (let i =0 ; i<components.length ; i++){
            components[i].style.display = "none"
         }
@@ -183,10 +346,13 @@ export default function Student (props){
                 studentData ? 
                 <Container  dir="rtl" id ="studentData">
                 <br />
+                <Row >
+                <Col xs={"auto" }><Button variant="outlined" className="ButtonRow" color="primary" onClick={()=>handlePrint("weekly")} > <AiFillPrinter /> طباعة نموذج تقيم إسبوعي</Button></Col>
+                <Col xs={"auto" }><Button variant="outlined" className="ButtonRow" color="primary" onClick={()=>handlePrint("general")} > <AiFillPrinter /> طباعة نموذج أكاديمي عن الطالب</Button></Col>                    </Row>
+                <br /><br />
                 <Row>
-                    <Col xs={9 }>
+                    <Col xs={12 }>
                         <Typography variant="h5"> بيانات الطالب</Typography></Col>
-                    <Col xs={3 }><Button variant="outlined" className="ButtonRow" color="primary" onClick={handlePrint} > <AiFillPrinter /> طباعة</Button></Col>
                 </Row>
                 <br />
                 <Row>
@@ -209,16 +375,149 @@ export default function Student (props){
                 {/*<Row className="ButtonRow">
                     <Col xs={3}><Button variant="contained" color="primary" onClick={handleEditProfile} >تعديل بيانات</Button></Col>
             </Row>*/}
+            <br />
+            <Row className="ButtonRow">
+                    <Col xs={12}><Button variant="contained" color="primary" onClick={()=>handleCreate("rating")} >إضافة تقيم إسبوعي للطالب</Button></Col>
+                    
+            </Row>
+            <br />
+            <Row className="ButtonRow">
+                 {studentData.studentRating.map(weekno=>{
+                        return<Col xs={12}><Link variant="body2" component="button" color="primary" onClick={()=>getweeklyRating(weekno.weekno)} >- تقييم الاسبوع {weekno.weekno}</Link></Col>
+                    })}
+            </Row>
+                    {
+                        studentData.rating ?
+                        <React.Fragment className="rating">
+                          <br />
+                        <Row>
+                         <Col xs={12 }><Typography variant="h5">التقييم الاسبوعي</Typography></Col>
+
+                            <Col xs={12}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>
+                                           كود
+                                        </TableCell>
+                                        <TableCell>
+                                           اسم الماده
+                                        </TableCell>
+                                        <TableCell>
+                                           تقيم 
+                                        </TableCell>
+                                        <TableCell className="ButtonRow">
+                                   اعدادات 
+                                </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {
+                                        studentData.rating.map((c,i)=>{
+                                            return(
+                                    <TableRow>
+                                        <TableCell>{c.course && c.course.code}</TableCell>
+                                        <TableCell>
+                                         {c.course && c.course.label}
+                                        </TableCell>
+                                        <TableCell>
+                                            {c.rate}
+                                        </TableCell>
+                                        <TableCell className="ButtonRow">
+                                    <IconButton onClick={()=>handleDeleteAxios("rating",c.id)}><MdDelete /></IconButton>
+                                    <IconButton onClick={()=>handleEdit("rating",c.id,i)}><MdEdit/></IconButton>
+                                </TableCell>
+                                    </TableRow>
+                                            )
+                                        })
+                                    }
+                                </TableBody>
+                                </Table>
+                                </Col>
+                                </Row>
+        
+                        <br />
+                        <Divider />
+                        </React.Fragment>:null
+                    }
+    <br />
+ <Row className="ButtonRow">
+                    <Col xs={12}><Button variant="contained" color="primary" onClick={()=>handleCreate("attendance")} >إضافة حالة حضور للطالب</Button></Col>
+                    
+            </Row>
+            <br />            <Row className="ButtonRow">
+                 {studentData.studentAttendance.map(weekno=>{
+                        return<Col xs={12}><Link variant="body2" component="button" color="primary" onClick={()=>getweeklyAttendance(weekno.weekno)} >- للاسبوع بيان الحضور {weekno.weekno}</Link></Col>
+                    })}
+            </Row>
+                    {
+                        studentData.attendance ?
+                        <React.Fragment className="rating">
+                          <br />
+                        <Row>
+                         <Col xs={12 }><Typography variant="h5">بيان الحضور</Typography></Col>
+
+                            <Col xs={12}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>
+                                           البيان
+                                        </TableCell>
+                                        <TableCell>
+                                           اسم الماده
+                                        </TableCell>
+                                        <TableCell>
+                                           حالة الحضور 
+                                        </TableCell>
+                                        <TableCell className="ButtonRow">
+                                   اعدادات 
+                                </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {
+                                        studentData.attendance.map((c,i)=>{
+                                            return(
+                                    <TableRow>
+                                        <TableCell>{c.type}</TableCell>
+                                        <TableCell>
+                                         {c.course && c.course.label}
+                                        </TableCell>
+                                        <TableCell>
+                                            {c.status}
+                                        </TableCell>
+                                        <TableCell className="ButtonRow">
+                                    <IconButton onClick={()=>handleDeleteAxios("attendance",c.id)}><MdDelete /></IconButton>
+                                    <IconButton onClick={()=>handleEdit("attendance",c.id,i)}><MdEdit/></IconButton>
+                                </TableCell>
+                                    </TableRow>
+                                            )
+                                        })
+                                    }
+                                </TableBody>
+                                </Table>
+                                </Col>
+                                </Row>
+        
+                        <br />
+                        <Divider />
+                        </React.Fragment>:null
+                    }
+
+
+
+
 
                 <br />
                 <Divider />
                 <br />
-                <Row>
+                <Row className="subjects">
                     <Col xs={12 }><Typography variant="h5"> مواد الطالب</Typography></Col>
                 </Row>
                 <br />
-                <Row>
-                    <Col xs={12}>
+                <Row className="subjects">
+                    <Col xs={12} className="subjects">
                     <Table>
 
                         <TableHead>
@@ -337,14 +636,14 @@ export default function Student (props){
                 <br />
                 <br />
 
-                <Row>
+                <Row  className="subjects">
                   <Col xs={9}><Typography variant="h5">المواد التي ادت لرسوبه الترم/العام السابق</Typography></Col>
                   <Col xs={3} className="ButtonRow" style={{textAlign: "end"}}><Button variant="contained" color="primary"  onClick={()=>handleCreate("failedCourses")}  >إضاقة مادة</Button></Col>
 
                 </Row>
                 <br />
               
-                <Row>
+                <Row  className="subjects">
                     <Col xs={ 12}>
                         <Table>
                         <TableHead>
