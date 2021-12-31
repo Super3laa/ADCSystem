@@ -104,13 +104,12 @@ export default function EntityPage(props){
             window.location.reload();
         }
     }
-    const addButton = ()=>{
-        return <Button size="large" onClick={handleAddEntity} variant="contained" color="primary" style={{marginTop:"30px"}} type="submit">
-        اضافة {entity.text}
-        </Button>
-    }
-    function searchHandler(data){
-        console.log(data)
+
+    async function searchHandler(data){
+        let res = await axios.get(API+entity.api+'search'+`/${data.search}`);
+        //console.log(res.data)
+        setEntityList(res.data);
+
     }
     return(
             <Layout>
@@ -132,19 +131,14 @@ export default function EntityPage(props){
                                                     placeHolder:"بحـــث ... ",
                                                     variant: "outlined",
                                                     translate:"Username",
-                                                    xs:8,
-                                                    md:8
-                                                },{
-                                                   type:"custom",xs:4,
-                                                   md:4,
-                                                   component:addButton
-                                                  
+                                                    xs:12,
+                                                    md:12
                                                 }
                                                 ]
                                             ]
                                             }
                                             noSubmit={false}
-                                            grid={{ xs: 12, md: 12 }}
+                                            grid={{ xs: 12, md: 8 }}
                                             dir={"rtl"}
                                             submitButtonText="بحث"
                                             submitButtonFullWidth={true}
@@ -155,7 +149,11 @@ export default function EntityPage(props){
                             </Container>
                         </Col>
                     </Row>
+
                     <Row>
+                        <Col><Button size="large" onClick={handleAddEntity} variant="contained" color="primary" style={{marginTop:"30px"}} type="submit">
+        اضافة {entity.text}
+        </Button></Col>
                         <Container >
                             <Row>
                                 <Col >
@@ -183,7 +181,7 @@ export default function EntityPage(props){
                                         </TableHead>
                                         <TableBody>
                                             {
-                                                entityList.map((data ,i )=>{
+                                                entityList.length >0 && entityList.map((data ,i )=>{
                                                     return(
                                                         <TableRow  >
                                                             {

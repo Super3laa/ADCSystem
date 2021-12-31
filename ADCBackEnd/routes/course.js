@@ -3,6 +3,15 @@ var router = express.Router();
 var models = require('../models');
 var jwt = require('jsonwebtoken');
 let sequelize= models.sequelize
+const { Op } = require("sequelize");
+router.get('/search/:search',async (req,res)=>{
+    try {
+      let userdb = await models.course.findAll({where:{title:{[Op.like]:`%${req.params.search}%`}}});
+      res.send(userdb).status(200);
+    } catch (error) {
+      console.log(error);
+    }
+  })
 router.post('/', async function (req, res, next) {
     try {
         await models.course.create(req.body.data);

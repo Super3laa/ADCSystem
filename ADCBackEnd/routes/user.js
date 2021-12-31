@@ -2,6 +2,15 @@ const express = require('express');
 var router = express.Router();
 let auth=require('../services/auth.js');
 var models=require('../models');
+const { Op } = require("sequelize");
+router.get('/search/:search',async (req,res)=>{
+    try {
+      let userdb = await models.user.findAll({where:{username:{[Op.like]:`%${req.params.search}%`}}});
+      res.send(userdb).status(200);
+    } catch (error) {
+      console.log(error);
+    }
+  })
 router.post('/getUser',async function(req,res,next){
   try {
       console.log(req.body.data)

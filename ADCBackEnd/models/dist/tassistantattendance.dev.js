@@ -22,18 +22,18 @@ var _require = require('sequelize'),
     Model = _require.Model;
 
 module.exports = function (sequelize, DataTypes) {
-  var Officer =
+  var tassistantAttendance =
   /*#__PURE__*/
   function (_Model) {
-    _inherits(Officer, _Model);
+    _inherits(tassistantAttendance, _Model);
 
-    function Officer() {
-      _classCallCheck(this, Officer);
+    function tassistantAttendance() {
+      _classCallCheck(this, tassistantAttendance);
 
-      return _possibleConstructorReturn(this, _getPrototypeOf(Officer).apply(this, arguments));
+      return _possibleConstructorReturn(this, _getPrototypeOf(tassistantAttendance).apply(this, arguments));
     }
 
-    _createClass(Officer, null, [{
+    _createClass(tassistantAttendance, null, [{
       key: "associate",
 
       /**
@@ -43,27 +43,28 @@ module.exports = function (sequelize, DataTypes) {
        */
       value: function associate(models) {
         // define association here
-        Officer.hasMany(models.labsBenefit, {
-          foreignKey: "OfficerId"
+        tassistantAttendance.belongsTo(models.TAssistant, {
+          foreignKey: "tassistantId"
         });
-        Officer.hasMany(models.course, {
-          foreignKey: "OfficerId"
-        });
-        Officer.hasMany(models.officerAttendance, {
-          foreignKey: "officerId"
+        tassistantAttendance.belongsTo(models.course, {
+          foreignKey: "courseId"
         });
       }
     }]);
 
-    return Officer;
+    return tassistantAttendance;
   }(Model);
 
   ;
-  Officer.init({
-    name: DataTypes.STRING
+  tassistantAttendance.init({
+    courseId: DataTypes.INTEGER,
+    tassistantId: DataTypes.INTEGER,
+    weekno: DataTypes.INTEGER,
+    status: DataTypes.STRING,
+    type: DataTypes.STRING
   }, {
     sequelize: sequelize,
-    modelName: 'Officer'
+    modelName: 'tassistantAttendance'
   });
-  return Officer;
+  return tassistantAttendance;
 };

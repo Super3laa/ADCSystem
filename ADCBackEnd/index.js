@@ -33,7 +33,7 @@ app.use(function (req, res, next) {
     res.send(err.message);
   });
 
-app.listen(5050,()=>console.log("Server is up,Alaa on PORT 5050"))
+app.listen(9000,()=>console.log("Server is up,Alaa on PORT 5050"))
 
 
 

@@ -21,6 +21,12 @@ var _jwtDecode = _interopRequireDefault(require("jwt-decode"));
 
 var _Course = _interopRequireDefault(require("../views/Course/Course"));
 
+var _Doctor = _interopRequireDefault(require("../views/Doctor/Doctor"));
+
+var _Officer = _interopRequireDefault(require("../views/Officer/Officer"));
+
+var _TAssistant = _interopRequireDefault(require("../views/TAssistant/TAssistant"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function getRoutes() {
@@ -67,6 +73,15 @@ var superadmin = [{
   path: "/courses/:id",
   component: _Course["default"]
 }, {
+  path: "/doctors/:id",
+  component: _Doctor["default"]
+}, {
+  path: "/officers/:id",
+  component: _Officer["default"]
+}, {
+  path: "/tassistants/:id",
+  component: _TAssistant["default"]
+}, {
   path: "*",
   component: _NotFound["default"]
 }];
@@ -85,6 +100,15 @@ var admin = [{
 }, {
   path: "/courses/:id",
   component: _Course["default"]
+}, {
+  path: "/doctors/:id",
+  component: _Doctor["default"]
+}, {
+  path: "/officers/:id",
+  component: _Officer["default"]
+}, {
+  path: "/tassistants/:id",
+  component: _TAssistant["default"]
 }, {
   path: "*",
   component: _NotFound["default"]

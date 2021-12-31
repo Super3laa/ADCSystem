@@ -4,6 +4,8 @@ var models=require('../models');
 let student = models.student
 var jwt = require('jsonwebtoken');
 let sequelize = models.sequelize
+const { Op } = require("sequelize");
+
 router.post('/',async function(req,res,next){
   try {
         let userdb = await student.create(req.body.data);
@@ -126,7 +128,15 @@ router.delete('/rating/:id',async function(req,res,next){
   }
 });
 
-
+router.get('/search/:search',async (req,res)=>{
+  try {
+    console.log(req.params.search)
+    let userdb = await student.findAll({where:{name:{[Op.like]:`%${req.params.search}%`}}});
+    res.send(userdb).status(200);
+  } catch (error) {
+    console.log(error);
+  }
+})
 
 router.post('/attendance',async function(req,res,next){
   try {

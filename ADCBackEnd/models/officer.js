@@ -13,6 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Officer.hasMany(models.labsBenefit,{foreignKey:"OfficerId"})
       Officer.hasMany(models.course,{foreignKey:"OfficerId"})
+      Officer.hasMany(models.officerAttendance,{foreignKey:"officerId"})
+
 
     }
   };

@@ -326,12 +326,12 @@ entities.set('courses', {
   }
 });
 entities.set('doctors', {
-  addText: "إضافة دكتور",
-  text: "دكتور",
+  addText: "إضافة استاذ",
+  text: "استاذ",
   api: "doctor/",
   settingsCol: false,
   tableHead: ["الاسم"],
-  clickableRow: false,
+  clickableRow: true,
   tableBody: ["name"],
   FormData: {
     rows: [[{
@@ -364,7 +364,7 @@ entities.set('officers', {
   text: "ضابط",
   api: "officer/",
   settingsCol: false,
-  clickableRow: false,
+  clickableRow: true,
   tableHead: ["الاسم"],
   tableBody: ["name"],
   FormData: {
@@ -400,7 +400,7 @@ entities.set('tassistants', {
   tableBody: ["name"],
   tableHead: ["الاسم"],
   settingsCol: false,
-  clickableRow: false,
+  clickableRow: true,
   FormData: {
     rows: [[{
       name: "name",

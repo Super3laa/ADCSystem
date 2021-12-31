@@ -17,7 +17,7 @@ const routes = {
         permissions:["admin","superadmin"]
     },
     "doctors": {
-        title: "الدكاتره",
+        title: "الأساتذه",
         path:"/doctors",
         icon:"FaUser",
         permissions:["admin","superadmin"]
