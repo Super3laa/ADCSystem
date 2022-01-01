@@ -16,6 +16,7 @@ import  formsData  from './DoctorFormData';
 
 
 export default function Doctor(props) {
+    let doctorSkeleton = entities.get("doctors");
     const [doctorData, setDoctorData] = useState({})
     const [coursesArray,setCoursesArray] = useState([]);
     const dispatch = useDispatch();
@@ -129,6 +130,24 @@ export default function Doctor(props) {
         }
         dispatch(updateForm({...formsDataEdit,state:true,submitHandler:(data)=>handleCreateAxios(data,type)}))
     }
+    async function handleEditDoctor(data){
+       let res = await  axios.put(API+`doctor/${doctorData.doctor.id}`,{data});
+       if (res.status ==200){
+        setDoctorData({...doctorData , doctor:res.data});
+        toast.success("تم التعديل بنجاح")
+        window.location.reload()
+
+       }
+    }
+    async function handleEditProfile(){
+        dispatch(updateForm(
+            {...doctorSkeleton.FormData,
+                state:true,
+                values:doctorData.doctor,
+                submitButtonText:"تعديل",
+                submitHandler:(data)=>handleEditDoctor(data)
+            }))
+    }
     return (
         <Layout>
             {
@@ -146,8 +165,12 @@ export default function Doctor(props) {
                         <br />
                         <Row>
                             <Col><Typography >الأسم : {`${doctorData.doctor.name}`}</Typography></Col>
-                            <Col><Typography >تقييم من المشرف الأكاديمي : {`${doctorData.doctor.code}`}</Typography></Col>
+                            <Col><Typography >تقييم من المشرف الأكاديمي : {`${doctorData.doctor.rate}`}</Typography></Col>
                         </Row>
+                        <br/>
+                {<Row className="ButtonRow">
+                    <Col xs={3}><Button variant="contained" color="primary" onClick={handleEditProfile} >تعديل بيانات</Button></Col>
+            </Row>}
                         <br />
                        
                         <Row>

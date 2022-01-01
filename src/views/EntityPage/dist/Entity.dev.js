@@ -345,6 +345,17 @@ entities.set('doctors', {
       variant: "outlined",
       xs: 12,
       md: 12
+    }, {
+      name: "rate",
+      label: "تقيم المشرف الاكاديمي",
+      type: "text",
+      value: "",
+      size: "small",
+      helperText: "لا يترك فارغا",
+      placeHolder: "",
+      variant: "outlined",
+      xs: 12,
+      md: 12
     }]],
     noSubmit: false,
     grid: {
@@ -379,6 +390,17 @@ entities.set('officers', {
       variant: "outlined",
       xs: 12,
       md: 12
+    }, {
+      name: "rate",
+      label: "تقيم المشرف الاكاديمي",
+      type: "text",
+      value: "",
+      size: "small",
+      helperText: "لا يترك فارغا",
+      placeHolder: "",
+      variant: "outlined",
+      xs: 12,
+      md: 12
     }]],
     noSubmit: false,
     grid: {
@@ -405,6 +427,17 @@ entities.set('tassistants', {
     rows: [[{
       name: "name",
       label: "الأسم",
+      type: "text",
+      value: "",
+      size: "small",
+      helperText: "لا يترك فارغا",
+      placeHolder: "",
+      variant: "outlined",
+      xs: 12,
+      md: 12
+    }, {
+      name: "rate",
+      label: "تقيم المشرف الاكاديمي",
       type: "text",
       value: "",
       size: "small",

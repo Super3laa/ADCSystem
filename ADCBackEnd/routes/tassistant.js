@@ -4,6 +4,18 @@ var models=require('../models');
 const { Op } = require("sequelize");
 
 const sequelize = models.sequelize
+router.put("/:id",async (req,res,next)=>{
+  try {
+     await models.TAssistant.update(req.body.data
+    ,{where:{id:req.params.id}})
+    let doctors = await models.TAssistant.findOne({
+      where:{id:req.params.id}
+    });
+    res.send(doctors).status(200);
+  } catch (error) {
+    console.log(error)
+  }
+})
 router.post('/', async function (req, res, next) {
     try {
         await models.TAssistant.create(req.body.data);

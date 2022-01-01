@@ -186,7 +186,9 @@ export default function EntityPage(props){
                                                         <TableRow  >
                                                             {
                                                                 entity.tableBody.map(Datatype=>{
-                                                                    return <TableCell  className={entity.clickableRow ?"EntityRow":""}  onClick={()=>{entity.clickableRow && history.push(`/${entityName}/${data.id}`)}} style={{textAlign:"right"}}>{data[Datatype]}</TableCell>
+                                                                    return <TableCell  className={entity.clickableRow ?"EntityRow":""}  onClick={()=>{entity.clickableRow && history.push(`/${entityName}/${data.id}`)}} style={{textAlign:"right"}}>
+                                                                        {data[Datatype]?data[Datatype]:"لايكن"}
+                                                                        </TableCell>
                                                                 })
                                                             }
                                                             {

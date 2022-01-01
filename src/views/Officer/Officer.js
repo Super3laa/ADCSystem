@@ -16,6 +16,8 @@ import  formsData  from './OfficerformsData';
 
 
 export default function Officer(props) {
+    let officerSkeleton = entities.get("officers");
+
     const [officerData, setOfficerData] = useState({})
     const [coursesArray,setCoursesArray] = useState([]);
     const dispatch = useDispatch();
@@ -45,6 +47,24 @@ export default function Officer(props) {
         window.print();
         window.location.reload()
     }
+    async function handleEditOfficer(data){
+        let res = await  axios.put(API+`officer/${officerData.officer.id}`,{data});
+        if (res.status ==200){
+         setOfficerData({...officerData , officer:res.data});
+         toast.success("تم التعديل بنجاح")
+         window.location.reload()
+
+        }
+     }
+     async function handleEditProfile(){
+         dispatch(updateForm(
+             {...officerSkeleton.FormData,
+                 state:true,
+                 values:officerData.officer,
+                 submitButtonText:"تعديل",
+                 submitHandler:(data)=>handleEditOfficer(data)
+             }))
+     }
     async function handleCreateAxios(data,type){
         data.officerId = officerData.officer.id;
         let res = await axios.post(API+`officer/${type}`,{data});
@@ -146,8 +166,12 @@ export default function Officer(props) {
                         <br />
                         <Row>
                             <Col><Typography >الأسم : {`${officerData.officer.name}`}</Typography></Col>
-                            <Col><Typography >تقييم من المشرف الأكاديمي : {`${officerData.officer.code}`}</Typography></Col>
+                            <Col><Typography >تقييم من المشرف الأكاديمي : {`${officerData.officer.rate}`}</Typography></Col>
                         </Row>
+                        <br />
+                        {<Row className="ButtonRow">
+                    <Col xs={3}><Button variant="contained" color="primary" onClick={handleEditProfile} >تعديل بيانات</Button></Col>
+            </Row>}
                         <br />
                        
                         <Row>

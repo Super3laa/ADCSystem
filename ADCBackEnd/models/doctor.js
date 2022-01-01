@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Doctor.init({
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    rate:DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Doctor',

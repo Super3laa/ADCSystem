@@ -19,7 +19,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Officer.init({
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    rate:DataTypes.INTEGER,
+
   }, {
     sequelize,
     modelName: 'Officer',

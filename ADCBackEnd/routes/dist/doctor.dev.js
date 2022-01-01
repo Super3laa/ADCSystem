@@ -377,4 +377,44 @@ router["delete"]('/attendance/:id', function _callee8(req, res, next) {
     }
   }, null, null, [[0, 6]]);
 });
+router.put("/:id", function _callee9(req, res, next) {
+  var doctors;
+  return regeneratorRuntime.async(function _callee9$(_context9) {
+    while (1) {
+      switch (_context9.prev = _context9.next) {
+        case 0:
+          _context9.prev = 0;
+          _context9.next = 3;
+          return regeneratorRuntime.awrap(models.Doctor.update(req.body.data, {
+            where: {
+              id: req.params.id
+            }
+          }));
+
+        case 3:
+          _context9.next = 5;
+          return regeneratorRuntime.awrap(models.Doctor.findOne({
+            where: {
+              id: req.params.id
+            }
+          }));
+
+        case 5:
+          doctors = _context9.sent;
+          res.send(doctors).status(200);
+          _context9.next = 12;
+          break;
+
+        case 9:
+          _context9.prev = 9;
+          _context9.t0 = _context9["catch"](0);
+          console.log(_context9.t0);
+
+        case 12:
+        case "end":
+          return _context9.stop();
+      }
+    }
+  }, null, null, [[0, 9]]);
+});
 module.exports = router;

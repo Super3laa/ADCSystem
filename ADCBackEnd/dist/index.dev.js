@@ -33,6 +33,7 @@ app.use('/officer', officer);
 app.use('/doctor', doctor);
 app.use('/tassistant', tassistant);
 app.use('/course', course);
+app.use(express["static"]('../ExcelData'));
 app.use(function (req, res, next) {
   var err = new Error('File Not Found');
   err.status = 404;

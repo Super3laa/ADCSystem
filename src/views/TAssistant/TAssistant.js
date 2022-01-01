@@ -16,6 +16,8 @@ import  formsData  from './TAssistantformsData';
 
 
 export default function TAssistant(props) {
+    let tassistantSkeleton = entities.get("tassistants");
+
     const [tassistantData, setTAssistantData] = useState({})
     const [coursesArray,setCoursesArray] = useState([]);
     const dispatch = useDispatch();
@@ -105,6 +107,24 @@ export default function TAssistant(props) {
             window.location.reload();
         }
     }
+    async function handleEditTAssistant(data){
+        let res = await  axios.put(API+`tassistant/${tassistantData.tassistant.id}`,{data});
+        if (res.status ==200){
+         setTAssistantData({...tassistantData , tassistant:res.data});
+         toast.success("تم التعديل بنجاح")
+         window.location.reload()
+
+        }
+     }
+     async function handleEditProfile(){
+         dispatch(updateForm(
+             {...tassistantSkeleton.FormData,
+                 state:true,
+                 values:tassistantData.tassistant,
+                 submitButtonText:"تعديل",
+                 submitHandler:(data)=>handleEditTAssistant(data)
+             }))
+     }
     async function handleCreate(type){
         let formsDataEdit = formsData.get(type)
         switch (type){
@@ -146,8 +166,12 @@ export default function TAssistant(props) {
                         <br />
                         <Row>
                             <Col><Typography >الأسم : {`${tassistantData.tassistant.name}`}</Typography></Col>
-                            <Col><Typography >تقييم من المشرف الأكاديمي : {`${tassistantData.tassistant.code}`}</Typography></Col>
+                            <Col><Typography >تقييم من المشرف الأكاديمي : {`${tassistantData.tassistant.rate}`}</Typography></Col>
                         </Row>
+                        <br />
+                        {<Row className="ButtonRow">
+                    <Col xs={3}><Button variant="contained" color="primary" onClick={handleEditProfile} >تعديل بيانات</Button></Col>
+            </Row>}
                         <br />
                        
                         <Row>

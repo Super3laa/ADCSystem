@@ -27,7 +27,6 @@ function App() {
      let user = await loadUser()
      if (user){
       dispatch(updateUser(user));
-
      }
    }
   // eslint-disable-next-line react-hooks/exhaustive-deps

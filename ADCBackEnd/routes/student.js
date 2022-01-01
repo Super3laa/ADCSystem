@@ -181,9 +181,14 @@ router.get('/', async (req,res,next)=>{
   try {
     let token = req.headers['x-auth-token'];
     var decoded = jwt.verify(token, 'WizzardOz');
-    let students = await student.findAll({where:{
-      type:decoded.user.type !== "عام" && decoded.user.type 
-    }});
+    let students;
+    if(decoded.user.type !== "عام"){
+       students = await student.findAll({where:{
+        type: decoded.user.type
+      }});
+    }else{
+       students = await student.findAll();
+    }
     res.send(students).status(200);
   } catch (error) {
     console.log(error)

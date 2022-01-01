@@ -27,7 +27,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import languageTable from './languageTable';
 import CounterPart from 'counterpart';
 import Translate from 'react-translate-component';
-
+import axios from "axios";
+import { toast } from "react-toastify";
+import { API } from "../../const";
 export default function AbstractHeader(props) {
     const history = useHistory();
     const [isOpen, setIsOpen] = useState(false);
@@ -57,7 +59,13 @@ export default function AbstractHeader(props) {
             console.log(error)
         }
     }
-
+    const handleSync = async(type)=>{
+       await axios.get(API+'user'+'/sync/'+`${type}`).then(()=>{
+           toast.success("Database Synced Successfully")
+       }).catch(()=>{
+           toast.error("Error try Again or contant admin")
+       })
+    }
     const handleProfileMenuClick = (event) => {
         setAnchorElProfile(event.currentTarget);
     };
@@ -213,6 +221,8 @@ export default function AbstractHeader(props) {
                                             <MenuItem onClick={handleLogout}>{<Translate content="Logout"/>} <IoMdLogOut
                                                 id="Logout"
                                             /></MenuItem>
+                                            <MenuItem onClick={(e)=>{e.preventDefault();handleSync("EDB")}}>{"Synch Excel to DataBase"} </MenuItem>
+                                               <MenuItem onClick={(e)=>{e.preventDefault();handleSync("DBE")}}>{"Synch DataBase to Excel"} </MenuItem>
                                         </Menu>
                                         </> : null
                             }

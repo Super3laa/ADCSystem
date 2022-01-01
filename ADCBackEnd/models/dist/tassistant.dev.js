@@ -60,7 +60,8 @@ module.exports = function (sequelize, DataTypes) {
 
   ;
   TAssistant.init({
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    rate: DataTypes.INTEGER
   }, {
     sequelize: sequelize,
     modelName: 'TAssistant'

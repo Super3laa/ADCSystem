@@ -3,6 +3,7 @@ import jwtDecode from "jwt-decode";
 import { API } from "../const";
 
 export async function loadUser() {
+    console.log("here")
     if (localStorage.getItem('token')) {
         let res = await axios.post(API + 'user/getUser', { data: jwtDecode(localStorage.getItem('token')).user });
         if (res.status == 200) {
@@ -10,4 +11,5 @@ export async function loadUser() {
         }
         return false
     }
+
 }

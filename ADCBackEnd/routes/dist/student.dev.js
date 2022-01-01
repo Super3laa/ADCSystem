@@ -605,30 +605,47 @@ router.get('/', function _callee20(req, res, next) {
           _context20.prev = 0;
           token = req.headers['x-auth-token'];
           decoded = jwt.verify(token, 'WizzardOz');
-          _context20.next = 5;
+
+          if (!(decoded.user.type !== "عام")) {
+            _context20.next = 9;
+            break;
+          }
+
+          _context20.next = 6;
           return regeneratorRuntime.awrap(student.findAll({
             where: {
-              type: decoded.user.type !== "عام" && decoded.user.type
+              type: decoded.user.type
             }
           }));
 
-        case 5:
+        case 6:
           students = _context20.sent;
-          res.send(students).status(200);
           _context20.next = 12;
           break;
 
         case 9:
-          _context20.prev = 9;
+          _context20.next = 11;
+          return regeneratorRuntime.awrap(student.findAll());
+
+        case 11:
+          students = _context20.sent;
+
+        case 12:
+          res.send(students).status(200);
+          _context20.next = 18;
+          break;
+
+        case 15:
+          _context20.prev = 15;
           _context20.t0 = _context20["catch"](0);
           console.log(_context20.t0);
 
-        case 12:
+        case 18:
         case "end":
           return _context20.stop();
       }
     }
-  }, null, null, [[0, 9]]);
+  }, null, null, [[0, 15]]);
 });
 router.get('/:id', function _callee21(req, res, next) {
   var id, students, courses, FailedCourses, Punishments, LabsBenefits, doctors, officers, tassistants, studentRating, attendance;

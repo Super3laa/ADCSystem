@@ -12,6 +12,8 @@ import axios from "axios";
 import { API } from "../../const";
 import { useDispatch } from "react-redux";
 import {addUser} from '../../redux/actions/user'
+            
+import { toast } from "react-toastify";
 export default function Login() {
     const theme = useTheme();
     const lang = useSelector(state=>state.language)
@@ -25,14 +27,13 @@ export default function Login() {
 
     }
     async function loginHandler(data){
-        const res = await axios.post(API+'user/login',{data})
-        console.log(res)
-        if(res.status == 200){
+        const res = await axios.post(API+'user/login',{data}).then(res=>{
             dispatch(addUser(res.data.token))
-             localStorage.setItem('token', res.data.token);
-             window.location.replace('/');
-        }
-        
+            localStorage.setItem('token', res.data.token);
+            window.location.replace('/');
+        }).catch(err=>{
+            toast.error("wrong username or password")
+        })      
     }
     return (
         <Layout>

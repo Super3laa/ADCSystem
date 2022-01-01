@@ -116,6 +116,17 @@ router.post('/attendance',async function(req,res,next){
     }
   });
   
-
+  router.put("/:id",async (req,res,next)=>{
+    try {
+       await models.Doctor.update(req.body.data
+      ,{where:{id:req.params.id}})
+      let doctors = await models.Doctor.findOne({
+        where:{id:req.params.id}
+      });
+      res.send(doctors).status(200);
+    } catch (error) {
+      console.log(error)
+    }
+  })
 
 module.exports = router;

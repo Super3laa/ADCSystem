@@ -11,6 +11,18 @@ router.get('/search/:search',async (req,res)=>{
       console.log(error);
     }
   })
+  router.put("/:id",async (req,res,next)=>{
+    try {
+       await models.Officer.update(req.body.data
+      ,{where:{id:req.params.id}})
+      let doctors = await models.Officer.findOne({
+        where:{id:req.params.id}
+      });
+      res.send(doctors).status(200);
+    } catch (error) {
+      console.log(error)
+    }
+  })
 router.post('/', async function (req, res, next) {
     try {
         await models.Officer.create(req.body.data);

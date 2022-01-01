@@ -13,6 +13,14 @@ var models = require('../models');
 var _require = require("sequelize"),
     Op = _require.Op;
 
+var fs = require('fs');
+
+var path = require('path');
+
+var readXlsxFile = require('read-excel-file/node');
+
+var writeXlsxFile = require('write-excel-file/node');
+
 router.get('/search/:search', function _callee(req, res) {
   var userdb;
   return regeneratorRuntime.async(function _callee$(_context) {
@@ -162,30 +170,161 @@ router.post('/', function _callee4(req, res, next) {
     }
   }, null, null, [[0, 6]]);
 });
-router.get('/', function _callee5(req, res, next) {
-  var Officers;
+router.get('/sync/:sync', function _callee5(req, res, next) {
+  var map, studentRows;
   return regeneratorRuntime.async(function _callee5$(_context5) {
     while (1) {
       switch (_context5.prev = _context5.next) {
         case 0:
           _context5.prev = 0;
-          _context5.next = 3;
+          console.log("Excel File path : ", path.join(__dirname, '../ExcelData/dummy.xlsx'));
+          _context5.t0 = req.params.sync;
+          _context5.next = _context5.t0 === "EDB" ? 5 : _context5.t0 === "DBE" ? 12 : 15;
+          break;
+
+        case 5:
+          map = {
+            'الاسم': 'name',
+            'رقم العسكري': 'militaryId'
+          };
+          _context5.next = 8;
+          return regeneratorRuntime.awrap(readXlsxFile(path.join(__dirname, '../ExcelData/dummy.xlsx'), {
+            map: map
+          }));
+
+        case 8:
+          studentRows = _context5.sent;
+          _context5.next = 11;
+          return regeneratorRuntime.awrap(studentFormatter(studentRows.rows));
+
+        case 11:
+          return _context5.abrupt("break", 15);
+
+        case 12:
+          _context5.next = 14;
+          return regeneratorRuntime.awrap(studentWriting());
+
+        case 14:
+          return _context5.abrupt("break", 15);
+
+        case 15:
+          res.sendStatus(200);
+          _context5.next = 21;
+          break;
+
+        case 18:
+          _context5.prev = 18;
+          _context5.t1 = _context5["catch"](0);
+          console.log(_context5.t1);
+
+        case 21:
+        case "end":
+          return _context5.stop();
+      }
+    }
+  }, null, null, [[0, 18]]);
+});
+
+function studentFormatter(rows) {
+  var i;
+  return regeneratorRuntime.async(function studentFormatter$(_context6) {
+    while (1) {
+      switch (_context6.prev = _context6.next) {
+        case 0:
+          _context6.next = 2;
+          return regeneratorRuntime.awrap(models.student.destroy({
+            where: {}
+          }));
+
+        case 2:
+          i = 0;
+
+        case 3:
+          if (!(i < rows.length)) {
+            _context6.next = 9;
+            break;
+          }
+
+          _context6.next = 6;
+          return regeneratorRuntime.awrap(models.student.create(rows[i]));
+
+        case 6:
+          i++;
+          _context6.next = 3;
+          break;
+
+        case 9:
+        case "end":
+          return _context6.stop();
+      }
+    }
+  });
+}
+
+function studentWriting() {
+  var students, schema;
+  return regeneratorRuntime.async(function studentWriting$(_context7) {
+    while (1) {
+      switch (_context7.prev = _context7.next) {
+        case 0:
+          _context7.next = 2;
+          return regeneratorRuntime.awrap(models.student.findAll({
+            raw: true
+          }));
+
+        case 2:
+          students = _context7.sent;
+          schema = [{
+            column: 'الاسم',
+            type: String,
+            value: function value(student) {
+              return student.name;
+            }
+          }, {
+            column: 'رقم العسكري',
+            type: String,
+            value: function value(student) {
+              return student.militaryId;
+            }
+          }];
+          _context7.next = 6;
+          return regeneratorRuntime.awrap(writeXlsxFile(students, {
+            schema: schema,
+            filePath: path.join(__dirname, '../ExcelData/dummy.xlsx')
+          }));
+
+        case 6:
+        case "end":
+          return _context7.stop();
+      }
+    }
+  });
+}
+
+router.get('/', function _callee6(req, res, next) {
+  var Officers;
+  return regeneratorRuntime.async(function _callee6$(_context8) {
+    while (1) {
+      switch (_context8.prev = _context8.next) {
+        case 0:
+          _context8.prev = 0;
+          _context8.next = 3;
           return regeneratorRuntime.awrap(models.user.findAll());
 
         case 3:
-          Officers = _context5.sent;
+          Officers = _context8.sent;
           res.send(Officers).status(200);
-          _context5.next = 10;
+          _context8.next = 10;
           break;
 
         case 7:
-          _context5.prev = 7;
-          _context5.t0 = _context5["catch"](0);
-          console.log(_context5.t0);
+          _context8.prev = 7;
+          _context8.t0 = _context8["catch"](0);
+          console.log(_context8.t0);
 
         case 10:
         case "end":
-          return _context5.stop();
+          return _context8.stop();
       }
     }
   }, null, null, [[0, 7]]);

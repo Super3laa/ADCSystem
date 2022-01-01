@@ -60,7 +60,8 @@ module.exports = function (sequelize, DataTypes) {
 
   ;
   Officer.init({
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    rate: DataTypes.INTEGER
   }, {
     sequelize: sequelize,
     modelName: 'Officer'

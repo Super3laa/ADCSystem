@@ -27,9 +27,9 @@ module.exports = (sequelize, DataTypes) => {
     type: DataTypes.STRING,
     email: DataTypes.STRING,
     year:DataTypes.STRING,
-    collegeDegree:DataTypes.FLOAT,
-    prevTermDegree:DataTypes.FLOAT,
-    prevTermweekestDegree: DataTypes.FLOAT,
+    collegeDegree:DataTypes.STRING,
+    prevTermDegree:DataTypes.STRING,
+    prevTermweekestDegree: DataTypes.STRING,
 
   }, {
     sequelize,

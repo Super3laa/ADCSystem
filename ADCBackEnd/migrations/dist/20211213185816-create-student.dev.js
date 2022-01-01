@@ -56,15 +56,15 @@ module.exports = {
               },
               collegeDegree: {
                 allowNull: true,
-                type: Sequelize.FLOAT
+                type: Sequelize.STRING
               },
               prevTermDegree: {
                 allowNull: true,
-                type: Sequelize.FLOAT
+                type: Sequelize.STRING
               },
               prevTermweekestDegree: {
                 allowNull: true,
-                type: Sequelize.FLOAT
+                type: Sequelize.STRING
               },
               createdAt: {
                 allowNull: false,
