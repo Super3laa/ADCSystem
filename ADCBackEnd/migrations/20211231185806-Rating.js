@@ -3,16 +3,16 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.addColumn("Officers", "rate", {
-      type: Sequelize.INTEGER,
+      type: Sequelize.STRING,
       allowNull: true,
     })
     await queryInterface.addColumn("Doctors", "rate", {
-      type: Sequelize.INTEGER,
+      type: Sequelize.STRING,
       allowNull: true,
     })
 
     await queryInterface.addColumn("TAssistants", "rate", {
-      type: Sequelize.INTEGER,
+      type: Sequelize.STRING,
       allowNull: true,
     })
     return Promise.resolve();

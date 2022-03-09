@@ -8,21 +8,21 @@ module.exports = {
           case 0:
             _context.next = 2;
             return regeneratorRuntime.awrap(queryInterface.addColumn("Officers", "rate", {
-              type: Sequelize.INTEGER,
+              type: Sequelize.STRING,
               allowNull: true
             }));
 
           case 2:
             _context.next = 4;
             return regeneratorRuntime.awrap(queryInterface.addColumn("Doctors", "rate", {
-              type: Sequelize.INTEGER,
+              type: Sequelize.STRING,
               allowNull: true
             }));
 
           case 4:
             _context.next = 6;
             return regeneratorRuntime.awrap(queryInterface.addColumn("TAssistants", "rate", {
-              type: Sequelize.INTEGER,
+              type: Sequelize.STRING,
               allowNull: true
             }));
 

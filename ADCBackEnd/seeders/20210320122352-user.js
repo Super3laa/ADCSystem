@@ -3,11 +3,10 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
       return await queryInterface.bulkInsert('users', [{
-         username: 'AlaaEssam',
+         username: 'alaa',
          password: '$2b$12$Gy8C8NoHEZNXbUBHvzKGWe0TsMdXe4IQBCXXb4tMkAx1Zz2V69mJi',
-         permissions:'admin',
-         active:1,
-         clientId:null,
+         permissions:'superadmin',
+         type:'عام',
       }], {});
   },
 

@@ -80,10 +80,10 @@ export default function Course (props){
                     </Row>
                     <br />
                     <Row>
-                        <ChartMe data={courseData.coursetotalStatus} title={"المادة"}/>
-                        <ChartMe data={courseData.LecStatus} title={"المحاضرة"}/>
-                        <ChartMe data={courseData.SecStatus} title={"التمارين"}/>
-                        <ChartMe data={courseData.LabStatus} title={"المعمل"}/>
+                        {courseData.coursetotalStatus.length>0 &&<ChartMe data={courseData.coursetotalStatus} title={"المادة"}/>}
+                        {courseData.LecStatus.length>0 &&<ChartMe data={courseData.LecStatus} title={"المحاضرة"}/>}
+                        {courseData.SecStatus.length>0 && <ChartMe data={courseData.SecStatus} title={"التمارين"}/>}
+                        {courseData.LabStatus.length>0 && <ChartMe data={courseData.LabStatus} title={"المعمل"}/>}
                     </Row>
                     <br />
                     <br />
@@ -125,6 +125,7 @@ function ChartMe ({title,data}){
             <Row>
                 <Col xs={12}><Typography>الحضور الكلي {title}</Typography></Col>
                 <Col xs={6}><PieChart
+                legendToggle
                         data={[
                             { title:  'حضر', value: AttendeNumber, color: '#3498db' },
                             { title:  'لم يحضر', value: didnotAttendNumber, color: '#e74c3c' },

@@ -15,6 +15,9 @@ var sequelize = models.sequelize;
 var _require = require("sequelize"),
     Op = _require.Op;
 
+var _require2 = require('../services/auth'),
+    checkTokenValidity = _require2.checkTokenValidity;
+
 router.get('/search/:search', function _callee(req, res) {
   var userdb;
   return regeneratorRuntime.async(function _callee$(_context) {
@@ -73,19 +76,20 @@ router.post('/', function _callee2(req, res, next) {
     }
   }, null, null, [[0, 6]]);
 });
-router.get('/', function _callee3(req, res, next) {
+router.get('/type/:type', checkTokenValidity, function _callee3(req, res, next) {
   var token, decoded, courses, doctors, officers, tassistants;
   return regeneratorRuntime.async(function _callee3$(_context3) {
     while (1) {
       switch (_context3.prev = _context3.next) {
         case 0:
-          _context3.prev = 0;
+          console.log(req.params.type);
+          _context3.prev = 1;
           token = req.headers['x-auth-token'];
           decoded = jwt.verify(token, 'WizzardOz');
-          _context3.next = 5;
+          _context3.next = 6;
           return regeneratorRuntime.awrap(models.course.findAll({
             where: {
-              type: decoded.user.type !== "عام" && decoded.user.type
+              type: req.params.type
             },
             include: [{
               model: models.Doctor,
@@ -106,28 +110,28 @@ router.get('/', function _callee3(req, res, next) {
             raw: true
           }));
 
-        case 5:
+        case 6:
           courses = _context3.sent;
-          _context3.next = 8;
+          _context3.next = 9;
           return regeneratorRuntime.awrap(models.Doctor.findAll({
             attributes: [['name', 'label'], ['id', 'value']]
           }));
 
-        case 8:
+        case 9:
           doctors = _context3.sent;
-          _context3.next = 11;
+          _context3.next = 12;
           return regeneratorRuntime.awrap(models.Officer.findAll({
             attributes: [['name', 'label'], ['id', 'value']]
           }));
 
-        case 11:
+        case 12:
           officers = _context3.sent;
-          _context3.next = 14;
+          _context3.next = 15;
           return regeneratorRuntime.awrap(models.TAssistant.findAll({
             attributes: [['name', 'label'], ['id', 'value']]
           }));
 
-        case 14:
+        case 15:
           tassistants = _context3.sent;
           res.send({
             courses: courses,
@@ -135,30 +139,31 @@ router.get('/', function _callee3(req, res, next) {
             officers: officers,
             tassistants: tassistants
           }).status(200);
-          _context3.next = 21;
+          _context3.next = 22;
           break;
 
-        case 18:
-          _context3.prev = 18;
-          _context3.t0 = _context3["catch"](0);
+        case 19:
+          _context3.prev = 19;
+          _context3.t0 = _context3["catch"](1);
           console.log(_context3.t0);
 
-        case 21:
+        case 22:
         case "end":
           return _context3.stop();
       }
     }
-  }, null, null, [[0, 18]]);
+  }, null, null, [[1, 19]]);
 });
-router.get('/:id', function _callee4(req, res, next) {
+router.get('/:id', checkTokenValidity, function _callee4(req, res, next) {
   var id, course, enrollmentNumber, coursetotalStatus, studentResponse, LecStatus, SecStatus, LabStatus;
   return regeneratorRuntime.async(function _callee4$(_context4) {
     while (1) {
       switch (_context4.prev = _context4.next) {
         case 0:
           id = req.params.id;
-          _context4.prev = 1;
-          _context4.next = 4;
+          console.log(id);
+          _context4.prev = 2;
+          _context4.next = 5;
           return regeneratorRuntime.awrap(models.course.findOne({
             where: {
               id: id
@@ -181,9 +186,9 @@ router.get('/:id', function _callee4(req, res, next) {
             }]
           }));
 
-        case 4:
+        case 5:
           course = _context4.sent;
-          _context4.next = 7;
+          _context4.next = 8;
           return regeneratorRuntime.awrap(models.student.count({
             where: {
               year: course.dataValues.year,
@@ -191,9 +196,9 @@ router.get('/:id', function _callee4(req, res, next) {
             }
           }));
 
-        case 7:
+        case 8:
           enrollmentNumber = _context4.sent;
-          _context4.next = 10;
+          _context4.next = 11;
           return regeneratorRuntime.awrap(models.studentAttendance.findAll({
             where: {
               courseId: course.dataValues.id
@@ -203,9 +208,9 @@ router.get('/:id', function _callee4(req, res, next) {
             order: [['status', 'ASC']]
           }));
 
-        case 10:
+        case 11:
           coursetotalStatus = _context4.sent;
-          _context4.next = 13;
+          _context4.next = 14;
           return regeneratorRuntime.awrap(models.studentRating.findAll({
             where: {
               courseId: course.dataValues.id
@@ -215,9 +220,9 @@ router.get('/:id', function _callee4(req, res, next) {
             order: [['rate', 'ASC']]
           }));
 
-        case 13:
+        case 14:
           studentResponse = _context4.sent;
-          _context4.next = 16;
+          _context4.next = 17;
           return regeneratorRuntime.awrap(models.studentAttendance.findAll({
             where: {
               courseId: course.dataValues.id,
@@ -228,9 +233,9 @@ router.get('/:id', function _callee4(req, res, next) {
             order: [['status', 'ASC']]
           }));
 
-        case 16:
+        case 17:
           LecStatus = _context4.sent;
-          _context4.next = 19;
+          _context4.next = 20;
           return regeneratorRuntime.awrap(models.studentAttendance.findAll({
             where: {
               courseId: course.dataValues.id,
@@ -241,9 +246,9 @@ router.get('/:id', function _callee4(req, res, next) {
             order: [['status', 'ASC']]
           }));
 
-        case 19:
+        case 20:
           SecStatus = _context4.sent;
-          _context4.next = 22;
+          _context4.next = 23;
           return regeneratorRuntime.awrap(models.studentAttendance.findAll({
             where: {
               courseId: course.dataValues.id,
@@ -254,7 +259,7 @@ router.get('/:id', function _callee4(req, res, next) {
             order: [['status', 'ASC']]
           }));
 
-        case 22:
+        case 23:
           LabStatus = _context4.sent;
           res.send({
             studentResponse: studentResponse,
@@ -265,20 +270,20 @@ router.get('/:id', function _callee4(req, res, next) {
             enrollmentNumber: enrollmentNumber,
             coursetotalStatus: coursetotalStatus
           }).status(200);
-          _context4.next = 29;
+          _context4.next = 30;
           break;
 
-        case 26:
-          _context4.prev = 26;
-          _context4.t0 = _context4["catch"](1);
+        case 27:
+          _context4.prev = 27;
+          _context4.t0 = _context4["catch"](2);
           console.log(_context4.t0);
 
-        case 29:
+        case 30:
         case "end":
           return _context4.stop();
       }
     }
-  }, null, null, [[1, 26]]);
+  }, null, null, [[2, 27]]);
 });
 router.put('/', function _callee5(req, res, next) {
   return regeneratorRuntime.async(function _callee5$(_context5) {

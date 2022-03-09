@@ -151,19 +151,19 @@ entities.set('students', {
       value: "",
       size: "small",
       rows: [{
-        value: "اولى",
+        value: "1",
         label: "اولى"
       }, {
-        value: "تانيه",
+        value: "2",
         label: "تانيه"
       }, {
-        value: "تالته",
+        value: "3",
         label: "تالته"
       }, {
-        value: "رابعه",
+        value: "4",
         label: "رابعه"
       }, {
-        value: "تكميلية",
+        value: "5",
         label: "تكميلية"
       }],
       helperText: "لا يترك فارغا",
@@ -278,6 +278,12 @@ entities.set('courses', {
       }, {
         value: "عام",
         label: "عام"
+      }, {
+        value: "علوم عسكرية",
+        label: "علوم عسكرية"
+      }, {
+        value: "دفاع جوي",
+        label: "دفاع جوي"
       }],
       helperText: "لا يترك فارغا",
       placeHolder: "",
@@ -291,19 +297,19 @@ entities.set('courses', {
       value: "",
       size: "small",
       rows: [{
-        value: "اولى",
+        value: "1",
         label: "اولى"
       }, {
-        value: "تانيه",
+        value: "2",
         label: "تانيه"
       }, {
-        value: "تالته",
+        value: "3",
         label: "تالته"
       }, {
-        value: "رابعه",
+        value: "4",
         label: "رابعه"
       }, {
-        value: "تكميلية",
+        value: "5",
         label: "تكميلية"
       }],
       helperText: "لا يترك فارغا",
@@ -466,7 +472,7 @@ entities.set('users', {
   api: "user/",
   tableBody: ["username", "type"],
   tableHead: ["الاسم", "القسم المتاح"],
-  settingsCol: false,
+  settingsCol: true,
   clickableRow: false,
   FormData: {
     rows: [[{

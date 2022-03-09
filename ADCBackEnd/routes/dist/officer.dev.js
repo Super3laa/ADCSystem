@@ -13,6 +13,9 @@ var sequelize = models.sequelize;
 var _require = require("sequelize"),
     Op = _require.Op;
 
+var _require2 = require('../services/auth'),
+    checkTokenValidity = _require2.checkTokenValidity;
+
 router.get('/search/:search', function _callee(req, res) {
   var userdb;
   return regeneratorRuntime.async(function _callee$(_context) {
@@ -111,7 +114,7 @@ router.post('/', function _callee3(req, res, next) {
     }
   }, null, null, [[0, 6]]);
 });
-router.get('/', function _callee4(req, res, next) {
+router.get('/', checkTokenValidity, function _callee4(req, res, next) {
   var Officers;
   return regeneratorRuntime.async(function _callee4$(_context4) {
     while (1) {

@@ -4,6 +4,7 @@ var models = require('../models');
 var jwt = require('jsonwebtoken');
 let sequelize= models.sequelize
 const { Op } = require("sequelize");
+const { checkTokenValidity } = require('../services/auth');
 router.get('/search/:search',async (req,res)=>{
     try {
       let userdb = await models.course.findAll({where:{title:{[Op.like]:`%${req.params.search}%`}}});
@@ -21,12 +22,13 @@ router.post('/', async function (req, res, next) {
     }
 });
 
-router.get('/', async (req, res, next) => {
+router.get('/type/:type',checkTokenValidity, async (req, res, next) => {
+    console.log(req.params.type)
     try {
         let token = req.headers['x-auth-token'];
         var decoded = jwt.verify(token, 'WizzardOz');
         let courses = await models.course.findAll({
-            where:{type:decoded.user.type !== "عام" && decoded.user.type 
+            where:{type:req.params.type 
         },
             include:[
             {model:models.Doctor,as:"Doctor",foreignKey:"doctorId",attributes:[['name','label'],['id','value']]},
@@ -42,11 +44,12 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-router.get('/:id',async(req,res,next)=>{
+router.get('/:id',checkTokenValidity,async(req,res,next)=>{
     const id = req.params.id;
+    console.log(id);
     try {
         let course = await models.course.findOne({
-          where:{id:id},
+          where:{id},
           include:[
             {model:models.Doctor,as:"Doctor",foreignKey:"doctorId",attributes:[['name','label'],['id','value']]},
             {model:models.Officer,as:"Officer",foreignKey:"OfficerId",attributes:[['name','label'],['id','value']]},

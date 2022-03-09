@@ -8,7 +8,9 @@ let student = require('./routes/student');
 let doctor = require('./routes/doctor');
 let officer = require('./routes/officer');
 let tassistant = require('./routes/tassistant');
-let course  = require('./routes/course')
+let course  = require('./routes/course');
+const auth = require('./services/auth');
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -18,8 +20,9 @@ app.use('/officer',officer)
 app.use('/doctor',doctor)
 app.use('/tassistant',tassistant)
 app.use('/course',course)
-app.use(express.static('../ExcelData')
-)
+app.use(express.static('../ExcelData'));
+
+
 app.use(function (req, res, next) {
     var err = new Error('File Not Found');
     err.status = 404;

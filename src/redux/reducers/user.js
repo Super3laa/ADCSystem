@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode';
 
-const user=(state={username:"",permissions:""},action)=>{
+const user=(state={},action)=>{
     switch (action.type){
         case 'addUser':
             const userState=jwtDecode(action.payload);

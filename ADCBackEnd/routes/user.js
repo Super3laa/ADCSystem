@@ -5,12 +5,12 @@ var models = require('../models');
 const { Op } = require("sequelize");
 var fs = require('fs');
 const path = require('path');
-
+const bcrypt = require('bcrypt')
 const readXlsxFile = require('read-excel-file/node')
-const writeXlsxFile = require('write-excel-file/node')
+const writeXlsxFile = require('write-excel-file/node');
+const { checkTokenValidity } = require('../services/auth.js');
 
-
-router.get('/search/:search', async (req, res) => {
+router.get('/search/:search',checkTokenValidity, async (req, res) => {
   try {
     let userdb = await models.user.findAll({ where: { username: { [Op.like]: `%${req.params.search}%` } } });
     res.send(userdb).status(200);
@@ -18,18 +18,22 @@ router.get('/search/:search', async (req, res) => {
     console.log(error);
   }
 })
-router.post('/getUser', async function (req, res, next) {
+router.post('/getUser',checkTokenValidity, async function (req, res, next) {
   try {
     console.log(req.body.data)
+
     let userdb = await models.user.findOne({
       attributes: ["id", "username", "permissions", "type"],
       where: { id: req.body.data.id }
     })
     if (userdb) {
-      return res.status(200).send(userdb);
+       res.status(200).send(userdb);
+    }else{
+      res.status(403).send("permission denied")
     }
   } catch (error) {
     console.log(error);
+    res.sendStatus(500);
   }
 });
 
@@ -45,11 +49,10 @@ router.post('/login', async function (req, res, next) {
     }
   } catch (error) {
     console.log(error);
-    res.send("Error").status(401);
   }
 });
 
-router.post('/', async function (req, res, next) {
+router.post('/', checkTokenValidity,async function (req, res, next) {
   try {
     await models.user.create(req.body.data);
     res.sendStatus(200);
@@ -57,7 +60,7 @@ router.post('/', async function (req, res, next) {
     console.log(error);
   }
 });
-router.get('/sync/:sync', async function (req, res, next) {
+router.get('/sync/:sync', checkTokenValidity,async function (req, res, next) {
   try {
     console.log("Excel File path : ", path.join(__dirname, '../ExcelData/dummy.xlsx'))
     switch (req.params.sync) {
@@ -115,18 +118,25 @@ router.get('/', async (req, res, next) => {
 })
 
 
-/*router.put('/',auth.auth,function(req,res,next){
+router.put('/',checkTokenValidity,async function(req,res,next){
   const salt=bcrypt.genSaltSync();
-  
-  req.body.userObj.password=bcrypt.hashSync(req.body.userObj.password,salt);
-   user.update(req.body.userObj,{where:{id:req.body.userObj.id}}).then((userDoc)=>{
-    res.status(200).send("User has been updated successfully!");
-  }).catch((err)=>{
-    var error=new Error(err);
-    error.status=500;
-    next(error);
-  });
+  try {
+    req.body.data.password = await bcrypt.hashSync(req.body.data.password,salt);
+    await models.user.update(req.body.data,{where:{id:req.body.data.id}});
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
 
-});*/
+});
+router.delete('/:id',checkTokenValidity,async function(req,res,next){
+  try {
+        await models.user.destroy({where:{id:req.params.id}});
+        res.sendStatus(200);
+  } catch (error) {
+      console.log(error);
+  }
+});
 
 module.exports = router;

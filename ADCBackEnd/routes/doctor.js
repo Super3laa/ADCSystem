@@ -3,6 +3,7 @@ var router = express.Router();
 var models = require('../models');
 const sequelize = models.sequelize
 const { Op } = require("sequelize");
+const { checkTokenValidity } = require('../services/auth');
 router.get('/search/:search',async (req,res)=>{
     try {
       let userdb = await models.Doctor.findAll({where:{name:{[Op.like]:`%${req.params.search}%`}}});
@@ -20,7 +21,7 @@ router.post('/', async function (req, res, next) {
     }
 });
 
-router.get('/', async (req, res, next) => {
+router.get('/', checkTokenValidity,async (req, res, next) => {
     try {
         let Doctors = await models.Doctor.findAll();
         res.send(Doctors).status(200);
@@ -43,6 +44,7 @@ router.get('/:id',async (req,res)=>{
         let LecStatus = await models.doctorAttendance.findAll({
             where:{
                 courseId:course.dataValues.id,
+                doctorId:id,
                 type:"محاضرة"
             },
             attributes: ['status', [sequelize.fn('count', sequelize.col('status')), 'count']],
@@ -55,6 +57,7 @@ router.get('/:id',async (req,res)=>{
         let SecStatus = await models.doctorAttendance.findAll({
             where:{
                 courseId:course.dataValues.id,
+                doctorId:id,
                 type:"تمرين"
             },
             attributes: ['status', [sequelize.fn('count', sequelize.col('status')), 'count']],
@@ -66,7 +69,9 @@ router.get('/:id',async (req,res)=>{
         let LabStatus = await models.doctorAttendance.findAll({
             where:{
                 courseId:course.dataValues.id,
-                type:"معمل"
+                type:"معمل",
+                doctorId:id,
+
             },
             attributes: ['status', [sequelize.fn('count', sequelize.col('status')), 'count']],
             group: ['status'],

@@ -3,6 +3,7 @@ var router = express.Router();
 var models=require('../models');
 const sequelize = models.sequelize;
 const { Op } = require("sequelize");
+const { checkTokenValidity } = require('../services/auth');
 router.get('/search/:search',async (req,res)=>{
     try {
       let userdb = await models.Officer.findAll({where:{name:{[Op.like]:`%${req.params.search}%`}}});
@@ -32,7 +33,7 @@ router.post('/', async function (req, res, next) {
     }
 });
 
-router.get('/', async (req, res, next) => {
+router.get('/',checkTokenValidity, async (req, res, next) => {
     try {
         let Officers = await models.Officer.findAll();
         res.send(Officers).status(200);

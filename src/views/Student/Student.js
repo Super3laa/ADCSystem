@@ -16,11 +16,12 @@ export default function Student (props){
     let studentSkeleton = entities.get("students");
     const [coursesArray,setCoursesArray] = useState([]);
     const dispatch = useDispatch();
+    
     useEffect(()=>{
         fetch();
         async function fetch (){
             let res = await axios.get(API+`student/${props.match.params.id}`)
-            console.log(res.data)
+            res.status !==200 && window.location.reload()     
             seStudentData(res.data);
             let dummyArray =[]
             res.data.courses.forEach(course=>{
@@ -59,6 +60,7 @@ export default function Student (props){
             window.location.reload();
         }
     }
+
     async function handleCreate(type){
         let formsDataEdit = formsData.get(type)
         switch (type){
@@ -310,7 +312,6 @@ export default function Student (props){
     }
     async function getweeklyAttendance(weekno){
         let res = await axios.get(API+`student/attendance/${studentData.student.id}/${weekno}`);
-        console.log(res.data);
         if(res.status == 200){
             seStudentData({...studentData,attendance:res.data});
         }
@@ -351,13 +352,22 @@ export default function Student (props){
                 <Col xs={"auto" }><Button variant="outlined" className="ButtonRow" color="primary" onClick={()=>handlePrint("general")} > <AiFillPrinter /> طباعة نموذج أكاديمي عن الطالب</Button></Col>                    </Row>
                 <br /><br />
                 <Row>
-                    <Col xs={12 }>
+                    <Col>
                         <Typography variant="h5"> بيانات الطالب</Typography></Col>
+                        {
+                            (studentData.student.year >= 3&&studentData.student.specialization == null) && <Col><Button variant="contained" onClick={()=>handleCreate("specialization")} color="primary">إضافة تخصص</Button></Col>
+                        }
+                        {
+                            (studentData.student.year >= 3&&studentData.student.specialization != null) && <Col><Button variant="contained" onClick={()=>handleEdit("specialization")} color="primary">تعديل تخصص</Button></Col>
+                        }
                 </Row>
                 <br />
                 <Row>
                     <Col><Typography >الرقم العسكري : {`${studentData.student.militaryId}`}</Typography></Col>
                     <Col><Typography >اسم الطالب : {`${studentData.student.name}`}</Typography></Col>
+                    {
+                        studentData.student.specialization &&                     <Col><Typography >تخصص : {`${studentData.student.specialization}`}</Typography></Col>
+                    }
                 </Row>
                 <Row>
                     <Col  xs={4} ><Typography >الفرقة : {`${studentData.student.group}`}</Typography></Col>
@@ -513,7 +523,7 @@ export default function Student (props){
                 <Divider />
                 <br />
                 <Row className="subjects">
-                    <Col xs={12 }><Typography variant="h5"> مواد الطالب</Typography></Col>
+                    <Col xs={12 }><Typography variant="h5"> مواد الطالب الهندسية و العسكرية</Typography></Col>
                 </Row>
                 <br />
                 <Row className="subjects">
@@ -577,60 +587,60 @@ export default function Student (props){
 
                 </Row>
                 <br />
-         
-                <Row>
-                    <Col xs={12}>
-                    <Table>
+                {
+                   studentData.punishment.length>0 ?<Row>
+                   <Col xs={12}>
+                   <Table>
 
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>
-                                   م 
-                                </TableCell>
-                                <TableCell>
-                                   العقوبة
-                                </TableCell>
-                                <TableCell>
-                                   السبب 
-                                </TableCell>
-                                <TableCell>
-                                   الأمر بالعقوبة 
-                                </TableCell>
-                                <TableCell className="ButtonRow">
-                                   اعدادات 
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {
-                                studentData.punishment.map((p,i)=>{
-                                    return(
-                            <TableRow>
-                                <TableCell>{i+1}</TableCell>
-                                <TableCell>
-                                    {p.title}
-                                </TableCell>
-                                <TableCell>
-                                    {p.reason}
-                                </TableCell>
-                                <TableCell>
-                                    {p.order}
-                                </TableCell>
-                                <TableCell className="ButtonRow">
-                                    <IconButton onClick={()=>handleDeleteAxios("punishment",p.id)}><MdDelete /></IconButton>
-                                    <IconButton onClick={()=>handleEdit("punishment",p.id,i)}><MdEdit/></IconButton>
-                                </TableCell>
-                            </TableRow>
-                                    )
-                                })
-                            }
-                        </TableBody>
-                        </Table>
+                       <TableHead>
+                           <TableRow>
+                               <TableCell>
+                                  م 
+                               </TableCell>
+                               <TableCell>
+                                  العقوبة
+                               </TableCell>
+                               <TableCell>
+                                  السبب 
+                               </TableCell>
+                               <TableCell>
+                                  الأمر بالعقوبة 
+                               </TableCell>
+                               <TableCell className="ButtonRow">
+                                  اعدادات 
+                               </TableCell>
+                           </TableRow>
+                       </TableHead>
+                       <TableBody>
+                           {
+                               studentData.punishment.map((p,i)=>{
+                                   return(
+                           <TableRow>
+                               <TableCell>{i+1}</TableCell>
+                               <TableCell>
+                                   {p.title}
+                               </TableCell>
+                               <TableCell>
+                                   {p.reason}
+                               </TableCell>
+                               <TableCell>
+                                   {p.order}
+                               </TableCell>
+                               <TableCell className="ButtonRow">
+                                   <IconButton onClick={()=>handleDeleteAxios("punishment",p.id)}><MdDelete /></IconButton>
+                                   <IconButton onClick={()=>handleEdit("punishment",p.id,i)}><MdEdit/></IconButton>
+                               </TableCell>
+                           </TableRow>
+                                   )
+                               })
+                           }
+                       </TableBody>
+                       </Table>
 
-                    </Col>
-                </Row>
-
-
+                   </Col>
+               </Row>:<Row><Col><Typography variant="h6">لا يكن</Typography></Col></Row>
+                }
+             
                 <br />
                 <Divider />
                 <br />
@@ -642,8 +652,8 @@ export default function Student (props){
 
                 </Row>
                 <br />
-              
-                <Row  className="subjects">
+              {
+                    studentData.failedCourses.length>0?       <Row  className="subjects">
                     <Col xs={ 12}>
                         <Table>
                         <TableHead>
@@ -680,8 +690,10 @@ export default function Student (props){
                         </TableBody>
                         </Table>
                     </Col>
-                </Row>
+                    </Row>:<Row><Col><Typography variant="h6">لا يكن</Typography></Col></Row>
 
+              }
+         
 
 
 
@@ -696,63 +708,66 @@ export default function Student (props){
 
                 </Row>
                 <br />
-               
-                <Row>
-                    <Col xs={12}>
-                    <Table>
+               {
+                   studentData.labsBenefits .length>0?
+                   <Row>
+                   <Col xs={12}>
+                   <Table>
 
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>
-                                   اسم المعمل
-                                </TableCell>
-                                <TableCell>
-                                   نسبة الحضور
-                                </TableCell>
-                                <TableCell>
-                                    عدد التجارب 
-                                </TableCell>
-                                <TableCell>
-                                استاذ المادة                                 
-                                </TableCell>
-                                <TableCell>
-                                   الضابط المدرس 
-                                </TableCell>
-                                <TableCell>
-                                   المعيد
-                                </TableCell>
-                                <TableCell className="ButtonRow">
-                                   اعدادات 
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {studentData.labsBenefits.map((l,i)=>{
-                                return(
-                                    <TableRow>
-                                <TableCell>{l.title}</TableCell>
-                                <TableCell>
-                                    {l.attendancePercentage}
-                                </TableCell>
-                                <TableCell>
-                                    {l.numberOfExperiment}
-                                </TableCell>
-                                <TableCell>{l.Doctor ? l.Doctor.label : "لا يكن"}</TableCell>
-                                <TableCell>{l.Officer ? l.Officer.label : "لا يكن"}</TableCell>
-                                <TableCell>{l.TAssistant ? l.TAssistant.label : "لا يكن"}</TableCell>
-                                <TableCell className="ButtonRow">
-                                    <IconButton onClick={()=>handleDeleteAxios("labsBenefits",l.id)}><MdDelete /></IconButton>
-                                    <IconButton onClick={()=>handleEdit("labsBenefits",l.id,i)}><MdEdit/></IconButton>
-                                </TableCell>
-                            </TableRow>
-                                )
-                            })}
-                        </TableBody>
-                        </Table>
+                       <TableHead>
+                           <TableRow>
+                               <TableCell>
+                                  اسم المعمل
+                               </TableCell>
+                               <TableCell>
+                                  نسبة الحضور
+                               </TableCell>
+                               <TableCell>
+                                   عدد التجارب 
+                               </TableCell>
+                               <TableCell>
+                               استاذ المادة                                 
+                               </TableCell>
+                               <TableCell>
+                                  الضابط المدرس 
+                               </TableCell>
+                               <TableCell>
+                                  المعيد
+                               </TableCell>
+                               <TableCell className="ButtonRow">
+                                  اعدادات 
+                               </TableCell>
+                           </TableRow>
+                       </TableHead>
+                       <TableBody>
+                           {studentData.labsBenefits.map((l,i)=>{
+                               return(
+                                   <TableRow>
+                               <TableCell>{l.title}</TableCell>
+                               <TableCell>
+                                   {l.attendancePercentage}
+                               </TableCell>
+                               <TableCell>
+                                   {l.numberOfExperiment}
+                               </TableCell>
+                               <TableCell>{l.Doctor ? l.Doctor.label : "لا يكن"}</TableCell>
+                               <TableCell>{l.Officer ? l.Officer.label : "لا يكن"}</TableCell>
+                               <TableCell>{l.TAssistant ? l.TAssistant.label : "لا يكن"}</TableCell>
+                               <TableCell className="ButtonRow">
+                                   <IconButton onClick={()=>handleDeleteAxios("labsBenefits",l.id)}><MdDelete /></IconButton>
+                                   <IconButton onClick={()=>handleEdit("labsBenefits",l.id,i)}><MdEdit/></IconButton>
+                               </TableCell>
+                           </TableRow>
+                               )
+                           })}
+                       </TableBody>
+                       </Table>
 
-                    </Col>
-                </Row>
-                </Container>:<Typography>Loading...</Typography>
+                   </Col>
+                   </Row>:<Row><Col><Typography variant="h6">لا يكن</Typography></Col></Row>
+
+                               }
+               </Container>:<Typography>Loading...</Typography>
             }
            
         </Layout>

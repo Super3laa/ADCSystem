@@ -17,11 +17,16 @@ var fs = require('fs');
 
 var path = require('path');
 
+var bcrypt = require('bcrypt');
+
 var readXlsxFile = require('read-excel-file/node');
 
 var writeXlsxFile = require('write-excel-file/node');
 
-router.get('/search/:search', function _callee(req, res) {
+var _require2 = require('../services/auth.js'),
+    checkTokenValidity = _require2.checkTokenValidity;
+
+router.get('/search/:search', checkTokenValidity, function _callee(req, res) {
   var userdb;
   return regeneratorRuntime.async(function _callee$(_context) {
     while (1) {
@@ -53,7 +58,7 @@ router.get('/search/:search', function _callee(req, res) {
     }
   }, null, null, [[0, 7]]);
 });
-router.post('/getUser', function _callee2(req, res, next) {
+router.post('/getUser', checkTokenValidity, function _callee2(req, res, next) {
   var userdb;
   return regeneratorRuntime.async(function _callee2$(_context2) {
     while (1) {
@@ -72,28 +77,27 @@ router.post('/getUser', function _callee2(req, res, next) {
         case 4:
           userdb = _context2.sent;
 
-          if (!userdb) {
-            _context2.next = 7;
-            break;
+          if (userdb) {
+            res.status(200).send(userdb);
+          } else {
+            res.status(403).send("permission denied");
           }
 
-          return _context2.abrupt("return", res.status(200).send(userdb));
-
-        case 7:
           _context2.next = 12;
           break;
 
-        case 9:
-          _context2.prev = 9;
+        case 8:
+          _context2.prev = 8;
           _context2.t0 = _context2["catch"](0);
           console.log(_context2.t0);
+          res.sendStatus(500);
 
         case 12:
         case "end":
           return _context2.stop();
       }
     }
-  }, null, null, [[0, 9]]);
+  }, null, null, [[0, 8]]);
 });
 router.post('/login', function _callee3(req, res, next) {
   var userDB, token;
@@ -128,23 +132,22 @@ router.post('/login', function _callee3(req, res, next) {
           res.status(301).send("Wrong Username or Passwrord");
 
         case 12:
-          _context3.next = 18;
+          _context3.next = 17;
           break;
 
         case 14:
           _context3.prev = 14;
           _context3.t0 = _context3["catch"](0);
           console.log(_context3.t0);
-          res.send("Error").status(401);
 
-        case 18:
+        case 17:
         case "end":
           return _context3.stop();
       }
     }
   }, null, null, [[0, 14]]);
 });
-router.post('/', function _callee4(req, res, next) {
+router.post('/', checkTokenValidity, function _callee4(req, res, next) {
   return regeneratorRuntime.async(function _callee4$(_context4) {
     while (1) {
       switch (_context4.prev = _context4.next) {
@@ -170,7 +173,7 @@ router.post('/', function _callee4(req, res, next) {
     }
   }, null, null, [[0, 6]]);
 });
-router.get('/sync/:sync', function _callee5(req, res, next) {
+router.get('/sync/:sync', checkTokenValidity, function _callee5(req, res, next) {
   var map, studentRows;
   return regeneratorRuntime.async(function _callee5$(_context5) {
     while (1) {
@@ -329,18 +332,72 @@ router.get('/', function _callee6(req, res, next) {
     }
   }, null, null, [[0, 7]]);
 });
-/*router.put('/',auth.auth,function(req,res,next){
-  const salt=bcrypt.genSaltSync();
-  
-  req.body.userObj.password=bcrypt.hashSync(req.body.userObj.password,salt);
-   user.update(req.body.userObj,{where:{id:req.body.userObj.id}}).then((userDoc)=>{
-    res.status(200).send("User has been updated successfully!");
-  }).catch((err)=>{
-    var error=new Error(err);
-    error.status=500;
-    next(error);
-  });
+router.put('/', checkTokenValidity, function _callee7(req, res, next) {
+  var salt;
+  return regeneratorRuntime.async(function _callee7$(_context9) {
+    while (1) {
+      switch (_context9.prev = _context9.next) {
+        case 0:
+          salt = bcrypt.genSaltSync();
+          _context9.prev = 1;
+          _context9.next = 4;
+          return regeneratorRuntime.awrap(bcrypt.hashSync(req.body.data.password, salt));
 
-});*/
+        case 4:
+          req.body.data.password = _context9.sent;
+          _context9.next = 7;
+          return regeneratorRuntime.awrap(models.user.update(req.body.data, {
+            where: {
+              id: req.body.data.id
+            }
+          }));
 
+        case 7:
+          res.sendStatus(200);
+          _context9.next = 14;
+          break;
+
+        case 10:
+          _context9.prev = 10;
+          _context9.t0 = _context9["catch"](1);
+          console.log(_context9.t0);
+          res.sendStatus(500);
+
+        case 14:
+        case "end":
+          return _context9.stop();
+      }
+    }
+  }, null, null, [[1, 10]]);
+});
+router["delete"]('/:id', checkTokenValidity, function _callee8(req, res, next) {
+  return regeneratorRuntime.async(function _callee8$(_context10) {
+    while (1) {
+      switch (_context10.prev = _context10.next) {
+        case 0:
+          _context10.prev = 0;
+          _context10.next = 3;
+          return regeneratorRuntime.awrap(models.user.destroy({
+            where: {
+              id: req.params.id
+            }
+          }));
+
+        case 3:
+          res.sendStatus(200);
+          _context10.next = 9;
+          break;
+
+        case 6:
+          _context10.prev = 6;
+          _context10.t0 = _context10["catch"](0);
+          console.log(_context10.t0);
+
+        case 9:
+        case "end":
+          return _context10.stop();
+      }
+    }
+  }, null, null, [[0, 6]]);
+});
 module.exports = router;

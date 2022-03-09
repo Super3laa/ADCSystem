@@ -14,8 +14,8 @@ import {MdDelete,MdEdit} from 'react-icons/md'
 import  {toast}  from 'react-toastify';
 
 export default function EntityPage(props){
-    const  entityName = props.match.params.entity;
-    let entity = entities.get(entityName)
+    const  entityName = props.match.path==="/courses/:type/"?"courses" : props.match.params.entity;
+    let entity = entities.get(props.match.path==="/courses/:type/"?"courses": entityName)
     let dispatch = useDispatch();
     const history = useHistory();
     const [entityList, setEntityList] = useState([]);
@@ -23,9 +23,10 @@ export default function EntityPage(props){
     useEffect(()=>{
         fetch();
         async function fetch(){
-            let res = await axios.get(API+entity.api);
-            console.log(res.data)
-            if(entityName==="courses"){
+            if(props.match.path ==="/courses/:type/"){
+                let res = await axios.get(API+`course/type/${props.match.params.type}`).catch((err)=>{
+                    window.location.reload();
+                });
                 setEntityList(res.data.courses)
                 res.data.doctors .push({label:"لايكن", value : null})
                 res.data.officers.push({label:"لايكن", value : null})
@@ -72,6 +73,9 @@ export default function EntityPage(props){
     
                 )
             }else{
+                let res = await axios.get(API+entity.api).catch((err)=>{
+                    window.location.reload();
+                });
                 setEntityList(res.data);
             }
         }
@@ -123,7 +127,7 @@ export default function EntityPage(props){
                                              rows={[
                                                 [{
                                                     name: "search",
-                                                    label: `بحث عن ${entity.text}`,
+                                                    label: `بحث عن ${entity.text && entity.text}`,
                                                     type: "text",
                                                     value: "",
                                                     size: "small",
@@ -186,7 +190,7 @@ export default function EntityPage(props){
                                                         <TableRow  >
                                                             {
                                                                 entity.tableBody.map(Datatype=>{
-                                                                    return <TableCell  className={entity.clickableRow ?"EntityRow":""}  onClick={()=>{entity.clickableRow && history.push(`/${entityName}/${data.id}`)}} style={{textAlign:"right"}}>
+                                                                    return <TableCell  className={entity.clickableRow ?"EntityRow":""}  onClick={()=>{entity.clickableRow && history.push(entityName !=="courses"?`/${entityName}/${data.id}`:`/${entityName}/detailed/${data.id}`)}} style={{textAlign:"right"}}>
                                                                         {data[Datatype]?data[Datatype]:"لايكن"}
                                                                         </TableCell>
                                                                 })

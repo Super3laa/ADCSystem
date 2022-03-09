@@ -22,6 +22,8 @@ var tassistant = require('./routes/tassistant');
 
 var course = require('./routes/course');
 
+var auth = require('./services/auth');
+
 app.use(bodyParser.urlencoded({
   extended: true
 }));

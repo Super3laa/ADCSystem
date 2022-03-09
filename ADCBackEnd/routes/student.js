@@ -5,6 +5,7 @@ let student = models.student
 var jwt = require('jsonwebtoken');
 let sequelize = models.sequelize
 const { Op } = require("sequelize");
+const { checkTokenValidity } = require('../services/auth');
 
 router.post('/',async function(req,res,next){
   try {
@@ -63,7 +64,25 @@ router.delete('/failedCourses/:id',async function(req,res,next){
       console.log(error);
   }
 });
+router.post('/specialization',async function(req,res,next){
+  try {
+    console.log(req.body.data)
+       await models.student.update({specialization:req.body.data.specialization},{where:{id:req.body.data.studentId}});
+        res.sendStatus(200);
+  } catch (error) {
+      console.log(error);
+  }
+});
 
+router.put('/specialization',async function(req,res,next){
+  try {
+    console.log(req.body.data)
+       let userdb = await models.student.update({specialization:req.body.data.specialization},{where:{id:req.body.data.studentId}});
+        res.sendStatus(200);
+  } catch (error) {
+      console.log(error);
+  }
+});
 router.post('/labsBenefits',async function(req,res,next){
   try {
         let userdb = await models.labsBenefit.create(req.body.data);
@@ -177,10 +196,9 @@ router.delete('/attendance/:id',async function(req,res,next){
 
 
 
-router.get('/', async (req,res,next)=>{
+router.get('/', checkTokenValidity,async (req,res,next)=>{
   try {
-    let token = req.headers['x-auth-token'];
-    var decoded = jwt.verify(token, 'WizzardOz');
+    var decoded = req.user
     let students;
     if(decoded.user.type !== "عام"){
        students = await student.findAll({where:{
@@ -201,12 +219,13 @@ router.get('/:id', async (req,res,next)=>{
     let students = await student.findOne({
       where:{id:id}
     });
-    let courses  = await models.course.findAll({where:{year:"تانيه"},include:[
+    console.log(students.dataValues.year)
+    let courses  = await models.course.findAll({where:{year:students.dataValues.year},include:[
       {model:models.Doctor,as:"Doctor",foreignKey:"doctorId",attributes:[['name','label'],['id','value']]},
          {model:models.Officer,as:"Officer",foreignKey:"OfficerId",attributes:[['name','label'],['id','value']]},
-         {model:models.TAssistant,as:"TAssistant",foreignKey:"TAssistantId",attributes:[['name','label'],['id','value']]},
-       
+         {model:models.TAssistant,as:"TAssistant",foreignKey:"TAssistantId",attributes:[['name','label'],['id','value']]},       
     ]})
+
     let FailedCourses = await models.failedCourse.findAll({where:{studentId:id}})
     let Punishments = await models.punishment.findAll({where:{studentId:id}})
     let LabsBenefits = await models.labsBenefit.findAll({where:{studentId:id}, include:[

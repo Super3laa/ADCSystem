@@ -24,6 +24,7 @@ function App() {
   useEffect(()=>{
     fetch();
    async function fetch(){
+     console.log("fetching user data")
      let user = await loadUser()
      if (user){
       dispatch(updateUser(user));

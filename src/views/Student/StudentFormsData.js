@@ -215,4 +215,37 @@ formsData.set('attendance',
 })
 
 
+
+formsData.set('specialization',
+{
+    rows:[
+        [ {
+            name: "specialization",
+            label: "تخصص",
+            type: "select",
+            value: "",
+            rows: [
+                { value: "افنجر", label: "افنجر" },
+                { value: "شيلكا", label: "شيلكا" },
+                { value: "ردار", label: "ردار" },
+                { value: "هوك", label: "هوك" },
+
+            ],
+            size: "small",
+            helperText: "لا يترك فارغا",
+            placeHolder:"",
+            variant: "outlined",
+            xs:12,
+            md:12,
+        }
+        ]
+    ],
+    noSubmit:false,
+    grid:{ xs: 12, md: 12 },
+    dir:"rtl",
+    submitButtonText:"إضافة",
+    submitButtonFullWidth:true,
+})
+
+
 export default formsData;

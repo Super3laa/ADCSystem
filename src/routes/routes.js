@@ -38,14 +38,15 @@ const passByRoutes = [
 ]
 const superadmin = [
     {path:"/Home",component:Home},
+    {path:"/coursesDetails",component:Home},
     {path:"/:entity",component:EntityPage},
     {path:"/Dashboard/Permissions",component:Permissions},
     {path:"/students/:id",component:Student},
-    {path:"/courses/:id",component:Course},
+    {path:"/courses/:type/",component:EntityPage},
+    {path:"/courses/detailed/:id",component:Course},
     {path:"/doctors/:id",component:Doctor},
     {path:"/officers/:id",component:Officer},
     {path:"/tassistants/:id",component:TAssistant},
-
     {path:"*",component:NotFound},
 ]
 const admin = [
