@@ -221,9 +221,14 @@ export default function AbstractHeader(props) {
                                             <MenuItem onClick={handleLogout}>{<Translate content="Logout"/>} <IoMdLogOut
                                                 id="Logout"
                                             /></MenuItem>
-                                            <MenuItem onClick={(e)=>{e.preventDefault();handleSync("EDB")}}>{"Synch Excel to DataBase"} </MenuItem>
+                                            {
+                                                user.permissions == 'superadmin' ? <>
+                                                   <MenuItem onClick={(e)=>{e.preventDefault();handleSync("EDB")}}>{"Synch Excel to DataBase"} </MenuItem>
                                                <MenuItem onClick={(e)=>{e.preventDefault();handleSync("DBE")}}>{"Synch DataBase to Excel"} </MenuItem>
-                                        </Menu>
+                                        
+                                                </>:null
+                                            }
+                                         </Menu>
                                         </> : null
                             }
                         </NavbarText>
