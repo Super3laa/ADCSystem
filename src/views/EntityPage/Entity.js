@@ -469,10 +469,10 @@ entities.set('users',{
                 value: "",
                 size: "small",
                 rows: [
-                    { value: "اتصالات", label: "اتصالات" },
-                    { value: "ميكاترونكس", label: "ميكاترونكس" },
-                    { value: "حواسب", label: "حواسب" },
                     { value: "عام", label: "عام" },
+                    { value: "علوم عسكرية", label: "علوم عسكرية" },
+                    { value: "دفاع جوي", label: "دفاع جوي" },
+                    { value: "تخصصات", label: "تخصصات" },
                 ],
                 helperText: "لا يترك فارغا",
                 placeHolder:"",

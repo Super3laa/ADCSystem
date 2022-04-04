@@ -110,7 +110,10 @@ async function studentWriting(){
 
 router.get('/', async (req, res, next) => {
   try {
-    let Officers = await models.user.findAll();
+    let Officers = await models.user.findAll({
+      attributes:['id','username','permissions','type']
+    }
+    );
     res.send(Officers).status(200);
   } catch (error) {
     console.log(error)

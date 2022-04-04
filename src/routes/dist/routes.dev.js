@@ -61,6 +61,9 @@ var superadmin = [{
   path: "/Home",
   component: _Home["default"]
 }, {
+  path: "/coursesDetails",
+  component: _Home["default"]
+}, {
   path: "/:entity",
   component: _EntityPage["default"]
 }, {
@@ -70,7 +73,10 @@ var superadmin = [{
   path: "/students/:id",
   component: _Student["default"]
 }, {
-  path: "/courses/:id",
+  path: "/courses/:type/",
+  component: _EntityPage["default"]
+}, {
+  path: "/courses/detailed/:id",
   component: _Course["default"]
 }, {
   path: "/doctors/:id",
@@ -89,6 +95,9 @@ var admin = [{
   path: "/Home",
   component: _Home["default"]
 }, {
+  path: "/coursesDetails",
+  component: _Home["default"]
+}, {
   path: "/:entity",
   component: _EntityPage["default"]
 }, {
@@ -98,7 +107,10 @@ var admin = [{
   path: "/students/:id",
   component: _Student["default"]
 }, {
-  path: "/courses/:id",
+  path: "/courses/:type/",
+  component: _EntityPage["default"]
+}, {
+  path: "/courses/detailed/:id",
   component: _Course["default"]
 }, {
   path: "/doctors/:id",

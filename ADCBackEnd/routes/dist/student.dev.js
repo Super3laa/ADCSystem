@@ -668,54 +668,32 @@ router["delete"]('/attendance/:id', function _callee21(req, res, next) {
   }, null, null, [[0, 6]]);
 });
 router.get('/', checkTokenValidity, function _callee22(req, res, next) {
-  var decoded, students;
+  var students;
   return regeneratorRuntime.async(function _callee22$(_context22) {
     while (1) {
       switch (_context22.prev = _context22.next) {
         case 0:
           _context22.prev = 0;
-          decoded = req.user;
-
-          if (!(decoded.user.type !== "عام")) {
-            _context22.next = 8;
-            break;
-          }
-
-          _context22.next = 5;
-          return regeneratorRuntime.awrap(student.findAll({
-            where: {
-              type: decoded.user.type
-            }
-          }));
-
-        case 5:
-          students = _context22.sent;
-          _context22.next = 11;
-          break;
-
-        case 8:
-          _context22.next = 10;
+          _context22.next = 3;
           return regeneratorRuntime.awrap(student.findAll());
 
-        case 10:
+        case 3:
           students = _context22.sent;
-
-        case 11:
           res.send(students).status(200);
-          _context22.next = 17;
+          _context22.next = 10;
           break;
 
-        case 14:
-          _context22.prev = 14;
+        case 7:
+          _context22.prev = 7;
           _context22.t0 = _context22["catch"](0);
           console.log(_context22.t0);
 
-        case 17:
+        case 10:
         case "end":
           return _context22.stop();
       }
     }
-  }, null, null, [[0, 14]]);
+  }, null, null, [[0, 7]]);
 });
 router.get('/:id', function _callee23(req, res, next) {
   var id, students, courses, FailedCourses, Punishments, LabsBenefits, doctors, officers, tassistants, studentRating, attendance;

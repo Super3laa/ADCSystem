@@ -8,11 +8,17 @@ import { useHistory } from "react-router-dom";
 export default function Home(props) {
   const history = useHistory();
   const [CardChildren, setCardChildren] = useState(false);
+  const lang = useSelector((state) => state.language);
+  const permissions = useSelector((state) => state.user.permissions);
+  const userType = useSelector((state)=> state.user.type);
   useEffect(() => {
     if (props.location.pathname == "/coursesDetails") {
-      let arr = [];
+      let arr = []; 
+      console.log(userType )
+
       Object.keys(routes["courses"].children).map((child, i) => {
-        arr.push(
+        console.log(userType )
+        routes["courses"].children[child].type == userType && arr.push(
           <Col xs={12} md={3}>
             <Card key={i} data={routes["courses"].children[child]} />
           </Col>
@@ -20,7 +26,7 @@ export default function Home(props) {
       });
       setCardChildren(arr);
     }
-  }, []);
+  }, [userType]);
   const handleNavigation = (path) => {
     history.push(path);
   };
@@ -29,6 +35,7 @@ export default function Home(props) {
       title: "الطلاب",
       icon: "FaUserAlt",
       permissions: ["admin", "superadmin"],
+      type:"all",
       onClick: (e) => {
         e.preventDefault();
         handleNavigation("/students");
@@ -37,6 +44,7 @@ export default function Home(props) {
     },
     courses: {
       title: "البرامج",
+      type:"all",
       onClick: (e) => {
         e.preventDefault();
         handleNavigation("/coursesDetails");
@@ -46,6 +54,7 @@ export default function Home(props) {
       children: {
         General: {
           title: "عام",
+          type:"عام",
           icon: "FaBook",
           onClick: (e) => {
             e.preventDefault();
@@ -54,6 +63,7 @@ export default function Home(props) {
         },
         Communications: {
           title: "اتصالات",
+          type:"عام",
           icon: "FaBook",
           onClick: (e) => {
             e.preventDefault();
@@ -63,6 +73,7 @@ export default function Home(props) {
         Mechatronics: {
           title: "ميكاترونكس",
           icon: "FaBook",
+          type:"عام",
           onClick: (e) => {
             e.preventDefault();
             handleNavigation("/courses/ميكاترونكس");
@@ -71,14 +82,16 @@ export default function Home(props) {
         Computer: {
           title: "حواسب",
           icon: "FaBook",
+          type:"عام",
           onClick: (e) => {
             e.preventDefault();
             handleNavigation("/courses/حواسب");
           },
         },
         MilitaryScience: {
-          title: "علوم عسكريه",
+          title: "علوم عسكرية",
           icon: "FaBook",
+          type:"علوم عسكرية",
           onClick: (e) => {
             e.preventDefault();
             handleNavigation("/courses/علوم عسكرية");
@@ -87,6 +100,7 @@ export default function Home(props) {
         AirDefense: {
           title: "دفاع جوي",
           icon: "FaBook",
+          type:"دفاع جوي",
           onClick: (e) => {
             e.preventDefault();
             handleNavigation("/courses/دفاع جوي");
@@ -95,6 +109,7 @@ export default function Home(props) {
         Specialization: {
           title: "تخصصات",
           icon: "FaBook",
+          type:"تخصصات",
           onClick: (e) => {
             e.preventDefault();
             handleNavigation("/courses/تخصصات");
@@ -106,6 +121,7 @@ export default function Home(props) {
       title: "الأساتذه",
       icon: "FaUser",
       permissions: ["admin", "superadmin"],
+      type:"all",
       children: false,
       onClick: (e) => {
         e.preventDefault();
@@ -115,8 +131,8 @@ export default function Home(props) {
     officers: {
       title: "الضباط",
       icon: "FaUser",
+      type:"all",
       permissions: ["admin", "superadmin"],
-
       children: false,
       onClick: (e) => {
         e.preventDefault();
@@ -127,6 +143,7 @@ export default function Home(props) {
       title: "المعيدين",
       icon: "FaUser",
       permissions: ["admin", "superadmin"],
+      type:"all",
 
       children: false,
       onClick: (e) => {
@@ -138,8 +155,8 @@ export default function Home(props) {
       title: "المستخدمين",
       icon: "FaUser",
       permissions: ["superadmin"],
-
       children: false,
+      type:"all",
       onClick: (e) => {
         e.preventDefault();
         handleNavigation("/users");
@@ -149,8 +166,6 @@ export default function Home(props) {
   let currentRoutes = props.match.params.hasOwnProperty("section")
     ? routes[props.match.params.section].children
     : routes;
-  const lang = useSelector((state) => state.language);
-  const permissions = useSelector((state) => state.user.permissions);
 
   return (
     <Layout>
@@ -159,14 +174,14 @@ export default function Home(props) {
           {CardChildren
             ? CardChildren
             : Object.keys(currentRoutes).map((data, i) => {
-                return (
-                  currentRoutes[data].permissions.includes(permissions) && (
-                    <Col xs={12} md={3}>
-                      <Card key={i} data={currentRoutes[data]} />
-                    </Col>
-                  )
-                );
-              })}
+              return (
+                (currentRoutes[data].permissions.includes(permissions)) && (
+                  <Col xs={12} md={3}>
+                    <Card key={i} data={currentRoutes[data]} />
+                  </Col>
+                )
+              );
+            })}
         </Row>
       </Container>
     </Layout>

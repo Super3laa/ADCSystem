@@ -312,7 +312,9 @@ router.get('/', function _callee6(req, res, next) {
         case 0:
           _context8.prev = 0;
           _context8.next = 3;
-          return regeneratorRuntime.awrap(models.user.findAll());
+          return regeneratorRuntime.awrap(models.user.findAll({
+            attributes: ['id', 'username', 'permissions', 'type']
+          }));
 
         case 3:
           Officers = _context8.sent;

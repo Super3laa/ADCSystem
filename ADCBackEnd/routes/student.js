@@ -198,15 +198,8 @@ router.delete('/attendance/:id',async function(req,res,next){
 
 router.get('/', checkTokenValidity,async (req,res,next)=>{
   try {
-    var decoded = req.user
-    let students;
-    if(decoded.user.type !== "عام"){
-       students = await student.findAll({where:{
-        type: decoded.user.type
-      }});
-    }else{
-       students = await student.findAll();
-    }
+    
+  let   students = await student.findAll();
     res.send(students).status(200);
   } catch (error) {
     console.log(error)
