@@ -9,6 +9,7 @@ const bcrypt = require('bcrypt')
 const readXlsxFile = require('read-excel-file/node')
 const writeXlsxFile = require('write-excel-file/node');
 const { checkTokenValidity } = require('../services/auth.js');
+const { seedDataBase ,seedExcelSheets} = require('../services/ExcelSync.js');
 
 router.get('/search/:search',checkTokenValidity, async (req, res) => {
   try {
@@ -62,51 +63,22 @@ router.post('/', checkTokenValidity,async function (req, res, next) {
 });
 router.get('/sync/:sync', checkTokenValidity,async function (req, res, next) {
   try {
-    console.log("Excel File path : ", path.join(__dirname, '../ExcelData/dummy.xlsx'))
     switch (req.params.sync) {
       case "EDB":
-        const map = {
-          'الاسم': 'name',
-          'رقم العسكري': 'militaryId',
-        }        
-        let studentRows = await readXlsxFile(path.join(__dirname, '../ExcelData/dummy.xlsx'),{map});
-        await studentFormatter(studentRows.rows);
+        await seedDataBase();
         break;
       case"DBE":
-        await studentWriting();
+        await seedExcelSheets();
         break;
     }
     res.sendStatus(200);
   } catch (error) {
     console.log(error);
+    res.sendStatus(500);
   }
 });
 
-async function studentFormatter(rows){
-  await models.student.destroy({ where:{}})
-  for( let i = 0 ; i < rows.length ;i++ ){
-    await models.student.create(rows[i])
-  }
-}
-async function studentWriting(){
-  let students = await models.student.findAll({raw:true});
-  const schema = [
-    {
-      column: 'الاسم',
-      type: String,
-      value: student => student.name,
-    },
-    {
-      column: 'رقم العسكري',
-      type: String,
-      value: student => student.militaryId,
-    }
-  ]
-  await writeXlsxFile(students, {
-    schema,
-    filePath: path.join(__dirname, '../ExcelData/dummy.xlsx')
-  })  
-}
+
 
 router.get('/', async (req, res, next) => {
   try {

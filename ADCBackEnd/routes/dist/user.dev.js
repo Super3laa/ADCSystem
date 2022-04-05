@@ -26,6 +26,10 @@ var writeXlsxFile = require('write-excel-file/node');
 var _require2 = require('../services/auth.js'),
     checkTokenValidity = _require2.checkTokenValidity;
 
+var _require3 = require('../services/ExcelSync.js'),
+    seedDataBase = _require3.seedDataBase,
+    seedExcelSheets = _require3.seedExcelSheets;
+
 router.get('/search/:search', checkTokenValidity, function _callee(req, res) {
   var userdb;
   return regeneratorRuntime.async(function _callee$(_context) {
@@ -174,180 +178,91 @@ router.post('/', checkTokenValidity, function _callee4(req, res, next) {
   }, null, null, [[0, 6]]);
 });
 router.get('/sync/:sync', checkTokenValidity, function _callee5(req, res, next) {
-  var map, studentRows;
   return regeneratorRuntime.async(function _callee5$(_context5) {
     while (1) {
       switch (_context5.prev = _context5.next) {
         case 0:
           _context5.prev = 0;
-          console.log("Excel File path : ", path.join(__dirname, '../ExcelData/dummy.xlsx'));
           _context5.t0 = req.params.sync;
-          _context5.next = _context5.t0 === "EDB" ? 5 : _context5.t0 === "DBE" ? 12 : 15;
+          _context5.next = _context5.t0 === "EDB" ? 4 : _context5.t0 === "DBE" ? 7 : 10;
           break;
 
-        case 5:
-          map = {
-            'الاسم': 'name',
-            'رقم العسكري': 'militaryId'
-          };
-          _context5.next = 8;
-          return regeneratorRuntime.awrap(readXlsxFile(path.join(__dirname, '../ExcelData/dummy.xlsx'), {
-            map: map
-          }));
+        case 4:
+          _context5.next = 6;
+          return regeneratorRuntime.awrap(seedDataBase());
 
-        case 8:
-          studentRows = _context5.sent;
-          _context5.next = 11;
-          return regeneratorRuntime.awrap(studentFormatter(studentRows.rows));
+        case 6:
+          return _context5.abrupt("break", 10);
 
-        case 11:
-          return _context5.abrupt("break", 15);
+        case 7:
+          _context5.next = 9;
+          return regeneratorRuntime.awrap(seedExcelSheets());
 
-        case 12:
-          _context5.next = 14;
-          return regeneratorRuntime.awrap(studentWriting());
+        case 9:
+          return _context5.abrupt("break", 10);
 
-        case 14:
-          return _context5.abrupt("break", 15);
-
-        case 15:
+        case 10:
           res.sendStatus(200);
-          _context5.next = 21;
+          _context5.next = 17;
           break;
 
-        case 18:
-          _context5.prev = 18;
+        case 13:
+          _context5.prev = 13;
           _context5.t1 = _context5["catch"](0);
           console.log(_context5.t1);
+          res.sendStatus(500);
 
-        case 21:
+        case 17:
         case "end":
           return _context5.stop();
       }
     }
-  }, null, null, [[0, 18]]);
+  }, null, null, [[0, 13]]);
 });
-
-function studentFormatter(rows) {
-  var i;
-  return regeneratorRuntime.async(function studentFormatter$(_context6) {
+router.get('/', function _callee6(req, res, next) {
+  var Officers;
+  return regeneratorRuntime.async(function _callee6$(_context6) {
     while (1) {
       switch (_context6.prev = _context6.next) {
         case 0:
-          _context6.next = 2;
-          return regeneratorRuntime.awrap(models.student.destroy({
-            where: {}
-          }));
-
-        case 2:
-          i = 0;
-
-        case 3:
-          if (!(i < rows.length)) {
-            _context6.next = 9;
-            break;
-          }
-
-          _context6.next = 6;
-          return regeneratorRuntime.awrap(models.student.create(rows[i]));
-
-        case 6:
-          i++;
+          _context6.prev = 0;
           _context6.next = 3;
-          break;
-
-        case 9:
-        case "end":
-          return _context6.stop();
-      }
-    }
-  });
-}
-
-function studentWriting() {
-  var students, schema;
-  return regeneratorRuntime.async(function studentWriting$(_context7) {
-    while (1) {
-      switch (_context7.prev = _context7.next) {
-        case 0:
-          _context7.next = 2;
-          return regeneratorRuntime.awrap(models.student.findAll({
-            raw: true
-          }));
-
-        case 2:
-          students = _context7.sent;
-          schema = [{
-            column: 'الاسم',
-            type: String,
-            value: function value(student) {
-              return student.name;
-            }
-          }, {
-            column: 'رقم العسكري',
-            type: String,
-            value: function value(student) {
-              return student.militaryId;
-            }
-          }];
-          _context7.next = 6;
-          return regeneratorRuntime.awrap(writeXlsxFile(students, {
-            schema: schema,
-            filePath: path.join(__dirname, '../ExcelData/dummy.xlsx')
-          }));
-
-        case 6:
-        case "end":
-          return _context7.stop();
-      }
-    }
-  });
-}
-
-router.get('/', function _callee6(req, res, next) {
-  var Officers;
-  return regeneratorRuntime.async(function _callee6$(_context8) {
-    while (1) {
-      switch (_context8.prev = _context8.next) {
-        case 0:
-          _context8.prev = 0;
-          _context8.next = 3;
           return regeneratorRuntime.awrap(models.user.findAll({
             attributes: ['id', 'username', 'permissions', 'type']
           }));
 
         case 3:
-          Officers = _context8.sent;
+          Officers = _context6.sent;
           res.send(Officers).status(200);
-          _context8.next = 10;
+          _context6.next = 10;
           break;
 
         case 7:
-          _context8.prev = 7;
-          _context8.t0 = _context8["catch"](0);
-          console.log(_context8.t0);
+          _context6.prev = 7;
+          _context6.t0 = _context6["catch"](0);
+          console.log(_context6.t0);
 
         case 10:
         case "end":
-          return _context8.stop();
+          return _context6.stop();
       }
     }
   }, null, null, [[0, 7]]);
 });
 router.put('/', checkTokenValidity, function _callee7(req, res, next) {
   var salt;
-  return regeneratorRuntime.async(function _callee7$(_context9) {
+  return regeneratorRuntime.async(function _callee7$(_context7) {
     while (1) {
-      switch (_context9.prev = _context9.next) {
+      switch (_context7.prev = _context7.next) {
         case 0:
           salt = bcrypt.genSaltSync();
-          _context9.prev = 1;
-          _context9.next = 4;
+          _context7.prev = 1;
+          _context7.next = 4;
           return regeneratorRuntime.awrap(bcrypt.hashSync(req.body.data.password, salt));
 
         case 4:
-          req.body.data.password = _context9.sent;
-          _context9.next = 7;
+          req.body.data.password = _context7.sent;
+          _context7.next = 7;
           return regeneratorRuntime.awrap(models.user.update(req.body.data, {
             where: {
               id: req.body.data.id
@@ -356,29 +271,29 @@ router.put('/', checkTokenValidity, function _callee7(req, res, next) {
 
         case 7:
           res.sendStatus(200);
-          _context9.next = 14;
+          _context7.next = 14;
           break;
 
         case 10:
-          _context9.prev = 10;
-          _context9.t0 = _context9["catch"](1);
-          console.log(_context9.t0);
+          _context7.prev = 10;
+          _context7.t0 = _context7["catch"](1);
+          console.log(_context7.t0);
           res.sendStatus(500);
 
         case 14:
         case "end":
-          return _context9.stop();
+          return _context7.stop();
       }
     }
   }, null, null, [[1, 10]]);
 });
 router["delete"]('/:id', checkTokenValidity, function _callee8(req, res, next) {
-  return regeneratorRuntime.async(function _callee8$(_context10) {
+  return regeneratorRuntime.async(function _callee8$(_context8) {
     while (1) {
-      switch (_context10.prev = _context10.next) {
+      switch (_context8.prev = _context8.next) {
         case 0:
-          _context10.prev = 0;
-          _context10.next = 3;
+          _context8.prev = 0;
+          _context8.next = 3;
           return regeneratorRuntime.awrap(models.user.destroy({
             where: {
               id: req.params.id
@@ -387,17 +302,17 @@ router["delete"]('/:id', checkTokenValidity, function _callee8(req, res, next) {
 
         case 3:
           res.sendStatus(200);
-          _context10.next = 9;
+          _context8.next = 9;
           break;
 
         case 6:
-          _context10.prev = 6;
-          _context10.t0 = _context10["catch"](0);
-          console.log(_context10.t0);
+          _context8.prev = 6;
+          _context8.t0 = _context8["catch"](0);
+          console.log(_context8.t0);
 
         case 9:
         case "end":
-          return _context10.stop();
+          return _context8.stop();
       }
     }
   }, null, null, [[0, 6]]);
