@@ -53,7 +53,6 @@ const XlsxFollower = [
             'كود المادة':'code',
             'القسم':'type',
             'سنة دراسية':'year',
-
         }
     }
 ]
