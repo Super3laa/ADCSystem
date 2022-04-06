@@ -4,21 +4,53 @@ var readXlsxFile = require('read-excel-file/node');
 
 var writeXlsxFile = require('write-excel-file/node');
 
+var path = require('path');
+
 var models = require('../models');
 
 var student = models.student;
 var officer = models.Officer;
 var doctor = models.Doctor;
-var TAssistants = models.TAssistants;
+var TAssistants = models.TAssistant;
 var course = models.course;
-
-var path = require('path');
-
 var XlsxFollower = [{
+  modelType: course,
+  fileName: "courses",
+  map: {
+    'اسم المادة': 'title',
+    'كود المادة': 'code',
+    'القسم': 'type',
+    'سنة دراسية': 'year'
+  },
+  schema: [{
+    column: 'اسم المادة',
+    type: String,
+    value: function value(student) {
+      return student.title;
+    }
+  }, {
+    column: 'كود المادة',
+    type: String,
+    value: function value(student) {
+      return student.code;
+    }
+  }, {
+    column: 'القسم',
+    type: String,
+    value: function value(student) {
+      return student.type;
+    }
+  }, {
+    column: 'سنة دراسية',
+    type: String,
+    value: function value(student) {
+      return student.year;
+    }
+  }]
+}, {
   modelType: student,
   fileName: "students",
   map: {
-    'مسلسل': 'id',
     'الاسم': 'name',
     'رقم العسكري': 'militaryId',
     'الفرقة': 'group',
@@ -31,41 +63,140 @@ var XlsxFollower = [{
     'مجموع الثانوية العامة': 'collegeDegree',
     'تقدير الترم /العام السابق': 'prevTermDegree',
     'اضعف تقدير الترم /العام السابق': 'prevTermweekestDegree'
-  }
+  },
+  schema: [{
+    column: 'الاسم',
+    type: String,
+    value: function value(student) {
+      return student.name;
+    }
+  }, {
+    column: 'رقم العسكري',
+    type: String,
+    value: function value(student) {
+      return student.militaryId;
+    }
+  }, {
+    column: 'البريدالإلكتروني',
+    type: String,
+    value: function value(student) {
+      return student.email;
+    }
+  }, {
+    column: 'الفرقة',
+    type: String,
+    value: function value(student) {
+      return student.group;
+    }
+  }, {
+    column: 'السرية',
+    type: String,
+    value: function value(student) {
+      return student.unit;
+    }
+  }, {
+    column: 'الفصيلة',
+    type: String,
+    value: function value(student) {
+      return student.section;
+    }
+  }, {
+    column: 'القسم',
+    type: String,
+    value: function value(student) {
+      return student.type;
+    }
+  }, {
+    column: 'المحافظه',
+    type: String,
+    value: function value(student) {
+      return student.town;
+    }
+  }, {
+    column: 'الدولة',
+    type: String,
+    value: function value(student) {
+      return student.country;
+    }
+  }, {
+    column: 'اضعف تقدير الترم /العام السابق',
+    type: String,
+    value: function value(student) {
+      return student.prevTermweekestDegree;
+    }
+  }, {
+    column: 'تقدير الترم /العام السابق',
+    type: String,
+    value: function value(student) {
+      return student.prevTermDegree;
+    }
+  }, {
+    column: 'مجموع الثانوية العامة',
+    type: String,
+    value: function value(student) {
+      return student.collegeDegree;
+    }
+  }]
 }, {
   modelType: officer,
   fileName: "officers",
   map: {
-    'مسلسل': 'id',
     'الاسم': 'name',
     'التقييم': 'rate'
-  }
+  },
+  schema: [{
+    column: 'الاسم',
+    type: String,
+    value: function value(student) {
+      return student.name;
+    }
+  }, {
+    column: 'التقييم',
+    type: String,
+    value: function value(student) {
+      return student.rate;
+    }
+  }]
 }, {
   modelType: doctor,
   fileName: "doctors",
   map: {
-    'مسلسل': 'id',
     'الاسم': 'name',
     'التقييم': 'rate'
-  }
+  },
+  schema: [{
+    column: 'الاسم',
+    type: String,
+    value: function value(student) {
+      return student.name;
+    }
+  }, {
+    column: 'التقييم',
+    type: String,
+    value: function value(student) {
+      return student.rate;
+    }
+  }]
 }, {
   modelType: TAssistants,
   fileName: "TAssistants",
   map: {
-    'مسلسل': 'id',
     'الاسم': 'name',
     'التقييم': 'rate'
-  }
-}, {
-  modelType: course,
-  fileName: "courses",
-  map: {
-    'مسلسل': 'id',
-    'اسم المادة': 'title',
-    'كود المادة': 'code',
-    'القسم': 'type',
-    'سنة دراسية': 'year'
-  }
+  },
+  schema: [{
+    column: 'الاسم',
+    type: String,
+    value: function value(student) {
+      return student.name;
+    }
+  }, {
+    column: 'التقييم',
+    type: String,
+    value: function value(student) {
+      return student.rate;
+    }
+  }]
 }];
 
 function seedDataBase() {
@@ -142,40 +273,51 @@ function entityFormatter(rows, modelType) {
 }
 
 function seedExcelSheets() {
-  var students, schema;
-  return regeneratorRuntime.async(function seedExcelSheets$(_context4) {
+  return regeneratorRuntime.async(function seedExcelSheets$(_context5) {
     while (1) {
-      switch (_context4.prev = _context4.next) {
+      switch (_context5.prev = _context5.next) {
         case 0:
-          _context4.next = 2;
-          return regeneratorRuntime.awrap(models.student.findAll({
-            raw: true
-          }));
+          XlsxFollower.forEach(function _callee2(table) {
+            var tableData;
+            return regeneratorRuntime.async(function _callee2$(_context4) {
+              while (1) {
+                switch (_context4.prev = _context4.next) {
+                  case 0:
+                    _context4.prev = 0;
+                    _context4.next = 3;
+                    return regeneratorRuntime.awrap(table.modelType.findAll({
+                      raw: true
+                    }));
 
-        case 2:
-          students = _context4.sent;
-          schema = [{
-            column: 'الاسم',
-            type: String,
-            value: function value(student) {
-              return student.name;
-            }
-          }, {
-            column: 'رقم العسكري',
-            type: String,
-            value: function value(student) {
-              return student.militaryId;
-            }
-          }];
-          _context4.next = 6;
-          return regeneratorRuntime.awrap(writeXlsxFile(students, {
-            schema: schema,
-            filePath: path.join(__dirname, '../ExcelData/dummy.xlsx')
-          }));
+                  case 3:
+                    tableData = _context4.sent;
+                    _context4.next = 6;
+                    return regeneratorRuntime.awrap(writeXlsxFile(tableData, {
+                      schema: table.schema,
+                      filePath: path.join(__dirname, "../ExcelData/".concat(table.fileName, ".xlsx"))
+                    }));
 
-        case 6:
+                  case 6:
+                    console.log(table.fileName + ' has been Seeded to Excel Sheet');
+                    _context4.next = 12;
+                    break;
+
+                  case 9:
+                    _context4.prev = 9;
+                    _context4.t0 = _context4["catch"](0);
+                    console.log(table.fileName + ' Not Seeded ERROR');
+
+                  case 12:
+                  case "end":
+                    return _context4.stop();
+                }
+              }
+            }, null, null, [[0, 9]]);
+          });
+
+        case 1:
         case "end":
-          return _context4.stop();
+          return _context5.stop();
       }
     }
   });
