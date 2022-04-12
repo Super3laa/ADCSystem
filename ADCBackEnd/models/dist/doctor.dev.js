@@ -47,10 +47,15 @@ module.exports = function (sequelize, DataTypes) {
           foreignKey: "doctorId"
         });
         Doctor.hasMany(models.course, {
+          as: "Doctor",
           foreignKey: "doctorId"
         });
         Doctor.hasMany(models.doctorAttendance, {
           foreignKey: "doctorId"
+        });
+        Doctor.hasMany(models.course, {
+          as: "SecDoctor",
+          foreignKey: "secdoctorId"
         });
       }
     }]);

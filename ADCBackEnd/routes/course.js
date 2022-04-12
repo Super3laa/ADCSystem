@@ -30,11 +30,8 @@ router.get('/type/:type',checkTokenValidity, async (req, res, next) => {
         let courses = await models.course.findAll({
             where:{type:req.params.type 
         },
-            include:[
-            {model:models.Doctor,as:"Doctor",foreignKey:"doctorId",attributes:[['name','label'],['id','value']]},
-            {model:models.Officer,as:"Officer",foreignKey:"OfficerId",attributes:[['name','label'],['id','value']]},
-            {model:models.TAssistant,as:"TAssistant",foreignKey:"TAssistantId",attributes:[['name','label'],['id','value']]},
-          ],raw:true});
+            include:{all:true},raw:true});
+          console.log(courses[1])
         let doctors = await models.Doctor.findAll({attributes:[['name','label'],['id','value']]});
         let officers = await models.Officer.findAll({attributes:[['name','label'],['id','value']]});
         let tassistants = await models.TAssistant.findAll({attributes:[['name','label'],['id','value']]});    
@@ -50,12 +47,7 @@ router.get('/:id',checkTokenValidity,async(req,res,next)=>{
     try {
         let course = await models.course.findOne({
           where:{id},
-          include:[
-            {model:models.Doctor,as:"Doctor",foreignKey:"doctorId",attributes:[['name','label'],['id','value']]},
-            {model:models.Officer,as:"Officer",foreignKey:"OfficerId",attributes:[['name','label'],['id','value']]},
-            {model:models.TAssistant,as:"TAssistant",foreignKey:"TAssistantId",attributes:[['name','label'],['id','value']]},
-          ]
-        });
+          include:{all:true}});
         let enrollmentNumber = await models.student.count({where:{
             year:course.dataValues.year,
             type:course.dataValues.type

@@ -198,8 +198,8 @@ entities.set('courses',{
     addText:"إضافة مادة",
     text:"مادة",
     api:"course/",
-    tableHead:["الكود","الاسم","قسم","سنة","دكتور","ضابط","معيد"],
-    tableBody:["code","title","type","year","Doctor.label","Officer.label","TAssistant.label"],
+    tableHead:["الكود","الاسم","قسم","سنة","دكتور","دكتور2","ضابط","معيد"],
+    tableBody:["code","title","type","year","Doctor.name","SecDoctor.name","Officer.name","TAssistant. name"],
     settingsCol:true,
     clickableRow:true,
     FormData:{

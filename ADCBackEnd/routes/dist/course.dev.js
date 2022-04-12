@@ -91,47 +91,35 @@ router.get('/type/:type', checkTokenValidity, function _callee3(req, res, next) 
             where: {
               type: req.params.type
             },
-            include: [{
-              model: models.Doctor,
-              as: "Doctor",
-              foreignKey: "doctorId",
-              attributes: [['name', 'label'], ['id', 'value']]
-            }, {
-              model: models.Officer,
-              as: "Officer",
-              foreignKey: "OfficerId",
-              attributes: [['name', 'label'], ['id', 'value']]
-            }, {
-              model: models.TAssistant,
-              as: "TAssistant",
-              foreignKey: "TAssistantId",
-              attributes: [['name', 'label'], ['id', 'value']]
-            }],
+            include: {
+              all: true
+            },
             raw: true
           }));
 
         case 6:
           courses = _context3.sent;
-          _context3.next = 9;
+          console.log(courses[1]);
+          _context3.next = 10;
           return regeneratorRuntime.awrap(models.Doctor.findAll({
             attributes: [['name', 'label'], ['id', 'value']]
           }));
 
-        case 9:
+        case 10:
           doctors = _context3.sent;
-          _context3.next = 12;
+          _context3.next = 13;
           return regeneratorRuntime.awrap(models.Officer.findAll({
             attributes: [['name', 'label'], ['id', 'value']]
           }));
 
-        case 12:
+        case 13:
           officers = _context3.sent;
-          _context3.next = 15;
+          _context3.next = 16;
           return regeneratorRuntime.awrap(models.TAssistant.findAll({
             attributes: [['name', 'label'], ['id', 'value']]
           }));
 
-        case 15:
+        case 16:
           tassistants = _context3.sent;
           res.send({
             courses: courses,
@@ -139,20 +127,20 @@ router.get('/type/:type', checkTokenValidity, function _callee3(req, res, next) 
             officers: officers,
             tassistants: tassistants
           }).status(200);
-          _context3.next = 22;
+          _context3.next = 23;
           break;
 
-        case 19:
-          _context3.prev = 19;
+        case 20:
+          _context3.prev = 20;
           _context3.t0 = _context3["catch"](1);
           console.log(_context3.t0);
 
-        case 22:
+        case 23:
         case "end":
           return _context3.stop();
       }
     }
-  }, null, null, [[1, 19]]);
+  }, null, null, [[1, 20]]);
 });
 router.get('/:id', checkTokenValidity, function _callee4(req, res, next) {
   var id, course, enrollmentNumber, coursetotalStatus, studentResponse, LecStatus, SecStatus, LabStatus;
@@ -168,22 +156,9 @@ router.get('/:id', checkTokenValidity, function _callee4(req, res, next) {
             where: {
               id: id
             },
-            include: [{
-              model: models.Doctor,
-              as: "Doctor",
-              foreignKey: "doctorId",
-              attributes: [['name', 'label'], ['id', 'value']]
-            }, {
-              model: models.Officer,
-              as: "Officer",
-              foreignKey: "OfficerId",
-              attributes: [['name', 'label'], ['id', 'value']]
-            }, {
-              model: models.TAssistant,
-              as: "TAssistant",
-              foreignKey: "TAssistantId",
-              attributes: [['name', 'label'], ['id', 'value']]
-            }]
+            include: {
+              all: true
+            }
           }));
 
         case 5:

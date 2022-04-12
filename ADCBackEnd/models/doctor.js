@@ -12,8 +12,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Doctor.hasMany(models.labsBenefit,{foreignKey:"doctorId"})
-      Doctor.hasMany(models.course,{foreignKey:"doctorId"})
+      Doctor.hasMany(models.course,{as:"Doctor",foreignKey:"doctorId"})
       Doctor.hasMany(models.doctorAttendance,{foreignKey:"doctorId"})
+      Doctor.hasMany(models.course,{as:"SecDoctor",foreignKey:"secdoctorId"})
 
 
     }

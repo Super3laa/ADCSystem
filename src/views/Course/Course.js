@@ -63,9 +63,12 @@ export default function Course (props){
                         <Col><Typography >سنه دراسيه : {`${courseData.course.year}`}</Typography></Col>
                     </Row>
                     <Row>
-                        <Col><Typography >دكتور : {`${courseData.course.Doctor ? courseData.course.Doctor.label : "لايكن"}`}</Typography></Col>
-                        <Col><Typography >ضابط : {`${courseData.course.Officer?courseData.course.Officer.label: "لايكن"}`}</Typography></Col>
-                        <Col><Typography >معيد مجند : {`${courseData.course.TAssistant ? courseData.course.TAssistant.label: "لايكن"}`}</Typography></Col>
+
+                        <Col><Typography >دكتور : {`${courseData.course.doctorId? courseData.course.Doctor.name : "لايكن"}`}</Typography></Col>
+                        <Col><Typography >2دكتور : {`${courseData.course.secdoctorId ? courseData.course.SecDoctor.name : "لايكن"}`}</Typography></Col>
+
+                        <Col><Typography >ضابط : {`${courseData.course.officerId?courseData.course.Officer.name: "لايكن"}`}</Typography></Col>
+                        <Col><Typography >معيد مجند : {`${courseData.course.TAssistantId ? courseData.course.TAssistant.name: "لايكن"}`}</Typography></Col>
                     </Row>
                     <Row>
                         <Col><Typography >عدد الطلاب في الماده : {`${courseData.enrollmentNumber}`}</Typography></Col>

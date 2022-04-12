@@ -18,6 +18,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+var moment = require('moment');
+
 var _require = require('sequelize'),
     Model = _require.Model;
 
@@ -59,6 +61,13 @@ module.exports = function (sequelize, DataTypes) {
   doctorAttendance.init({
     courseId: DataTypes.INTEGER,
     doctorId: DataTypes.INTEGER,
+    date: {
+      type: DataTypes.DATE,
+      get: function get() {
+        var rawValue = this.getDataValue('date');
+        return moment(rawValue).format('DD/MM/YYYY');
+      }
+    },
     weekno: DataTypes.INTEGER,
     status: DataTypes.STRING,
     type: DataTypes.STRING

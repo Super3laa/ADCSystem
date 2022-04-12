@@ -1,4 +1,5 @@
 'use strict';
+const moment = require('moment')
 const {
   Model
 } = require('sequelize');
@@ -18,6 +19,11 @@ module.exports = (sequelize, DataTypes) => {
   doctorAttendance.init({
     courseId: DataTypes.INTEGER,
     doctorId: DataTypes.INTEGER,
+    date: {type:DataTypes.DATE,
+    get(){
+      const rawValue= this.getDataValue('date');
+      return moment(rawValue).format('DD/MM/YYYY')
+    }},
     weekno: DataTypes.INTEGER,
     status: DataTypes.STRING,
     type: DataTypes.STRING

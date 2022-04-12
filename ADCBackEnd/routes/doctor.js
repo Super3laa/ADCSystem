@@ -37,7 +37,8 @@ router.get('/:id',async (req,res)=>{
         attributes: ['weekno', [sequelize.fn('count', sequelize.col('weekno')), 'cnt']],
         group: ['weekno'],
     })
-    let courses  = await models.course.findAll({where:{doctorId:id}})
+    let courses  = await models.course.findAll({where:{[Op.or]:[{doctorId:id},{secdoctorId:id}]}})
+    console.log(courses)
     let coursesRating = [];
     for(let course of courses){
         let secArr = []
@@ -52,7 +53,6 @@ router.get('/:id',async (req,res)=>{
             order:[['status','ASC']]
 
         })
-        console.log(LecStatus)
         LecStatus  !==null ?  secArr.push(LecStatus) : secArr.push([]);
         let SecStatus = await models.doctorAttendance.findAll({
             where:{

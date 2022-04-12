@@ -56,6 +56,17 @@ formsData.set('attendance', {
     variant: "outlined",
     xs: 12,
     md: 6
+  }, {
+    name: "date",
+    label: "تاريخ",
+    type: "date",
+    value: "",
+    size: "small",
+    helperText: "لا يترك فارغا",
+    placeHolder: "",
+    variant: "outlined",
+    xs: 12,
+    md: 6
   }]],
   noSubmit: false,
   grid: {

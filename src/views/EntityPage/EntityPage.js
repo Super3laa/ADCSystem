@@ -46,6 +46,18 @@ export default function EntityPage(props){
                         xs:12,
                         md:12,
                     },{
+                        name: "secdoctorId",
+                        label: "2 دكتور",
+                        type: "select",
+                        value: "",
+                        size: "small",
+                        rows: res.data.doctors,
+                        helperText: "",
+                        placeHolder:"",
+                        variant: "outlined",
+                        xs:12,
+                        md:12,
+                    },{
                         name: "OfficerId",
                         label: "ظابط مشرف",
                         type: "select",

@@ -13,7 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       course.belongsTo(models.Officer,{foreignKey:"OfficerId"})
       course.belongsTo(models.TAssistant,{foreignKey:"TAssistantId"})
-      course.belongsTo(models.Doctor,{foreignKey:"doctorId"})
+      course.belongsTo(models.Doctor,{as:"Doctor",foreignKey:"doctorId"})
+      course.belongsTo(models.Doctor,{as:"SecDoctor",foreignKey:"secdoctorId"})
+
       course.hasMany(models.studentRating,{foreignKey:"courseId"})
       course.hasMany(models.studentAttendance,{foreignKey:"courseId"})
 
@@ -24,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     code: DataTypes.STRING,
     type: DataTypes.STRING,
     year: DataTypes.STRING,
+    secdoctorId: DataTypes.INTEGER,
     doctorId: DataTypes.INTEGER,
     officerId: DataTypes.INTEGER,
     TAssistantId: DataTypes.INTEGER

@@ -12,25 +12,25 @@ import { toast } from 'react-toastify';
 import { AiFillPrinter } from 'react-icons/ai'
 import { PieChart } from 'react-minimal-pie-chart';
 import { Chart } from "react-google-charts";
-import  formsData  from './DoctorFormData';
+import formsData from './DoctorFormData';
 
 
 export default function Doctor(props) {
     let doctorSkeleton = entities.get("doctors");
     const [doctorData, setDoctorData] = useState({})
-    const [coursesArray,setCoursesArray] = useState([]);
+    const [coursesArray, setCoursesArray] = useState([]);
     const dispatch = useDispatch();
     useEffect(() => {
         fetch();
         async function fetch() {
             let res = await axios.get(API + `doctor/${props.match.params.id}`)
             console.log(res.data);
-            let dummyArray =[]
-            res.data.courses.forEach(course=>{
+            let dummyArray = []
+            res.data.courses.forEach(course => {
                 dummyArray.push(
                     {
-                        value:course.id,
-                        label:course.title
+                        value: course.id,
+                        label: course.title
                     }
                 )
             })
@@ -46,106 +46,108 @@ export default function Doctor(props) {
         window.print();
         window.location.reload()
     }
-    async function handleCreateAxios(data,type){
+    async function handleCreateAxios(data, type) {
         data.doctorId = doctorData.doctor.id;
-        let res = await axios.post(API+`doctor/${type}`,{data});
-        if(res.status == 200){
+        let res = await axios.post(API + `doctor/${type}`, { data });
+        if (res.status == 200) {
             toast.success("تم الإضافة بنجاح")
             window.location.reload();
         }
     }
-    async function getweeklyAttendance(weekno){
-        let res = await axios.get(API+`doctor/attendance/${doctorData.doctor.id}/${weekno}`);
+    async function getweeklyAttendance(weekno) {
+        let res = await axios.get(API + `doctor/attendance/${doctorData.doctor.id}/${weekno}`);
         console.log(res.data);
-        if(res.status == 200){
-            setDoctorData({...doctorData,attendance:res.data});
+        if (res.status == 200) {
+            setDoctorData({ ...doctorData, attendance: res.data });
         }
     }
-    async function handleEditAxios(data,type){
-        let res = await axios.put(API+`doctor/${type}`,{data});
-        if(res.status == 200){
+    async function handleEditAxios(data, type) {
+        let res = await axios.put(API + `doctor/${type}`, { data });
+        if (res.status == 200) {
             toast.success("تم التعديل بنجاح")
             window.location.reload();
         }
     }
-    async function handleEdit(type,id,index){
-            let formsDataEdit = formsData.get(type)
-            switch (type){
-                case 'attendance':
-                    formsDataEdit.rows[0].length < 4 && formsDataEdit.rows[0].push(
-                            {
-                                name: "courseId",
-                                label: "مادة",
-                                type: "select",
-                                value: "",
-                                size: "small",
-                                defaultValue:coursesArray[0].value,
-                                rows: coursesArray,
-                                helperText: "لا يترك فارغا",
-                                placeHolder:"",
-                                variant: "outlined",
-                                xs:12,
-                                md:6,
-                            }
+    async function handleEdit(type, id, index) {
+        let formsDataEdit = formsData.get(type)
+        switch (type) {
+            case 'attendance':
+                formsDataEdit.rows[0].length < 5 && formsDataEdit.rows[0].push(
+                    {
+                        name: "courseId",
+                        label: "مادة",
+                        type: "select",
+                        value: "",
+                        size: "small",
+                        defaultValue: coursesArray[0].value,
+                        rows: coursesArray,
+                        helperText: "لا يترك فارغا",
+                        placeHolder: "",
+                        variant: "outlined",
+                        xs: 12,
+                        md: 6,
+                    }
                 )
-                    break;
-                default:
-                    break;
-            }
-            dispatch(updateForm({...formsDataEdit,
-            state:true,
-            submitHandler:(data)=>handleEditAxios(data,type),
-            values:doctorData[type][index],
-            submitButtonText:"تعديل"
+                break;
+            default:
+                break;
+        }
+        dispatch(updateForm({
+            ...formsDataEdit,
+            state: true,
+            submitHandler: (data) => handleEditAxios(data, type),
+            values: doctorData[type][index],
+            submitButtonText: "تعديل"
         }))
     }
-    async function handleDeleteAxios(type,id){
-        let res = await axios.delete(API+`doctor/${type}/${id}`);
-        if(res.status == 200){
+    async function handleDeleteAxios(type, id) {
+        let res = await axios.delete(API + `doctor/${type}/${id}`);
+        if (res.status == 200) {
             toast.warning("تم المسح بنجاح")
             window.location.reload();
         }
     }
-    async function handleCreate(type){
+    async function handleCreate(type) {
         let formsDataEdit = formsData.get(type)
-        switch (type){
+        switch (type) {
             case 'attendance':
-            formsDataEdit.rows[0].length < 4 && formsDataEdit.rows[0].push(
-                        {
-                            name: "courseId",
-                            label: "مادة",
-                            type: "select",
-                            value: "",
-                            size: "small",
-                            defaultValue:coursesArray[0].value,
-                            rows: coursesArray,
-                            helperText: "لا يترك فارغا",
-                            placeHolder:"",
-                            variant: "outlined",
-                            xs:12,
-                            md:6,
-                        }
-            )
-            break;
+                formsDataEdit.rows[0].length < 5 && formsDataEdit.rows[0].push(
+                    {
+                        name: "courseId",
+                        label: "مادة",
+                        type: "select",
+                        value: "",
+                        size: "small",
+                        defaultValue: coursesArray[0].value,
+                        rows: coursesArray,
+                        helperText: "لا يترك فارغا",
+                        placeHolder: "",
+                        variant: "outlined",
+                        xs: 12,
+                        md: 12,
+                    }
+                )
+                break;
         }
-        dispatch(updateForm({...formsDataEdit,state:true,submitHandler:(data)=>handleCreateAxios(data,type)}))
+        dispatch(updateForm({ ...formsDataEdit, state: true, submitHandler: (data) => handleCreateAxios(data, type) }))
     }
-    async function handleEditDoctor(data){
-       let res = await  axios.put(API+`doctor/${doctorData.doctor.id}`,{data});
-       if (res.status ==200){
-        setDoctorData({...doctorData , doctor:res.data});
-        toast.success("تم التعديل بنجاح")
-        window.location.reload()
+    async function handleEditDoctor(data) {
+        let res = await axios.put(API + `doctor/${doctorData.doctor.id}`, { data });
+        if (res.status == 200) {
+            setDoctorData({ ...doctorData, doctor: res.data });
+            toast.success("تم التعديل بنجاح")
+            window.location.reload()
 
-       }
+        }
     }
-    async function handleEditProfile(){
+    async function handleEditProfile() {
         dispatch(updateForm(
-            {...doctorSkeleton.FormData,
-                state:true,
-                values:doctorData.doctor,
-                submitButtonText:"تعديل",
-                submitHandler:(data)=>handleEditDoctor(data)
+            {
+                ...doctorSkeleton.FormData,
+                state: true,
+                values: doctorData.doctor,
+                submitButtonText: "تعديل",
+                submitHandler: (data) => handleEditDoctor(data)
             }))
     }
     return (
@@ -167,23 +169,23 @@ export default function Doctor(props) {
                             <Col><Typography >الأسم : {`${doctorData.doctor.name}`}</Typography></Col>
                             <Col><Typography >تقييم من المشرف الأكاديمي : {`${doctorData.doctor.rate}`}</Typography></Col>
                         </Row>
-                        <br/>
-                {<Row className="ButtonRow">
-                    <Col xs={3}><Button variant="contained" color="primary" onClick={handleEditProfile} >تعديل بيانات</Button></Col>
-            </Row>}
                         <br />
-                       
+                        {<Row className="ButtonRow">
+                            <Col xs={3}><Button variant="contained" color="primary" onClick={handleEditProfile} >تعديل بيانات</Button></Col>
+                        </Row>}
+                        <br />
+
                         <Row>
                             <Row className="ButtonRow">
                                 <Col xs={12}><Button variant="contained" color="primary" onClick={() => handleCreate("attendance")} >إضافة حالة حضور للأستاذ</Button></Col>
                             </Row>
-                            <br /> 
-                             <Row className="ButtonRow">
-                                {doctorData.doctorAttendance? doctorData.doctorAttendance.map(weekno => {
+                            <br />
+                            <Row className="ButtonRow">
+                                {doctorData.doctorAttendance ? doctorData.doctorAttendance.map(weekno => {
                                     return <Col xs={12}><Link variant="body2" component="button" color="primary" onClick={() => getweeklyAttendance(weekno.weekno)} >-  بيان الحضور الاسبوع {weekno.weekno}</Link></Col>
-                                }):null}
+                                }) : null}
                             </Row>
-                        <br />
+                            <br />
 
                             {
                                 doctorData.attendance ?
@@ -205,6 +207,9 @@ export default function Doctor(props) {
                                                             <TableCell>
                                                                 حالة الحضور
                                                             </TableCell>
+                                                            <TableCell>
+                                                                تاريخ
+                                                            </TableCell>
                                                             <TableCell className="ButtonRow">
                                                                 اعدادات
                                                             </TableCell>
@@ -221,6 +226,9 @@ export default function Doctor(props) {
                                                                         </TableCell>
                                                                         <TableCell>
                                                                             {c.status}
+                                                                        </TableCell>
+                                                                        <TableCell>
+                                                                            {c.date}
                                                                         </TableCell>
                                                                         <TableCell className="ButtonRow">
                                                                             <IconButton onClick={() => handleDeleteAxios("attendance", c.id)}><MdDelete /></IconButton>
@@ -244,18 +252,26 @@ export default function Doctor(props) {
                         <Divider />
                         <br />
                         <Row>
+                            <Col>
+
+                            </Col>
+                        </Row>
+                        <br />
+                        <Divider />
+                        <br />
+                        <Row>
                             <Col xs={12}>
                                 <Typography variant="h5"> إحصائيات حضور الأستاذ للمواد</Typography>
                             </Col>
                         </Row>
-                        <br/>
+                        <br />
                         {
-                            doctorData.courses.map((course,i)=>{
+                            doctorData.courses.map((course, i) => {
                                 return <Row>
                                     <Col xs={12}><Typography >{course.title}</Typography></Col>
-                                    <ChartMe data={ doctorData.coursesRating[i][0]} title={"المحاضرة"}/>
-                                    <ChartMe data={doctorData.coursesRating[i][1]} title={"التمارين"}/>
-                                    <ChartMe data={   doctorData.coursesRating[i][2]} title={"المعمل"}/>
+                                    <ChartMe data={doctorData.coursesRating[i][0]} title={"المحاضرة"} />
+                                    <ChartMe data={doctorData.coursesRating[i][1]} title={"التمارين"} />
+                                    <ChartMe data={doctorData.coursesRating[i][2]} title={"المعمل"} />
                                 </Row>
                             })
                         }
@@ -294,18 +310,18 @@ function ChartMe({ title, data }) {
             <Container>
                 <Row>
                     <Col xs={12}><Typography>الحضور الكلي {title}</Typography></Col>
-                    <br/>
-                    {AttendeNumber+ didnotAttendNumber == 0 ? <Typography>لا يوجد معلومات كافية</Typography> :
-                    <React.Fragment>
-                        <Col xs={6}>
-                    <PieChart
-                        data={[
-                            { title: 'حضر', value: AttendeNumber, color: '#3498db' },
-                            { title: 'لم يحضر', value: didnotAttendNumber, color: '#e74c3c' },
-                        ]}
-                    /></Col>
-                    <Col xs={12}>نسبة الحضور {parseFloat(((AttendeNumber) / ((AttendeNumber) + (didnotAttendNumber))) * 100).toFixed(2)} %</Col>
-                    </React.Fragment>}
+                    <br />
+                    {AttendeNumber + didnotAttendNumber == 0 ? <Typography>لا يوجد معلومات كافية</Typography> :
+                        <React.Fragment>
+                            <Col xs={6}>
+                                <PieChart
+                                    data={[
+                                        { title: 'حضر', value: AttendeNumber, color: '#3498db' },
+                                        { title: 'لم يحضر', value: didnotAttendNumber, color: '#e74c3c' },
+                                    ]}
+                                /></Col>
+                            <Col xs={12}>نسبة الحضور {parseFloat(((AttendeNumber) / ((AttendeNumber) + (didnotAttendNumber))) * 100).toFixed(2)} %</Col>
+                        </React.Fragment>}
                 </Row>
                 <br />
                 <br />

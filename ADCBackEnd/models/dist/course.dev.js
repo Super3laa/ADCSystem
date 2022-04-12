@@ -50,7 +50,12 @@ module.exports = function (sequelize, DataTypes) {
           foreignKey: "TAssistantId"
         });
         course.belongsTo(models.Doctor, {
+          as: "Doctor",
           foreignKey: "doctorId"
+        });
+        course.belongsTo(models.Doctor, {
+          as: "SecDoctor",
+          foreignKey: "secdoctorId"
         });
         course.hasMany(models.studentRating, {
           foreignKey: "courseId"
@@ -70,6 +75,7 @@ module.exports = function (sequelize, DataTypes) {
     code: DataTypes.STRING,
     type: DataTypes.STRING,
     year: DataTypes.STRING,
+    secdoctorId: DataTypes.INTEGER,
     doctorId: DataTypes.INTEGER,
     officerId: DataTypes.INTEGER,
     TAssistantId: DataTypes.INTEGER

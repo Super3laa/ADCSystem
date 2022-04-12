@@ -132,21 +132,24 @@ router.get('/:id', function _callee4(req, res) {
           doctorAttendance = _context4.sent;
           _context4.next = 9;
           return regeneratorRuntime.awrap(models.course.findAll({
-            where: {
+            where: _defineProperty({}, Op.or, [{
               doctorId: id
-            }
+            }, {
+              secdoctorId: id
+            }])
           }));
 
         case 9:
           courses = _context4.sent;
+          console.log(courses);
           coursesRating = [];
           _iteratorNormalCompletion = true;
           _didIteratorError = false;
           _iteratorError = undefined;
-          _context4.prev = 14;
+          _context4.prev = 15;
           _iterator = courses[Symbol.iterator]();
 
-        case 16:
+        case 17:
           if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
             _context4.next = 36;
             break;
@@ -154,7 +157,7 @@ router.get('/:id', function _callee4(req, res) {
 
           course = _step.value;
           secArr = [];
-          _context4.next = 21;
+          _context4.next = 22;
           return regeneratorRuntime.awrap(models.doctorAttendance.findAll({
             where: {
               courseId: course.dataValues.id,
@@ -166,9 +169,8 @@ router.get('/:id', function _callee4(req, res) {
             order: [['status', 'ASC']]
           }));
 
-        case 21:
+        case 22:
           LecStatus = _context4.sent;
-          console.log(LecStatus);
           LecStatus !== null ? secArr.push(LecStatus) : secArr.push([]);
           _context4.next = 26;
           return regeneratorRuntime.awrap(models.doctorAttendance.findAll({
@@ -204,7 +206,7 @@ router.get('/:id', function _callee4(req, res) {
 
         case 33:
           _iteratorNormalCompletion = true;
-          _context4.next = 16;
+          _context4.next = 17;
           break;
 
         case 36:
@@ -213,7 +215,7 @@ router.get('/:id', function _callee4(req, res) {
 
         case 38:
           _context4.prev = 38;
-          _context4.t0 = _context4["catch"](14);
+          _context4.t0 = _context4["catch"](15);
           _didIteratorError = true;
           _iteratorError = _context4.t0;
 
@@ -254,7 +256,7 @@ router.get('/:id', function _callee4(req, res) {
           return _context4.stop();
       }
     }
-  }, null, null, [[14, 38, 42, 50], [43,, 45, 49]]);
+  }, null, null, [[15, 38, 42, 50], [43,, 45, 49]]);
 });
 router.post('/attendance', function _callee5(req, res, next) {
   var userdb;
