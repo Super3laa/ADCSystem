@@ -27,6 +27,8 @@ var _Officer = _interopRequireDefault(require("../views/Officer/Officer"));
 
 var _TAssistant = _interopRequireDefault(require("../views/TAssistant/TAssistant"));
 
+var _DoctorsAttendance = _interopRequireDefault(require("../views/doctorsAttendance/DoctorsAttendance"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function getRoutes() {
@@ -64,6 +66,9 @@ var superadmin = [{
   path: "/coursesDetails",
   component: _Home["default"]
 }, {
+  path: "/doctorsAttendance",
+  component: _DoctorsAttendance["default"]
+}, {
   path: "/:entity",
   component: _EntityPage["default"]
 }, {
@@ -97,6 +102,9 @@ var admin = [{
 }, {
   path: "/coursesDetails",
   component: _Home["default"]
+}, {
+  path: "/doctorsAttendance",
+  component: _DoctorsAttendance["default"]
 }, {
   path: "/:entity",
   component: _EntityPage["default"]

@@ -29,6 +29,19 @@ router.get('/', checkTokenValidity,async (req, res, next) => {
         console.log(error)
     }
 })
+router.post('/AttendanceAll',async(req,res)=>{
+  console.log(req.body)
+  let doctors = await models.Doctor.findAll({attribuit:['id','name'],raw:true});
+  let data = [];
+  for(let i = 0 ; i < doctors.length ; i++){
+    let docAttendance = await models.doctorAttendance.findAll({where:{doctorId:doctors[i].id,date:{
+      [Op.gte]:req.body.datatime.from,
+      [Op.lte]:req.body.datatime.to
+    }},attributes:['status','date','type'],order:[['date','ASC']],raw:true})
+    data.push({name:doctors[i].name,attendance:docAttendance});
+  }
+  res.send(data).status(200);
+})
 router.get('/:id',async (req,res)=>{
     const id = req.params.id
     let doctor = await models.Doctor.findOne({where:{id}});

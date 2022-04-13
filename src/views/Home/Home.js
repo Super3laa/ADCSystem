@@ -150,6 +150,16 @@ export default function Home(props) {
         e.preventDefault();
         handleNavigation("/tassistants");
       },
+    },attendance: {
+      title: "حضور الأساتذه",
+      icon: "FaUser",
+      permissions: ["superadmin","admin"],
+      children: false,
+      type:"all",
+      onClick: (e) => {
+        e.preventDefault();
+        handleNavigation("/doctorsAttendance");
+      },
     },
     users: {
       title: "المستخدمين",

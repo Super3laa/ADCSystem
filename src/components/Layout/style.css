@@ -1,0 +1,18 @@
+@media screen {
+    .divFooter {
+      display: none;
+      text-align: center !important;
+      background: #eeeeee;
+    }
+  }
+  @media print {
+    .divFooter {
+      position: fixed !important;
+      bottom: 0;
+      text-align: center !important;
+      background: #eeeeee !important;
+    }
+  }
+  .Joo{
+    font-weight: bold;
+  }

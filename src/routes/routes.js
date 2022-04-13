@@ -9,6 +9,7 @@ import Course from "../views/Course/Course";
 import Doctor from "../views/Doctor/Doctor";
 import Officer from "../views/Officer/Officer";
 import TAssistant from "../views/TAssistant/TAssistant";
+import DoctorsAttendance from "../views/doctorsAttendance/DoctorsAttendance";
 export default function getRoutes(){
     try {
         if(localStorage.getItem('token')){
@@ -39,6 +40,8 @@ const passByRoutes = [
 const superadmin = [
     {path:"/Home",component:Home},
     {path:"/coursesDetails",component:Home},
+    {path:"/doctorsAttendance",component:DoctorsAttendance},
+
     {path:"/:entity",component:EntityPage},
     {path:"/Dashboard/Permissions",component:Permissions},
     {path:"/students/:id",component:Student},
@@ -47,11 +50,14 @@ const superadmin = [
     {path:"/doctors/:id",component:Doctor},
     {path:"/officers/:id",component:Officer},
     {path:"/tassistants/:id",component:TAssistant},
+
     {path:"*",component:NotFound},
 ]
 const admin = [
     {path:"/Home",component:Home},
     {path:"/coursesDetails",component:Home},
+    {path:"/doctorsAttendance",component:DoctorsAttendance},
+
     {path:"/:entity",component:EntityPage},
     {path:"/Dashboard/Permissions",component:Permissions},
     {path:"/students/:id",component:Student},
@@ -60,5 +66,6 @@ const admin = [
     {path:"/doctors/:id",component:Doctor},
     {path:"/officers/:id",component:Officer},
     {path:"/tassistants/:id",component:TAssistant},
+
     {path:"*",component:NotFound},
 ]

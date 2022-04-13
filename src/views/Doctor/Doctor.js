@@ -167,7 +167,7 @@ export default function Doctor(props) {
                         <br />
                         <Row>
                             <Col><Typography >الأسم : {`${doctorData.doctor.name}`}</Typography></Col>
-                            <Col><Typography >تقييم من المشرف الأكاديمي : {`${doctorData.doctor.rate}`}</Typography></Col>
+                            <Col><Typography >تقييم من المشرف الأكاديمي : {`${doctorData.doctor.rate ? doctorData.doctor.rate:"لايكن"}`}</Typography></Col>
                         </Row>
                         <br />
                         {<Row className="ButtonRow">
@@ -283,6 +283,7 @@ export default function Doctor(props) {
                     </Row>*/}
                     </Container> : <Typography>Loading ....</Typography>
             }
+
         </Layout>
     )
 
@@ -293,7 +294,6 @@ function ChartMe({ title, data }) {
     let didnotAttendNumber = 0;
     if (data.length > 0) {
         if (data[0].status == "حضر") {
-            console.log(data[0].count)
             AttendeNumber = data[0].count
             if (data.length > 1) {
                 didnotAttendNumber = data[1].count;
